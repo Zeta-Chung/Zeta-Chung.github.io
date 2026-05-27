@@ -22,26 +22,26 @@
     <meta name="description" content="stm32时钟树模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="时钟树">
-<meta property="og:url" content="http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/index.html">
+<meta property="og:url" content="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/index.html">
 <meta property="og:site_name" content="ZetaC">
 <meta property="og:description" content="stm32时钟树模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png">
-<meta property="og:image" content="http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/image7.png">
-<meta property="article:published_time" content="2026-05-25T11:27:22.000Z">
-<meta property="article:modified_time" content="2026-05-25T15:07:12.090Z">
+<meta property="og:image" content="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png">
+<meta property="og:image" content="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image7.png">
+<meta property="article:published_time" content="2026-05-15T11:27:22.000Z">
+<meta property="article:modified_time" content="2026-05-27T12:29:34.004Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png">
+<meta name="twitter:image" content="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png">
 
 
-<link rel="canonical" href="http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/">
+<link rel="canonical" href="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/","path":"2026/05/25/时钟树/","title":"时钟树"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/","path":"2026/05/15/时钟树/","title":"时钟树"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>时钟树 | ZetaC</title>
@@ -179,7 +179,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,9 +207,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-05-25 19:27:22 / 修改时间：23:07:12" itemprop="dateCreated datePublished" datetime="2026-05-25T19:27:22+08:00">2026-05-25</time>
+      <time title="创建时间：2026-05-15 19:27:22" itemprop="dateCreated datePublished" datetime="2026-05-15T19:27:22+08:00">2026-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-05-27 20:29:34" itemprop="dateModified" datetime="2026-05-27T20:29:34+08:00">2026-05-27</time>
     </span>
 
   
@@ -223,7 +229,7 @@
     
     <div class="post-body" itemprop="articleBody"><p>stm32时钟树模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）</p>
 <span id="more"></span>
-<h1 id="时钟和时钟树的概念"><a href="#时钟和时钟树的概念" class="headerlink" title="时钟和时钟树的概念"></a>时钟和时钟树的概念</h1><h3 id="时钟：持续振荡、高低电平交替变化的方波信号。"><a href="#时钟：持续振荡、高低电平交替变化的方波信号。" class="headerlink" title="时钟：持续振荡、高低电平交替变化的方波信号。"></a>时钟：持续振荡、高低电平交替变化的方波信号。</h3><h3 id="时钟树：-不同外设（如-GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套-时钟分配和倍频-分频网络，这就是时钟树。"><a href="#时钟树：-不同外设（如-GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套-时钟分配和倍频-分频网络，这就是时钟树。" class="headerlink" title="时钟树： 不同外设（如 GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套 时钟分配和倍频&#x2F;分频网络，这就是时钟树。"></a>时钟树： 不同外设（如 GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套 时钟分配和倍频&#x2F;分频网络，这就是时钟树。</h3><p><img src="/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png" alt="时钟树结构"></p>
+<h1 id="时钟和时钟树的概念"><a href="#时钟和时钟树的概念" class="headerlink" title="时钟和时钟树的概念"></a>时钟和时钟树的概念</h1><h3 id="时钟：持续振荡、高低电平交替变化的方波信号。"><a href="#时钟：持续振荡、高低电平交替变化的方波信号。" class="headerlink" title="时钟：持续振荡、高低电平交替变化的方波信号。"></a>时钟：持续振荡、高低电平交替变化的方波信号。</h3><h3 id="时钟树：-不同外设（如-GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套-时钟分配和倍频-分频网络，这就是时钟树。"><a href="#时钟树：-不同外设（如-GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套-时钟分配和倍频-分频网络，这就是时钟树。" class="headerlink" title="时钟树： 不同外设（如 GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套 时钟分配和倍频&#x2F;分频网络，这就是时钟树。"></a>时钟树： 不同外设（如 GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套 时钟分配和倍频&#x2F;分频网络，这就是时钟树。</h3><p><img src="/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png" alt="时钟树结构"></p>
 <blockquote>
 <p>如图，STM32F103C8T6里的时钟树结构，其中背景带颜色表示可开关，带绿色表示默认开启</p>
 </blockquote>
@@ -285,7 +291,7 @@
 <ul>
 <li>SYSCLK的最高频率为<strong>72MHz</strong>，来源为</li>
 </ul>
-<h1 id="树枝"><a href="#树枝" class="headerlink" title="树枝"></a>树枝</h1><p><img src="/2026/05/25/%E6%97%B6%E9%92%9F%E6%A0%91/image7.png" alt="单片机内部结构框图"></p>
+<h1 id="树枝"><a href="#树枝" class="headerlink" title="树枝"></a>树枝</h1><p><img src="/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image7.png" alt="单片机内部结构框图"></p>
 <ul>
 <li><p>AHB总线分出APB1和APB2两条总线，两条总线上各自挂载不同外设，AHB总线上挂载DMA1与DMA2外设。</p>
 </li>
@@ -441,7 +447,7 @@
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意：需在SYSCLK&lt;=8MHz时启用</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x_flash.h&quot;</span> </span></span><br><span class="line">FLASH_PrefetchBufferCmd(Enable);<span class="comment">//启用预取功能</span></span><br><span class="line">FLASH_SetLatency(FLASH_Latency_2);<span class="comment">//设置等待周期数为2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="启动时钟树示例"><a href="#启动时钟树示例" class="headerlink" title="启动时钟树示例"></a>启动时钟树示例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x_rcc.h&quot;</span> </span></span><br><span class="line"><span class="type">void</span> <span class="title function_">App_SystemClock_Init</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//#0 配置 Flash 预取和等待周期</span></span><br><span class="line">  FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable); </span><br><span class="line">  FLASH_SetLatency(FLASH_Latency_2); <span class="comment">//设置等待周期数为2</span></span><br><span class="line">  <span class="comment">//#1 打开外部高速振荡器</span></span><br><span class="line">  RCC_HSEConfig(RCC_HSE_ON);</span><br><span class="line">  <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET); <span class="comment">//等待HSE稳定</span></span><br><span class="line">  <span class="comment">//#2 配置PLL为HSE×9=72MHz</span></span><br><span class="line">  RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9); </span><br><span class="line">  RCC_PLLCmd(ENABLE); <span class="comment">//使能PLL</span></span><br><span class="line">  <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET); <span class="comment">//等待PLL锁定</span></span><br><span class="line">  <span class="comment">//#3 配置总线分频器</span></span><br><span class="line">  RCC_HCLKConfig(RCC_SYSCLK_Div1); <span class="comment">//AHB分频系数为1，HCLK=72MHz</span></span><br><span class="line">  RCC_PCLK1Config(RCC_HCLK_Div2); <span class="comment">//APB1分频系数为2，PCLK1=36MHz</span></span><br><span class="line">  RCC_PCLK2Config(RCC_HCLK_Div1); <span class="comment">//APB2分频系数为1，PCLK2=72MHz</span></span><br><span class="line">  <span class="comment">//#4 切换系统时钟到PLL输出</span></span><br><span class="line">  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);</span><br><span class="line">  <span class="keyword">while</span> (RCC_GetSYSCLKSource() != <span class="number">0x08</span>); <span class="comment">//等待系统时钟切换完成</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="启动时钟树示例"><a href="#启动时钟树示例" class="headerlink" title="启动时钟树示例"></a>启动时钟树示例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x_rcc.h&quot;</span> </span></span><br><span class="line"><span class="type">void</span> <span class="title function_">App_SystemClock_Init</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//#0 配置 Flash 预取和等待周期</span></span><br><span class="line">  FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable); </span><br><span class="line">  FLASH_SetLatency(FLASH_Latency_2); <span class="comment">//设置等待周期数为2</span></span><br><span class="line">  <span class="comment">//#1 打开外部高速振荡器</span></span><br><span class="line">  RCC_HSEConfig(RCC_HSE_ON);</span><br><span class="line">  <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET); <span class="comment">//等待HSE稳定</span></span><br><span class="line">  <span class="comment">//#2 配置PLL为HSE×9=72MHz</span></span><br><span class="line">  RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9); </span><br><span class="line">  RCC_PLLCmd(ENABLE); <span class="comment">//使能PLL</span></span><br><span class="line">  <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET); <span class="comment">//等待PLL锁定</span></span><br><span class="line">  <span class="comment">//#3 配置总线分频器</span></span><br><span class="line">  RCC_HCLKConfig(RCC_SYSCLK_Div1); <span class="comment">//AHB分频系数为1，HCLK=72MHz</span></span><br><span class="line">  RCC_PCLK1Config(RCC_HCLK_Div2); <span class="comment">//APB1分频系数为2，PCLK1=36MHz</span></span><br><span class="line">  RCC_PCLK2Config(RCC_HCLK_Div1); <span class="comment">//APB2分频系数为1，PCLK2=72MHz</span></span><br><span class="line">  <span class="comment">//#4 切换系统时钟到PLL输出</span></span><br><span class="line">  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);</span><br><span class="line">  <span class="keyword">while</span> (RCC_GetSYSCLKSource() != <span class="number">0x08</span>); <span class="comment">//等待系统时钟切换完成</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="片上外设的时钟开关和复位"><a href="#片上外设的时钟开关和复位" class="headerlink" title="片上外设的时钟开关和复位"></a>片上外设的时钟开关和复位</h2><ol>
 <li><p><strong><code>RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</code></strong></p>
 <ul>
@@ -503,9 +509,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/STM32/" rel="tag"># STM32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
           </div>
 
         
