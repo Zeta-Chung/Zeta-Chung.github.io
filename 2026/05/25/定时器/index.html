@@ -71,7 +71,8 @@
 
 
 
-
+<!-- source/_data/head.njk -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -134,7 +135,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%9A%E6%97%B6%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、定时器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%A7%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">定时器大体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%9A%E6%97%B6%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">一、定时器类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text">二、时基单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">时基单元结构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%BB%84%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">各组件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%9D%A5%E6%BA%90%EF%BC%9A%E6%8F%90%E4%BE%9B%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7%E3%80%82"><span class="nav-number">2.2.1.</span> <span class="nav-text">时钟来源：提供时钟信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%88%86%E9%A2%91%E5%99%A8%EF%BC%9A%E7%BB%99%E4%BF%A1%E5%8F%B7%E9%99%8D%E4%BD%8E%E9%A2%91%E7%8E%87%E3%80%82"><span class="nav-number">2.2.2.</span> <span class="nav-text">预分频器：给信号降低频率。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E8%A3%85%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%9A%E8%AE%BE%E7%BD%AE%E5%AE%9A%E6%97%B6%E5%91%A8%E6%9C%9F%EF%BC%88ARR-1%EF%BC%89%E3%80%82"><span class="nav-number">2.2.3.</span> <span class="nav-text">自动重装寄存器：设置定时周期（ARR+1）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%9A%E6%A0%B9%E6%8D%AE%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%91%A8%E6%9C%9F%E8%AE%A1%E6%95%B0%EF%BC%8C%E6%AF%8F%E6%8E%A5%E5%8F%97%E4%B8%80%E6%AC%A1%E4%BF%A1%E5%8F%B7%E8%AE%A1%E6%95%B0%E4%B8%80%E6%AC%A1%EF%BC%8C%E5%91%A8%E6%9C%9F%E6%BB%A1%E5%90%8E%E6%BA%A2%E5%87%BA%E9%87%8D%E6%96%B0%E8%AE%A1%E6%95%B0%E3%80%82"><span class="nav-number">2.2.4.</span> <span class="nav-text">计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%9A%E8%AE%BE%E7%BD%AE%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E6%AC%A1%E6%95%B0%EF%BC%88%E5%91%A8%E6%9C%9F%E6%95%B0%EF%BC%89%EF%BC%8C%E6%AC%A1%E6%95%B0%E6%BB%A1%E5%90%8Eupdate%E4%B8%80%E6%AC%A1%E3%80%82"><span class="nav-number">2.2.5.</span> <span class="nav-text">重复计数器：设置重复计数次数（周期数），次数满后update一次。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.6.</span> <span class="nav-text">配置函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#void-TIM-TimeBaseInit-TIM-TypeDef-TIMx-TIM-TimeBaseInitTypeDef-TIM-TimeBaseInitStruct"><span class="nav-number">2.2.6.1.</span> <span class="nav-text">void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#void-TIM-Cmd-TIM-TypeDef-TIMx-FunctionalState-NewState"><span class="nav-number">2.2.6.2.</span> <span class="nav-text">void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#void-TIM-ITConfig-TIM-TypeDef-TIMx-uint16-t-TIM-IT-FunctionalState-NewState"><span class="nav-number">2.2.6.3.</span> <span class="nav-text">void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%88%A9%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%87%AA%E5%88%B6%E5%BB%B6%E6%97%B6%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">示例：利用定时器自制延时函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text">三、输出比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7"><span class="nav-number">4.</span> <span class="nav-text">四、输入捕获</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%BB%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">五、从模式控制器</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-%E5%AE%9A%E6%97%B6%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text"> 一、定时器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%A7%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text"> 定时器大体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E5%AE%9A%E6%97%B6%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text"> 一、定时器类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text"> 二、时基单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text"> 时基单元结构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%BB%84%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text"> 各组件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%9D%A5%E6%BA%90%E6%8F%90%E4%BE%9B%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 时钟来源：提供时钟信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%88%86%E9%A2%91%E5%99%A8%E7%BB%99%E4%BF%A1%E5%8F%B7%E9%99%8D%E4%BD%8E%E9%A2%91%E7%8E%87"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 预分频器：给信号降低频率。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E8%A3%85%E5%AF%84%E5%AD%98%E5%99%A8%E8%AE%BE%E7%BD%AE%E5%AE%9A%E6%97%B6%E5%91%A8%E6%9C%9Farr1"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 自动重装寄存器：设置定时周期（ARR+1）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8%E6%A0%B9%E6%8D%AE%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%91%A8%E6%9C%9F%E8%AE%A1%E6%95%B0%E6%AF%8F%E6%8E%A5%E5%8F%97%E4%B8%80%E6%AC%A1%E4%BF%A1%E5%8F%B7%E8%AE%A1%E6%95%B0%E4%B8%80%E6%AC%A1%E5%91%A8%E6%9C%9F%E6%BB%A1%E5%90%8E%E6%BA%A2%E5%87%BA%E9%87%8D%E6%96%B0%E8%AE%A1%E6%95%B0"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E5%99%A8%E8%AE%BE%E7%BD%AE%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E6%AC%A1%E6%95%B0%E5%91%A8%E6%9C%9F%E6%95%B0%E6%AC%A1%E6%95%B0%E6%BB%A1%E5%90%8Eupdate%E4%B8%80%E6%AC%A1"><span class="nav-number">2.2.5.</span> <span class="nav-text"> 重复计数器：设置重复计数次数（周期数），次数满后update一次。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.6.</span> <span class="nav-text"> 配置函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"><span class="nav-number">2.2.6.1.</span> <span class="nav-text"> void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#void-tim_cmdtim_typedef-timx-functionalstate-newstate"><span class="nav-number">2.2.6.2.</span> <span class="nav-text"> void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"><span class="nav-number">2.2.6.3.</span> <span class="nav-text"> void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E5%88%A9%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%87%AA%E5%88%B6%E5%BB%B6%E6%97%B6%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text"> 示例：利用定时器自制延时函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89-%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text"> 三、输出比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B-%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7"><span class="nav-number">4.</span> <span class="nav-text"> 四、输入捕获</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94-%E4%BB%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text"> 五、从模式控制器</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -230,47 +231,52 @@
     
     <div class="post-body" itemprop="articleBody"><p>stm32定时器模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）</p>
 <span id="more"></span>
-<h1 id="一、定时器简介"><a href="#一、定时器简介" class="headerlink" title="一、定时器简介"></a>一、定时器简介</h1><p>在 STM32F103C8T6 中，<strong>定时器模块</strong>是一个功能丰富且灵活的外设，主要分为 <strong>高级控制定时器</strong>、<strong>通用定时器</strong> 和 <strong>基本定时器</strong> 三类。下面简要介绍其核心特点与用途。</p>
-<h2 id="定时器大体结构"><a href="#定时器大体结构" class="headerlink" title="定时器大体结构"></a>定时器大体结构</h2><p><img src="/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image.png" alt="定时器大体结构"></p>
-<h2 id="一、定时器类型"><a href="#一、定时器类型" class="headerlink" title="一、定时器类型"></a>一、定时器类型</h2><table>
+<h1 id="一-定时器简介"><a class="markdownIt-Anchor" href="#一-定时器简介"></a> 一、定时器简介</h1>
+<p>在 STM32F103C8T6 中，<strong>定时器模块</strong>是一个功能丰富且灵活的外设，主要分为 <strong>高级控制定时器</strong>、<strong>通用定时器</strong> 和 <strong>基本定时器</strong> 三类。下面简要介绍其核心特点与用途。</p>
+<h2 id="定时器大体结构"><a class="markdownIt-Anchor" href="#定时器大体结构"></a> 定时器大体结构</h2>
+<p><img src="image.png" alt="定时器大体结构" /></p>
+<h2 id="一-定时器类型"><a class="markdownIt-Anchor" href="#一-定时器类型"></a> 一、定时器类型</h2>
+<table>
 <thead>
 <tr>
-<th align="center">定时器</th>
-<th align="center">类型</th>
-<th align="center">位数</th>
-<th align="left">计数方向</th>
-<th align="left">主要特点</th>
+<th style="text-align:center">定时器</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">位数</th>
+<th style="text-align:left">计数方向</th>
+<th style="text-align:left">主要特点</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">TIM1</td>
-<td align="center">高级控制定时器</td>
-<td align="center">16位</td>
-<td align="left">递增、递减、中心对齐</td>
-<td align="left">带死区互补PWM输出、刹车输入、编码器接口、霍尔传感器接口</td>
+<tbody>
+<tr>
+<td style="text-align:center">TIM1</td>
+<td style="text-align:center">高级控制定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">带死区互补PWM输出、刹车输入、编码器接口、霍尔传感器接口</td>
 </tr>
 <tr>
-<td align="center">TIM2</td>
-<td align="center">通用定时器</td>
-<td align="center">16位</td>
-<td align="left">递增、递减、中心对齐</td>
-<td align="left">4个独立通道（输入捕获&#x2F;输出比较&#x2F;PWM）、编码器接口、触发DAC</td>
+<td style="text-align:center">TIM2</td>
+<td style="text-align:center">通用定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">4个独立通道（输入捕获/输出比较/PWM）、编码器接口、触发DAC</td>
 </tr>
 <tr>
-<td align="center">TIM3</td>
-<td align="center">通用定时器</td>
-<td align="center">16位</td>
-<td align="left">递增、递减、中心对齐</td>
-<td align="left">同TIM2，通常用于普通PWM或计时</td>
+<td style="text-align:center">TIM3</td>
+<td style="text-align:center">通用定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">同TIM2，通常用于普通PWM或计时</td>
 </tr>
 <tr>
-<td align="center">TIM4</td>
-<td align="center">通用定时器</td>
-<td align="center">16位</td>
-<td align="left">递增、递减、中心对齐</td>
-<td align="left">同TIM2，引脚分布在PB6~PB9等</td>
+<td style="text-align:center">TIM4</td>
+<td style="text-align:center">通用定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">同TIM2，引脚分布在PB6~PB9等</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <blockquote>
 <p>注：STM32F103C8T6 仅包含上述定时器（无 TIM5、TIM6 等）。</p>
 </blockquote>
@@ -279,79 +285,121 @@
 <li>通用定时器：TIM2、TIM3、TIM4、TIM5（部分系列）</li>
 <li>基本定时器：TIM6、TIM7（无外部通道，仅作内部时钟基准）</li>
 </ul>
-<hr>
-<h1 id="二、时基单元"><a href="#二、时基单元" class="headerlink" title="二、时基单元"></a>二、时基单元</h1><h2 id="时基单元结构图"><a href="#时基单元结构图" class="headerlink" title="时基单元结构图"></a>时基单元结构图</h2><p><img src="/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image5.png" alt="时基单元结构"></p>
-<h2 id="各组件功能"><a href="#各组件功能" class="headerlink" title="各组件功能"></a>各组件功能</h2><h3 id="时钟来源：提供时钟信号。"><a href="#时钟来源：提供时钟信号。" class="headerlink" title="时钟来源：提供时钟信号。"></a>时钟来源：提供时钟信号。</h3><ul>
-<li>来源一：时钟树<br>  <img src="/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image6.png" alt="定时器在时钟树上的位置"><br>  定时器在时钟树上的位置<ul>
-<li><p>TIM1与APB2总线同步，TIM2&#x2F;3&#x2F;4与APB1总线同步，TIM1与APB2之间有变频器，TIM2&#x2F;3&#x2F;4与APB1之间有变频器。</p>
+<hr />
+<h1 id="二-时基单元"><a class="markdownIt-Anchor" href="#二-时基单元"></a> 二、时基单元</h1>
+<h2 id="时基单元结构图"><a class="markdownIt-Anchor" href="#时基单元结构图"></a> 时基单元结构图</h2>
+<p><img src="image5.png" alt="时基单元结构" /></p>
+<h2 id="各组件功能"><a class="markdownIt-Anchor" href="#各组件功能"></a> 各组件功能</h2>
+<h3 id="时钟来源提供时钟信号"><a class="markdownIt-Anchor" href="#时钟来源提供时钟信号"></a> 时钟来源：提供时钟信号。</h3>
+<ul>
+<li>来源一：时钟树<br />
+<img src="image6.png" alt="定时器在时钟树上的位置" /><br />
+定时器在时钟树上的位置
+<ul>
+<li>
+<p>TIM1与APB2总线同步，TIM2/3/4与APB1总线同步，TIM1与APB2之间有变频器，TIM2/3/4与APB1之间有变频器。</p>
 </li>
-<li><p>变频器的倍频系数自动决定，详细规律为：当APB1或APB2的预分频器（PCLK1或PCLK2）设置为1时，倍频系数为1；当预分频器设置为大于1的值时，倍频系数为2。</p>
+<li>
+<p>变频器的倍频系数自动决定，详细规律为：当APB1或APB2的预分频器（PCLK1或PCLK2）设置为1时，倍频系数为1；当预分频器设置为大于1的值时，倍频系数为2。</p>
 </li>
 </ul>
 </li>
 <li>来源二：从模式控制器（详见后文）</li>
 </ul>
-<h3 id="预分频器：给信号降低频率。"><a href="#预分频器：给信号降低频率。" class="headerlink" title="预分频器：给信号降低频率。"></a>预分频器：给信号降低频率。</h3><h3 id="自动重装寄存器：设置定时周期（ARR-1）。"><a href="#自动重装寄存器：设置定时周期（ARR-1）。" class="headerlink" title="自动重装寄存器：设置定时周期（ARR+1）。"></a>自动重装寄存器：设置定时周期（ARR+1）。</h3><h3 id="计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。"><a href="#计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。" class="headerlink" title="计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。"></a>计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</h3><ul>
-<li>计数方法：上计数、下计数、中心对齐  <ol>
-<li><p>上计数（最常用）：计数器从0开始向上计数到ARR（一个周期），然后又从0开始。</p>
+<h3 id="预分频器给信号降低频率"><a class="markdownIt-Anchor" href="#预分频器给信号降低频率"></a> 预分频器：给信号降低频率。</h3>
+<h3 id="自动重装寄存器设置定时周期arr1"><a class="markdownIt-Anchor" href="#自动重装寄存器设置定时周期arr1"></a> 自动重装寄存器：设置定时周期（ARR+1）。</h3>
+<h3 id="计数器根据设定的周期计数每接受一次信号计数一次周期满后溢出重新计数"><a class="markdownIt-Anchor" href="#计数器根据设定的周期计数每接受一次信号计数一次周期满后溢出重新计数"></a> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</h3>
+<ul>
+<li>计数方法：上计数、下计数、中心对齐
+<ol>
+<li>
+<p>上计数（最常用）：计数器从0开始向上计数到ARR（一个周期），然后又从0开始。</p>
 </li>
-<li><p>下计数：计数器从ARR开始向下计数到0（一个周期），然后又从ARR开始。</p>
+<li>
+<p>下计数：计数器从ARR开始向下计数到0（一个周期），然后又从ARR开始。</p>
 </li>
-<li><p>中心对齐：先上计数到ARR，再下计数到0（一个周期）。</p>
+<li>
+<p>中心对齐：先上计数到ARR，再下计数到0（一个周期）。</p>
 </li>
 </ol>
 </li>
 </ul>
-<h3 id="重复计数器：设置重复计数次数（周期数），次数满后update一次。"><a href="#重复计数器：设置重复计数次数（周期数），次数满后update一次。" class="headerlink" title="重复计数器：设置重复计数次数（周期数），次数满后update一次。"></a>重复计数器：设置重复计数次数（周期数），次数满后update一次。</h3><h3 id="配置函数"><a href="#配置函数" class="headerlink" title="配置函数"></a>配置函数</h3><h4 id="void-TIM-TimeBaseInit-TIM-TypeDef-TIMx-TIM-TimeBaseInitTypeDef-TIM-TimeBaseInitStruct"><a href="#void-TIM-TimeBaseInit-TIM-TypeDef-TIMx-TIM-TimeBaseInitTypeDef-TIM-TimeBaseInitStruct" class="headerlink" title="void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)"></a><code>void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</code></h4><ul>
-<li><p>作用：初始化定时器的时基单元，设置预分频器、自动重装寄存器、计数模式等参数。</p>
-</li>
-<li><p>参数：</p>
+<h3 id="重复计数器设置重复计数次数周期数次数满后update一次"><a class="markdownIt-Anchor" href="#重复计数器设置重复计数次数周期数次数满后update一次"></a> 重复计数器：设置重复计数次数（周期数），次数满后update一次。</h3>
+<h3 id="配置函数"><a class="markdownIt-Anchor" href="#配置函数"></a> 配置函数</h3>
+<h4 id="void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"><a class="markdownIt-Anchor" href="#void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"></a> <code>void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</code></h4>
 <ul>
-<li><p>TIMx：指定要初始化的定时器（如TIM1、TIM2等）。</p>
+<li>
+<p>作用：初始化定时器的时基单元，设置预分频器、自动重装寄存器、计数模式等参数。</p>
 </li>
-<li><p>TIM_TimeBaseInitStruct：指向一个结构体，结构体成员：</p>
+<li>
+<p>参数：</p>
 <ul>
-<li><p><code>TIM_Prescaler</code>：预分频器的值，决定了定时器计数的频率，可以取<strong>任意非负整数</strong>，实际分频系数为<strong>TIM_Prescaler + 1</strong>。</p>
+<li>
+<p>TIMx：指定要初始化的定时器（如TIM1、TIM2等）。</p>
 </li>
-<li><p><code>TIM_CounterMode</code>：计数模式（上计数、下计数、中心对齐），可以取<code>TIM_CounterMode_Up</code>（上计数）、<code>TIM_CounterMode_Down</code>（下计数）、<code>TIM_CounterMode_CenterAligned1</code>（中心对齐模式1）等。</p>
-</li>
-<li><p><code>TIM_Period</code>：自动重装寄存器的值，决定了定时器的周期，可以取<strong>任意非负整数</strong>，实际周期为<strong>TIM_Period + 1</strong>。</p>
-</li>
-<li><p><code>TIM_RepetitionCounter</code>：重复计数器的值，决定了周期数，可以取<strong>任意非负整数</strong>，实际周期数为<strong>TIM_RepetitionCounter + 1</strong>。</p>
-</li>
-<li><p><code>TIM_ClockDivision</code>（<strong>只有高级计数器才需要配置</strong>）：时钟分割，可以取<code>TIM_CKD_DIV1</code>（不分割）、<code>TIM_CKD_DIV2</code>（分割2）与<code>TIM_CKD_DIV4</code>（分割4），通常设置为0（<code>TIM_CKD_DIV1</code>）（不分割）。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="void-TIM-Cmd-TIM-TypeDef-TIMx-FunctionalState-NewState"><a href="#void-TIM-Cmd-TIM-TypeDef-TIMx-FunctionalState-NewState" class="headerlink" title="void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)"></a><code>void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</code></h4><ul>
-<li><p>作用：使能或失能指定的定时器。</p>
-</li>
-<li><p>参数：</p>
+<li>
+<p>TIM_TimeBaseInitStruct：指向一个结构体，结构体成员：</p>
 <ul>
-<li><p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+<li>
+<p><code>TIM_Prescaler</code>：预分频器的值，决定了定时器计数的频率，可以取<strong>任意非负整数</strong>，实际分频系数为<strong>TIM_Prescaler + 1</strong>。</p>
 </li>
-<li><p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+<li>
+<p><code>TIM_CounterMode</code>：计数模式（上计数、下计数、中心对齐），可以取<code>TIM_CounterMode_Up</code>（上计数）、<code>TIM_CounterMode_Down</code>（下计数）、<code>TIM_CounterMode_CenterAligned1</code>（中心对齐模式1）等。</p>
+</li>
+<li>
+<p><code>TIM_Period</code>：自动重装寄存器的值，决定了定时器的周期，可以取<strong>任意非负整数</strong>，实际周期为<strong>TIM_Period + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_RepetitionCounter</code>：重复计数器的值，决定了周期数，可以取<strong>任意非负整数</strong>，实际周期数为<strong>TIM_RepetitionCounter + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_ClockDivision</code>（<strong>只有高级计数器才需要配置</strong>）：时钟分割，可以取<code>TIM_CKD_DIV1</code>（不分割）、<code>TIM_CKD_DIV2</code>（分割2）与<code>TIM_CKD_DIV4</code>（分割4），通常设置为0（<code>TIM_CKD_DIV1</code>）（不分割）。</p>
 </li>
 </ul>
 </li>
 </ul>
-<h4 id="void-TIM-ITConfig-TIM-TypeDef-TIMx-uint16-t-TIM-IT-FunctionalState-NewState"><a href="#void-TIM-ITConfig-TIM-TypeDef-TIMx-uint16-t-TIM-IT-FunctionalState-NewState" class="headerlink" title="void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)"></a><code>void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</code></h4><ul>
+</li>
+</ul>
+<h4 id="void-tim_cmdtim_typedef-timx-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-tim_cmdtim_typedef-timx-functionalstate-newstate"></a> <code>void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</code></h4>
+<ul>
+<li>
+<p>作用：使能或失能指定的定时器。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"></a> <code>void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</code></h4>
+<ul>
 <li>作用：使能或失能指定定时器的中断。</li>
-<li>参数：<ul>
-<li><p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+<li>参数：
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
 </li>
-<li><p>TIM_IT：指定要配置的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获&#x2F;比较1中断）等。</p>
+<li>
+<p>TIM_IT：指定要配置的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
 </li>
-<li><p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+<li>
+<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="示例：利用定时器自制延时函数"><a href="#示例：利用定时器自制延时函数" class="headerlink" title="示例：利用定时器自制延时函数"></a>示例：利用定时器自制延时函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"><span class="comment">//# 1.获取当前时间</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint32_t</span> current_time = <span class="number">0</span>;<span class="comment">//定义当前时间，volatile作用是告诉编译器这个变量可能会被中断服务程序修改，禁止优化</span></span><br><span class="line"><span class="comment">//# 2.实现延迟函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">delay_ms</span><span class="params">(<span class="type">uint32_t</span> ms)</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> end_time = current_time + ms;<span class="comment">//记录结束时间</span></span><br><span class="line">    <span class="keyword">while</span> (current_time &lt; end_time) ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2Init</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//# 3. 配置时基单元</span></span><br><span class="line">    <span class="comment">//使能时钟</span></span><br><span class="line">    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);</span><br><span class="line">    <span class="comment">//初始化时基单元</span></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler = <span class="number">71</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period = <span class="number">999</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>；</span><br><span class="line">    </span><br><span class="line">    TIM_TimeBaseInit(TIM2,&amp;TIM_TimeBaseInitStruct);</span><br><span class="line">    TIM_Cmd(TIM2,ENABLE);</span><br><span class="line">    <span class="comment">//# 4.使能定时器中断</span></span><br><span class="line">    TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);</span><br><span class="line"></span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;</span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 5.编写中断响应函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2_IRQHandler</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(TIM_GetFlagStatus(TIM2,TIM_FLAG_Update) == SET)&#123;</span><br><span class="line">        TIM_ClearFlag(TIM2,TIM_FLAG_Update);<span class="comment">//清除中断标志位</span></span><br><span class="line">        current_time++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 6.主函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);</span><br><span class="line">    TIM2Init();</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="三、输出比较"><a href="#三、输出比较" class="headerlink" title="三、输出比较"></a>三、输出比较</h1><h1 id="四、输入捕获"><a href="#四、输入捕获" class="headerlink" title="四、输入捕获"></a>四、输入捕获</h1><h1 id="五、从模式控制器"><a href="#五、从模式控制器" class="headerlink" title="五、从模式控制器"></a>五、从模式控制器</h1>
+<h2 id="示例利用定时器自制延时函数"><a class="markdownIt-Anchor" href="#示例利用定时器自制延时函数"></a> 示例：利用定时器自制延时函数</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"><span class="comment">//# 1.获取当前时间</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint32_t</span> current_time = <span class="number">0</span>;<span class="comment">//定义当前时间，volatile作用是告诉编译器这个变量可能会被中断服务程序修改，禁止优化</span></span><br><span class="line"><span class="comment">//# 2.实现延迟函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">delay_ms</span><span class="params">(<span class="type">uint32_t</span> ms)</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> end_time = current_time + ms;<span class="comment">//记录结束时间</span></span><br><span class="line">    <span class="keyword">while</span> (current_time &lt; end_time) ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2Init</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//# 3. 配置时基单元</span></span><br><span class="line">    <span class="comment">//使能时钟</span></span><br><span class="line">    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);</span><br><span class="line">    <span class="comment">//初始化时基单元</span></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler = <span class="number">71</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period = <span class="number">999</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>；</span><br><span class="line">    </span><br><span class="line">    TIM_TimeBaseInit(TIM2,&amp;TIM_TimeBaseInitStruct);</span><br><span class="line">    TIM_Cmd(TIM2,ENABLE);</span><br><span class="line">    <span class="comment">//# 4.使能定时器中断</span></span><br><span class="line">    TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);</span><br><span class="line"></span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;</span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 5.编写中断响应函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2_IRQHandler</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(TIM_GetFlagStatus(TIM2,TIM_FLAG_Update) == SET)&#123;</span><br><span class="line">        TIM_ClearFlag(TIM2,TIM_FLAG_Update);<span class="comment">//清除中断标志位</span></span><br><span class="line">        current_time++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 6.主函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);</span><br><span class="line">    TIM2Init();</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="三-输出比较"><a class="markdownIt-Anchor" href="#三-输出比较"></a> 三、输出比较</h1>
+<h1 id="四-输入捕获"><a class="markdownIt-Anchor" href="#四-输入捕获"></a> 四、输入捕获</h1>
+<h1 id="五-从模式控制器"><a class="markdownIt-Anchor" href="#五-从模式控制器"></a> 五、从模式控制器</h1>
+
     </div>
 
     

@@ -1222,7 +1222,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #81ff65;
+    background: #0fb4ad;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2693,4 +2693,15 @@ header.header {
   .comments {
     padding: 10px 12px;
   }
+}
+.katex .mathnormal {
+  font-style: italic;
+}
+.katex-display {
+  margin: 1.2em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.katex {
+  font-size: 1.1em;
 }
