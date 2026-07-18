@@ -700,7 +700,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 16:28:21" itemprop="dateModified" datetime="2026-07-18T16:28:21+08:00">2026-07-18</time>
+      <time title="修改时间：2026-07-18 18:35:02" itemprop="dateModified" datetime="2026-07-18T18:35:02+08:00">2026-07-18</time>
     </span>
 
   
@@ -1072,6 +1072,20 @@
     document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
   }
 })();
+</script>
+<!-- 目录点击不产生历史记录：阻止默认锚点行为，改用手动滚动 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.post-toc .nav-link').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var target = document.getElementById(decodeURIComponent(this.getAttribute('href').slice(1)));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
 </script>
 
 </body>

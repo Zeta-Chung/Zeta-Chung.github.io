@@ -497,9 +497,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/ESP32/" rel="tag"># ESP32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
-              <a href="/tags/ESP32/" rel="tag"># ESP32</a>
           </div>
 
         
@@ -605,6 +605,20 @@
     document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
   }
 })();
+</script>
+<!-- 目录点击不产生历史记录：阻止默认锚点行为，改用手动滚动 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.post-toc .nav-link').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var target = document.getElementById(decodeURIComponent(this.getAttribute('href').slice(1)));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
 </script>
 
 </body>
