@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#059669"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#059669">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="stm32定时器模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="定时器">
+<meta property="og:url" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/index.html">
+<meta property="og:site_name" content="ZetaC">
+<meta property="og:description" content="stm32定时器模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image5.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image6.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/pwm.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/pwm%E8%BE%93%E5%87%BA.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E4%BA%92%E8%A1%A5%E8%BE%93%E5%87%BA.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E7%94%B5%E8%B7%AF%E4%BE%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9.png">
+<meta property="article:published_time" content="2026-05-25T11:30:41.000Z">
+<meta property="article:modified_time" content="2026-07-18T08:28:21.404Z">
+<meta property="article:author" content="ZetaChung">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/image.png">
+
+
+<link rel="canonical" href="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/","path":"2026/05/25/定时器/","title":"定时器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>定时器 | ZetaC</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<!-- source/_data/head.njk -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZetaC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text"> 定时器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%A7%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text"> 定时器大体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text"> 定时器类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text"> 时基单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text"> 时基单元结构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%BB%84%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text"> 各组件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%9D%A5%E6%BA%90%E6%8F%90%E4%BE%9B%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 时钟来源：提供时钟信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%88%86%E9%A2%91%E5%99%A8%E7%BB%99%E4%BF%A1%E5%8F%B7%E9%99%8D%E4%BD%8E%E9%A2%91%E7%8E%87%E5%AE%9E%E9%99%85%E9%99%8D%E9%A2%91%E7%B3%BB%E6%95%B0-psc%E8%AE%BE%E5%AE%9A%E7%9A%84%E9%99%8D%E9%A2%91%E5%80%BC-1"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 预分频器：给信号降低频率，实际降频系数 &#x3D; PSC（设定的降频值） + 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E8%A3%85%E5%AF%84%E5%AD%98%E5%99%A8%E8%AE%BE%E7%BD%AE%E5%AE%9A%E6%97%B6%E5%91%A8%E6%9C%9Farr1"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 自动重装寄存器：设置定时周期（ARR+1）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8%E6%A0%B9%E6%8D%AE%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%91%A8%E6%9C%9F%E8%AE%A1%E6%95%B0%E6%AF%8F%E6%8E%A5%E5%8F%97%E4%B8%80%E6%AC%A1%E4%BF%A1%E5%8F%B7%E8%AE%A1%E6%95%B0%E4%B8%80%E6%AC%A1%E5%91%A8%E6%9C%9F%E6%BB%A1%E5%90%8E%E6%BA%A2%E5%87%BA%E9%87%8D%E6%96%B0%E8%AE%A1%E6%95%B0"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E5%88%86%E5%89%B2%E8%AE%BE%E7%BD%AE%E6%97%B6%E9%92%9F%E5%88%86%E5%89%B2%E7%B3%BB%E6%95%B0"><span class="nav-number">2.2.5.</span> <span class="nav-text"> 时钟分割：设置时钟分割系数，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E5%99%A8%E8%AE%BE%E7%BD%AE%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E6%AC%A1%E6%95%B0%E5%91%A8%E6%9C%9F%E6%95%B0%E6%AC%A1%E6%95%B0%E6%BB%A1%E5%90%8Eupdate%E4%B8%80%E6%AC%A1"><span class="nav-number">2.2.6.</span> <span class="nav-text"> 重复计数器：设置重复计数次数（周期数），次数满后update一次。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text"> 配置函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"><span class="nav-number">2.3.1.</span> <span class="nav-text"> void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_cmdtim_typedef-timx-functionalstate-newstate"><span class="nav-number">2.3.2.</span> <span class="nav-text"> void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"><span class="nav-number">2.3.3.</span> <span class="nav-text"> void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81"><span class="nav-number">2.4.</span> <span class="nav-text"> 状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flagstatus-tim_getflagstatustim_typedef-timx-uint32_t-tim_flag"><span class="nav-number">2.4.1.</span> <span class="nav-text"> FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_clearflagtim_typedef-timx-uint32_t-tim_flag"><span class="nav-number">2.4.2.</span> <span class="nav-text"> void TIM_ClearFlag(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itstatus-tim_getitstatustim_typedef-timx-uint16_t-tim_it"><span class="nav-number">2.4.3.</span> <span class="nav-text"> ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_clearitpendingbittim_typedef-timx-uint16_t-tim_it"><span class="nav-number">2.4.4.</span> <span class="nav-text"> void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E5%88%A9%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%87%AA%E5%88%B6%E5%BB%B6%E6%97%B6%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text"> 示例：利用定时器自制延时函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text"> 输出比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E9%80%9A%E9%81%93"><span class="nav-number">3.1.1.</span> <span class="nav-text"> 定时器通道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text"> 输出比较原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwmpulse-width-modulation%E8%84%89%E5%86%B2%E5%AE%BD%E5%BA%A6%E8%B0%83%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text"> PWM（Pulse Width Modulation）（脉冲宽度调制）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">3.3.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.2.</span> <span class="nav-text"> 具体方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text"> 输出比较的工作模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%A1%A5%E8%BE%93%E5%87%BA"><span class="nav-number">3.5.</span> <span class="nav-text"> 互补输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9"><span class="nav-number">3.6.</span> <span class="nav-text"> 极性选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%87%BD%E6%95%B0-2"><span class="nav-number">3.7.</span> <span class="nav-text"> 配置函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_ocinittim_typedef-timx-tim_ocinittypedef-tim_ocinitstruct"><span class="nav-number">3.7.1.</span> <span class="nav-text"> void TIM_OCInit(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8Bpwm%E5%AE%9E%E7%8E%B0led%E5%91%BC%E5%90%B8%E7%81%AF"><span class="nav-number">3.8.</span> <span class="nav-text"> 工程示例：PWM实现LED呼吸灯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="nav-number">3.8.1.</span> <span class="nav-text"> 实现效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BC%E5%90%B8%E7%81%AF%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.8.2.</span> <span class="nav-text"> 呼吸灯工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.8.3.</span> <span class="nav-text"> 电路连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7"><span class="nav-number">4.</span> <span class="nav-text"> 输入捕获</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text"> 从模式控制器</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZetaChung"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">ZetaChung</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaChung">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="定时器 | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          定时器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-25 19:30:41" itemprop="dateCreated datePublished" datetime="2026-05-25T19:30:41+08:00">2026-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 16:28:21" itemprop="dateModified" datetime="2026-07-18T16:28:21+08:00">2026-07-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>stm32定时器模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）</p>
+<span id="more"></span>
+<h1 id="定时器简介"><a class="markdownIt-Anchor" href="#定时器简介"></a> 定时器简介</h1>
+<p>在 STM32F103C8T6 中，<strong>定时器模块</strong>是一个功能丰富且灵活的外设，主要分为 <strong>高级控制定时器</strong>、<strong>通用定时器</strong> 和 <strong>基本定时器</strong> 三类。下面简要介绍其核心特点与用途。</p>
+<h2 id="定时器大体结构"><a class="markdownIt-Anchor" href="#定时器大体结构"></a> 定时器大体结构</h2>
+<p><a id="dingshiqi"></a></p>
+<p><img src="image.png" alt="定时器大体结构" /></p>
+<h2 id="定时器类型"><a class="markdownIt-Anchor" href="#定时器类型"></a> 定时器类型</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">定时器</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">位数</th>
+<th style="text-align:left">计数方向</th>
+<th style="text-align:left">主要特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">TIM1</td>
+<td style="text-align:center">高级控制定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">带死区互补PWM输出、刹车输入、编码器接口、霍尔传感器接口</td>
+</tr>
+<tr>
+<td style="text-align:center">TIM2</td>
+<td style="text-align:center">通用定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">4个独立通道（输入捕获/输出比较/PWM）、编码器接口、触发DAC</td>
+</tr>
+<tr>
+<td style="text-align:center">TIM3</td>
+<td style="text-align:center">通用定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">同TIM2，通常用于普通PWM或计时</td>
+</tr>
+<tr>
+<td style="text-align:center">TIM4</td>
+<td style="text-align:center">通用定时器</td>
+<td style="text-align:center">16位</td>
+<td style="text-align:left">递增、递减、中心对齐</td>
+<td style="text-align:left">同TIM2，引脚分布在PB6~PB9等</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：STM32F103C8T6 仅包含上述定时器（无 TIM5、TIM6 等）。</p>
+</blockquote>
+<ul>
+<li>高级控制定时器：TIM1、TIM8（仅高端系列）</li>
+<li>通用定时器：TIM2、TIM3、TIM4、TIM5（部分系列）</li>
+<li>基本定时器：TIM6、TIM7（无外部通道，仅作内部时钟基准）</li>
+</ul>
+<hr />
+<h1 id="时基单元"><a class="markdownIt-Anchor" href="#时基单元"></a> 时基单元</h1>
+<h2 id="时基单元结构图"><a class="markdownIt-Anchor" href="#时基单元结构图"></a> 时基单元结构图</h2>
+<p><img src="image5.png" alt="时基单元结构" /></p>
+<h2 id="各组件功能"><a class="markdownIt-Anchor" href="#各组件功能"></a> 各组件功能</h2>
+<h3 id="时钟来源提供时钟信号"><a class="markdownIt-Anchor" href="#时钟来源提供时钟信号"></a> 时钟来源：提供时钟信号。</h3>
+<ul>
+<li>来源一：时钟树<br />
+<img src="image6.png" alt="定时器在时钟树上的位置" /><br />
+定时器在时钟树上的位置
+<ul>
+<li>
+<p>TIM1与APB2总线同步，TIM2/3/4与APB1总线同步，TIM1与APB2之间有变频器，TIM2/3/4与APB1之间有变频器。</p>
+</li>
+<li>
+<p>变频器的倍频系数自动决定，详细规律为：当APB1或APB2的预分频器（PCLK1或PCLK2）设置为1时，倍频系数为1；当预分频器设置为大于1的值时，倍频系数为2。</p>
+</li>
+</ul>
+</li>
+<li>来源二：<a href="#my-anchor">从模式控制器</a></li>
+</ul>
+<h3 id="预分频器给信号降低频率实际降频系数-psc设定的降频值-1"><a class="markdownIt-Anchor" href="#预分频器给信号降低频率实际降频系数-psc设定的降频值-1"></a> 预分频器：给信号降低频率，实际降频系数 = PSC（设定的降频值） + 1</h3>
+<h3 id="自动重装寄存器设置定时周期arr1"><a class="markdownIt-Anchor" href="#自动重装寄存器设置定时周期arr1"></a> 自动重装寄存器：设置定时周期（ARR+1）。</h3>
+<h3 id="计数器根据设定的周期计数每接受一次信号计数一次周期满后溢出重新计数"><a class="markdownIt-Anchor" href="#计数器根据设定的周期计数每接受一次信号计数一次周期满后溢出重新计数"></a> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</h3>
+<ul>
+<li>
+<p>计数方法：上计数、下计数、中心对齐</p>
+<ol>
+<li>
+<p>上计数（最常用）：计数器从0开始<strong>向上计数</strong>到ARR（一个周期），然后又从0开始。</p>
+</li>
+<li>
+<p>下计数：计数器从ARR开始<strong>向下计数</strong>到0（一个周期），然后又从ARR开始。</p>
+</li>
+<li>
+<p>中心对齐：</p>
+<ol>
+<li>
+<p><strong>上计数对齐</strong>：计数器从0开始向上计数到ARR（一个周期），然后又从ARR开始向下计数到0（一个周期），再从0开始。</p>
+</li>
+<li>
+<p><strong>下计数对齐</strong>：计数器从ARR开始向下计数到0（一个周期），然后又从0开始向上计数到ARR（一个周期），再从ARR开始。</p>
+</li>
+<li>
+<p><strong>双边对齐</strong>：计数器从0开始向上计数到ARR（一个周期），然后又从ARR开始向下计数到0（一个周期），再从0开始向上计数到ARR（一个周期），再从ARR开始。</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="时钟分割设置时钟分割系数"><a class="markdownIt-Anchor" href="#时钟分割设置时钟分割系数"></a> 时钟分割：设置时钟分割系数，</h3>
+<ul>
+<li>只有高级定时器才需要配置，通常设置为0（不分割）。</li>
+</ul>
+<h3 id="重复计数器设置重复计数次数周期数次数满后update一次"><a class="markdownIt-Anchor" href="#重复计数器设置重复计数次数周期数次数满后update一次"></a> 重复计数器：设置重复计数次数（周期数），次数满后update一次。</h3>
+<h2 id="配置函数"><a class="markdownIt-Anchor" href="#配置函数"></a> 配置函数</h2>
+<h3 id="void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"><a class="markdownIt-Anchor" href="#void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"></a> <code>void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</code></h3>
+<ul>
+<li>
+<p>作用：初始化定时器的时基单元，设置预分频器、自动重装寄存器、计数模式等参数。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要初始化的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_TimeBaseInitStruct：指向一个结构体，结构体成员：</p>
+<ul>
+<li>
+<p><code>TIM_Prescaler</code>：预分频器的值，决定了定时器计数的频率，可以取<strong>任意非负整数</strong>，实际分频系数为<strong>TIM_Prescaler + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_CounterMode</code>：计数模式（上计数、下计数、中心对齐），可以取<code>TIM_CounterMode_Up</code>（上计数）、<code>TIM_CounterMode_Down</code>（下计数）、<code>TIM_CounterMode_CenterAligned1</code>（中心对齐模式1）等。</p>
+</li>
+<li>
+<p><code>TIM_Period</code>：自动重装寄存器的值，决定了定时器的周期，可以取<strong>任意非负整数</strong>，实际周期为<strong>TIM_Period + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_RepetitionCounter</code>：重复计数器的值，决定了周期数，可以取<strong>任意非负整数</strong>，实际周期数为<strong>TIM_RepetitionCounter + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_ClockDivision</code>（<strong>只有高级计数器才需要配置</strong>）：时钟分割，可以取<code>TIM_CKD_DIV1</code>（不分割）、<code>TIM_CKD_DIV2</code>（分割2）与<code>TIM_CKD_DIV4</code>（分割4），通常设置为0（<code>TIM_CKD_DIV1</code>）（不分割）。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="void-tim_cmdtim_typedef-timx-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-tim_cmdtim_typedef-timx-functionalstate-newstate"></a> <code>void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</code></h3>
+<ul>
+<li>
+<p>作用：使能或失能指定的定时器。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"></a> <code>void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</code></h3>
+<ul>
+<li>
+<p>作用：使能或失能指定定时器的中断。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_IT：指定要配置的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
+</li>
+<li>
+<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="状态"><a class="markdownIt-Anchor" href="#状态"></a> 状态</h2>
+<h3 id="flagstatus-tim_getflagstatustim_typedef-timx-uint32_t-tim_flag"><a class="markdownIt-Anchor" href="#flagstatus-tim_getflagstatustim_typedef-timx-uint32_t-tim_flag"></a> <code>FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</code></h3>
+<ul>
+<li>
+<p>作用：查询指定定时器的标志位状态。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要查询的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_FLAG：指定要查询的标志位，可以取<code>TIM_FLAG_Update</code>（更新标志）、<code>TIM_FLAG_CC1</code>（捕获/比较1标志）等。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>返回值：<code>SET</code>（标志位被置位）或<code>RESET</code>（标志位未被置位）。</p>
+</li>
+</ul>
+<h3 id="void-tim_clearflagtim_typedef-timx-uint32_t-tim_flag"><a class="markdownIt-Anchor" href="#void-tim_clearflagtim_typedef-timx-uint32_t-tim_flag"></a> <code>void TIM_ClearFlag(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</code></h3>
+<ul>
+<li>
+<p>作用：清除指定定时器的标志位。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</li>
+<li>TIM_FLAG：指定要清除的标志位，可以取<code>TIM_FLAG_Update</code>（更新标志）、<code>TIM_FLAG_CC1</code>（捕获/比较1标志）等。</li>
+</ul>
+</li>
+</ul>
+<h3 id="itstatus-tim_getitstatustim_typedef-timx-uint16_t-tim_it"><a class="markdownIt-Anchor" href="#itstatus-tim_getitstatustim_typedef-timx-uint16_t-tim_it"></a> <code>ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)</code></h3>
+<ul>
+<li>
+<p>作用：查询指定定时器的中断状态。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要查询的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_IT：指定要查询的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>返回值：<code>SET</code>（中断被触发）或<code>RESET</code>（中断未被触发）。</p>
+</li>
+</ul>
+<blockquote>
+<p>flagstatus与itstatus的区别：flagstatus是标志位状态，itstatus是中断状态。标志位状态是指定时器的某个标志位是否被置位，而中断状态是指定时器的某个中断是否被触发。通常情况下，当标志位被置位时，中断也会被触发，但也有例外情况，比如当中断被屏蔽时，标志位可能被置位，但中断不会被触发。</p>
+</blockquote>
+<h3 id="void-tim_clearitpendingbittim_typedef-timx-uint16_t-tim_it"><a class="markdownIt-Anchor" href="#void-tim_clearitpendingbittim_typedef-timx-uint16_t-tim_it"></a> <code>void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)</code></h3>
+<ul>
+<li>作用：清除指定定时器的中断挂起位。</li>
+<li>参数：
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_IT：指定要清除的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>中断挂起位是指定时器的某个中断是否被触发，但还没有被处理。通常情况下，当中断被触发时，中断挂起位会被置位，但中断处理程序还没有执行完毕，此时中断挂起位仍然被置位。当中断处理程序执行完毕后，中断挂起位会被清除。</p>
+</blockquote>
+<h2 id="示例利用定时器自制延时函数"><a class="markdownIt-Anchor" href="#示例利用定时器自制延时函数"></a> 示例：利用定时器自制延时函数</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"><span class="comment">//# 1.获取当前时间</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint32_t</span> current_time = <span class="number">0</span>;<span class="comment">//定义当前时间，volatile作用是告诉编译器这个变量可能会被中断服务程序修改，禁止优化</span></span><br><span class="line"><span class="comment">//# 2.实现延迟函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">delay_ms</span><span class="params">(<span class="type">uint32_t</span> ms)</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> end_time = current_time + ms;<span class="comment">//记录结束时间</span></span><br><span class="line">    <span class="keyword">while</span> (current_time &lt; end_time) ;</span><br><span class="line">&#125;<span class="comment">//delay_ms函数会阻塞当前程序，直到current_time达到end_time为止</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2Init</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//# 3. 配置时基单元</span></span><br><span class="line">    <span class="comment">//使能时钟</span></span><br><span class="line">    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);</span><br><span class="line">    <span class="comment">//初始化时基单元</span></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler = <span class="number">71</span>;    <span class="comment">//预分频器设置为71，实际分频系数为72，定时器计数频率为1MHz（72MHz/72）</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;<span class="comment">//计数模式为上计数</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period = <span class="number">999</span>;<span class="comment">//自动重装寄存器设置为999，实际周期为1000，定时器溢出频率为1kHz（1MHz/1000）</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>;<span class="comment">//重复计数器设置为0，实际周期数为1，定时器每溢出一次就会产生一次中断</span></span><br><span class="line">    </span><br><span class="line">    TIM_TimeBaseInit(TIM2,&amp;TIM_TimeBaseInitStruct);     <span class="comment">//初始化时基单元</span></span><br><span class="line">    TIM_Cmd(TIM2,ENABLE);                               <span class="comment">//使能定时器</span></span><br><span class="line">    <span class="comment">//# 4.使能定时器中断</span></span><br><span class="line">    TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);            <span class="comment">//使能定时器更新中断</span></span><br><span class="line"></span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;                   <span class="comment">//初始化NVIC结构体</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;        <span class="comment">//指定中断通道为TIM2</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;<span class="comment">//抢占优先级为0，最高优先级</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority = <span class="number">0</span>;     <span class="comment">//子优先级为0，最高优先级</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;        <span class="comment">//使能中断通道</span></span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);                        <span class="comment">//初始化NVIC</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 5.编写中断响应函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2_IRQHandler</span><span class="params">(<span class="type">void</span>)</span><span class="comment">//该函数的名字是固定的，不能随意修改，通过查阅stm32f10x.h头文件中的IRQn_Type枚举类型可以找到对应的中断向量表</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(TIM_GetFlagStatus(TIM2,TIM_FLAG_Update) == SET)<span class="comment">//判断是否是定时器溢出中断</span></span><br><span class="line">    &#123;</span><br><span class="line">        TIM_ClearFlag(TIM2,TIM_FLAG_Update);          <span class="comment">//清除中断标志位</span></span><br><span class="line">        current_time++;                               <span class="comment">//每次定时器溢出，current_time加1，表示经过了1ms</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 6.主函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);</span><br><span class="line">    TIM2Init();</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="输出比较"><a class="markdownIt-Anchor" href="#输出比较"></a> 输出比较</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<h3 id="定时器通道"><a class="markdownIt-Anchor" href="#定时器通道"></a> 定时器通道</h3>
+<ol>
+<li>
+<p><a href="#dingshiqi">如图所示</a>，定时器模块通常包含多个通道（Channel），每个通道可以独立配置为输入捕获、输出比较或PWM模式。以 TIM2 为例，它有四个通道：通道1、通道2、通道3和通道4。</p>
+</li>
+<li>
+<p>内部结构：</p>
+<ul>
+<li>
+<p>每个通道都有一个独立的<strong>比较寄存器CCRX</strong>（X可以是1、2、3或4）。</p>
+</li>
+<li>
+<p>比较寄存器前是<strong>输入捕获寄存器ICRX</strong>（X可以是1、2、3或4），用于测量<strong>外部输入信号</strong>的<strong>时间参数</strong>（例如周期、占空比等）。</p>
+</li>
+<li>
+<p>比较寄存器后是<strong>输出比较寄存器OCX</strong>（X可以是1、2、3或4），用于生成<strong>定时器输出信号</strong>（精准定时的方波信号）。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="输出比较原理"><a class="markdownIt-Anchor" href="#输出比较原理"></a> 输出比较原理</h2>
+<p>通过设置比较寄存器的值，当计数器的值与比较寄存器的值相等时，定时器会触发一个事件（例如改变输出引脚的状态），从而实现<strong>精确的时间控制</strong>。这种机制可以用于生成定时信号、PWM波形等。</p>
+<h2 id="pwmpulse-width-modulation脉冲宽度调制"><a class="markdownIt-Anchor" href="#pwmpulse-width-modulation脉冲宽度调制"></a> PWM（Pulse Width Modulation）（脉冲宽度调制）</h2>
+<h3 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h3>
+<p>PWM是一种周期性信号，其<strong>频率固定</strong>，但<strong>高电平持续时间（占空比）可调</strong>。通过改变占空比，可以调节信号的输出幅度，实现对电机速度、LED亮度等的控制。<br />
+<img src="pwm.png" alt="pwm原理" /></p>
+<h3 id="具体方法"><a class="markdownIt-Anchor" href="#具体方法"></a> 具体方法</h3>
+<p><img src="pwm%E8%BE%93%E5%87%BA.png" alt="pwm输出" /><br />
+如图所示，将ARR设定为9，则计数器从0计数到9，形成一个周期为10的PWM信号。通过调整比较寄存器的值（例如设置为3），计数达到3时，改变输出引脚的电平状态，从而实现不同的占空比。</p>
+<h2 id="输出比较的工作模式"><a class="markdownIt-Anchor" href="#输出比较的工作模式"></a> 输出比较的工作模式</h2>
+<p><img src="%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%84.png" alt="输出比较结构" /></p>
+<ol>
+<li>
+<p>选择的模式不同，输出的OCxRef（含义见图中）值也不同</p>
+</li>
+<li>
+<p>八种输出比较模式<br />
+<img src="%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E6%A8%A1%E5%BC%8F.png" alt="输出比较模式" /></p>
+</li>
+</ol>
+<ul>
+<li>注:
+<ol>
+<li>
+<p>PWM模式1实际是在<strong>CNT&lt;=CCRx</strong>时输出<strong>有效电平</strong>，如果设置为高电平有效，则在CNT&lt;=CCRx的值时，输出为高电平；当CNT&gt;CCRx时，输出为低电平。反之亦然。</p>
+</li>
+<li>
+<p>PWM模式2实际是在<strong>CNT&gt;CCRx</strong>时输出<strong>有效电平</strong>，如果设置为高电平有效，则在CNT&gt;CCRx的值时，输出为高电平；当CNT&lt;=CCRx时，输出为低电平。反之亦然。</p>
+</li>
+<li>
+<p><strong>PWM模式1</strong>最常用，其他模式较少使用，主要用于特殊场景。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="互补输出"><a class="markdownIt-Anchor" href="#互补输出"></a> 互补输出</h2>
+<ol>
+<li>由<a href="#dingshiqi">定时器整体结构图</a>，输出比较模块有CHx和CHxN两个输出端口，分别对应<strong>主输出</strong>和<strong>互补输出</strong>。具体结构如图<br />
+<img src="%E4%BA%92%E8%A1%A5%E8%BE%93%E5%87%BA.png" alt="互补输出结构" /></li>
+</ol>
+<ul>
+<li>
+<p>主输出：OCxRef的电平与输出引脚的电平状态<strong>一致</strong>，输出为主输出。</p>
+</li>
+<li>
+<p>互补输出：OCxRef信号经过一个反向器，OCxRef电平与输出引脚的<strong>电平状态相反</strong>，输出为互补输出。</p>
+</li>
+</ul>
+<ol start="2">
+<li>
+<p>作用：在驱动电机或功率开关器件中，通过互补输出，可以实现<strong>高低侧开关的交替控制</strong>，从而提高效率并减少功耗。（如下图）<br />
+<img src="%E7%94%B5%E8%B7%AF%E4%BE%8B%E5%9B%BE.png" alt="例图" /></p>
+</li>
+<li>
+<p>互补输出只有 <strong>高级定时器(如TIM1)</strong> 才支持，通用定时器（如TIM2、TIM3、TIM4）不支持互补输出。</p>
+</li>
+</ol>
+<h2 id="极性选择"><a class="markdownIt-Anchor" href="#极性选择"></a> 极性选择</h2>
+<p><img src="%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9.png" alt="极性选择结构" /></p>
+<ol>
+<li>
+<p>如图，无论是主输出还是互补输出，都有两路极性选择，一路会经过<strong>反向器</strong>，另一路不经过反向器。经过反向器后，输出信号与OCxRef的电平状态<strong>相反</strong>。</p>
+</li>
+<li>
+<p>通过选择不同的极性，可以实现<strong>高电平有效</strong>或<strong>低电平有效</strong>的输出信号，从而满足不同的应用需求。</p>
+</li>
+</ol>
+<h2 id="配置函数-2"><a class="markdownIt-Anchor" href="#配置函数-2"></a> 配置函数</h2>
+<h3 id="void-tim_ocinittim_typedef-timx-tim_ocinittypedef-tim_ocinitstruct"><a class="markdownIt-Anchor" href="#void-tim_ocinittim_typedef-timx-tim_ocinittypedef-tim_ocinitstruct"></a> <code>void TIM_OCInit(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)</code></h3>
+<ul>
+<li>作用：初始化定时器的输出比较模块，设置比较寄存器、输出模式、极性等参数。</li>
+<li>参数：
+<ul>
+<li>
+<p>TIMx：指定要初始化的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_OCInitStruct：指向一个结构体，结构体成员：</p>
+<ul>
+<li>
+<p><code>TIM_OCMode</code>：输出比较模式，可以取<code>TIM_OCMode_Timing</code>（定时模式）、<code>TIM_OCMode_Active</code>（主动模式）、<code>TIM_OCMode_Inactive</code>（非主动模式）、<code>TIM_OCMode_Toggle</code>（翻转模式）、<code>TIM_OCMode_PWM1</code>（PWM模式1）、<code>TIM_OCMode_PWM2</code>（PWM模式2）等。</p>
+</li>
+<li>
+<p><code>TIM_OutputState</code>：输出状态，可以取<code>TIM_OutputState_Enable</code>（使能输出）或<code>TIM_OutputState_Disable</code>（失能输出）。</p>
+</li>
+<li>
+<p><code>TIM_OutputNState</code>（<strong>只有高级计数器才需要配置</strong>）：互补输出状态，可以取<code>TIM_OutputNState_Enable</code>（使能互补输出）或<code>TIM_OutputNState_Disable</code>（失能互补输出）。</p>
+</li>
+<li>
+<p><code>TIM_Pulse</code>：比较寄存器的值，决定了输出信号的占空比，可以取<strong>任意非负整数</strong>，实际占空比为**(TIM_Pulse + 1) / (ARR + 1)**。</p>
+</li>
+<li>
+<p><code>TIM_OCPolarity</code>：输出极性，可以取<code>TIM_OCPolarity_High</code>（高电平有效）或<code>TIM_OCPolarity_Low</code>（低电平有效）。</p>
+</li>
+<li>
+<p><code>TIM_OCNPolarity</code>（<strong>只有高级计数器才需要配置</strong>）：互补输出极性，可以取<code>TIM_OCNPolarity_High</code>（高电平有效）或<code>TIM_OCNPolarity_Low</code>（低电平有效）。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="工程示例pwm实现led呼吸灯"><a class="markdownIt-Anchor" href="#工程示例pwm实现led呼吸灯"></a> 工程示例：PWM实现LED呼吸灯</h2>
+<h3 id="实现效果"><a class="markdownIt-Anchor" href="#实现效果"></a> 实现效果</h3>
+<p>两颗LED灯交替亮灭，亮度呈现<strong>呼吸灯效果</strong>，即亮度逐渐增强到最大值，然后逐渐减弱到最小值，形成一个完整的呼吸周期。且两颗LED亮度变化的相位差为180°，即一颗LED亮度增强时，另一颗LED亮度减弱。</p>
+<h3 id="呼吸灯工作原理"><a class="markdownIt-Anchor" href="#呼吸灯工作原理"></a> 呼吸灯工作原理</h3>
+<ol>
+<li>
+<p>LED灯亮度呈现正弦函数变化，例如函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0.5</mn><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><mi>t</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y = 0.5sin(2\pi t+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0.5</span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0359em;">π</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>,形成一个完整的<strong>呼吸周期</strong>。</p>
+</li>
+<li>
+<p>由于输出引脚的电平只有高和低，通过<strong>改变PWM信号的占空比</strong>，可以实现LED亮度的平滑过渡。</p>
+</li>
+<li>
+<p>配置目的：配置PWM输出模式，设置比较寄存器的值，使得PWM信号的占空比随时间变化，从而实现LED呼吸灯效果。</p>
+</li>
+</ol>
+<h3 id="电路连接"><a class="markdownIt-Anchor" href="#电路连接"></a> 电路连接</h3>
+<h1 id="输入捕获"><a class="markdownIt-Anchor" href="#输入捕获"></a> 输入捕获</h1>
+<p><a id="my-anchor"></a></p>
+<h1 id="从模式控制器"><a class="markdownIt-Anchor" href="#从模式控制器"></a> 从模式控制器</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/19/%E4%B8%AD%E6%96%AD/" rel="prev" title="中断">
+                  <i class="fa fa-angle-left"></i> 中断
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/06/27/%E7%BA%BF%E6%80%A7%E8%A1%A8/" rel="next" title="数据结构-线性表">
+                  数据结构-线性表 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZetaChung</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Zeta-Chung" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

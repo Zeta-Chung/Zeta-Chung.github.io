@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#059669"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#059669">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="数据结构中，图的学习笔记，包括图的定义、存储结构、遍历和应用等内容，用C语言实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-图">
+<meta property="og:url" content="http://example.com/2026/06/29/%E5%9B%BE/index.html">
+<meta property="og:site_name" content="ZetaC">
+<meta property="og:description" content="数据结构中，图的学习笔记，包括图的定义、存储结构、遍历和应用等内容，用C语言实现。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-29T06:52:20.000Z">
+<meta property="article:modified_time" content="2026-07-01T03:15:58.144Z">
+<meta property="article:author" content="ZetaChung">
+<meta property="article:tag" content="C语言">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/06/29/%E5%9B%BE/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/06/29/%E5%9B%BE/","path":"2026/06/29/图/","title":"数据结构-图"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据结构-图 | ZetaC</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<!-- source/_data/head.njk -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZetaC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.</span> <span class="nav-text"> 图的定义与基本术语</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text"> 图的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%BD%A2%E5%BC%8F%E5%8C%96%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 图的形式化定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.2.</span> <span class="nav-text"> 图的抽象数据类型定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.2.</span> <span class="nav-text"> 基本术语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text"> 图的存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5"><span class="nav-number">2.1.</span> <span class="nav-text"> 邻接矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 邻接矩阵的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c%E8%AF%AD%E8%A8%80%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.1.2.</span> <span class="nav-text"> C语言描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90"><span class="nav-number">2.1.3.</span> <span class="nav-text"> 存储空间分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B6%E7%82%B9%E7%9A%84%E5%BA%A6degree%E8%AE%A1%E7%AE%97"><span class="nav-number">2.1.4.</span> <span class="nav-text"> 顶点的度（Degree）计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%97%A0%E5%90%91%E5%9B%BE"><span class="nav-number">2.1.4.1.</span> <span class="nav-text"> 1. 无向图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%9C%89%E5%90%91%E5%9B%BE"><span class="nav-number">2.1.4.2.</span> <span class="nav-text"> 2. 有向图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%89%E5%90%91%E7%BD%91"><span class="nav-number">2.1.5.</span> <span class="nav-text"> 创建有向网</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E8%A1%A8"><span class="nav-number">2.2.</span> <span class="nav-text"> 邻接表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 存储结构实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8"><span class="nav-number">2.3.</span> <span class="nav-text"> 十字链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%89%E5%90%91%E5%9B%BE%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 创建有向图十字链表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8"><span class="nav-number">2.4.</span> <span class="nav-text"> 邻接多重表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text"> 图的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E8%BE%B9%E9%A1%B6%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text"> 插入边&#x2F;顶点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5-2"><span class="nav-number">3.1.1.</span> <span class="nav-text"> 邻接矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E8%A1%A8-2"><span class="nav-number">3.1.2.</span> <span class="nav-text"> 邻接表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%87%BA%E5%BA%A6%E5%85%A5%E5%BA%A6"><span class="nav-number">3.2.</span> <span class="nav-text"> 计算出度&#x2F;入度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5-3"><span class="nav-number">3.2.1.</span> <span class="nav-text"> 邻接矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E8%A1%A8-3"><span class="nav-number">3.2.2.</span> <span class="nav-text"> 邻接表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-number">4.</span> <span class="nav-text"> 图的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2dfs"><span class="nav-number">4.1.</span> <span class="nav-text"> 深度优先搜索（DFS）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2bfs"><span class="nav-number">4.2.</span> <span class="nav-text"> 广度优先搜索（BFS）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text"> 图的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91"><span class="nav-number">5.1.</span> <span class="nav-text"> 求最小生成树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-3"><span class="nav-number">5.1.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">5.1.2.</span> <span class="nav-text"> 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#prim%E7%AE%97%E6%B3%95"><span class="nav-number">5.1.2.1.</span> <span class="nav-text"> Prim算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kruskal%E7%AE%97%E6%B3%95"><span class="nav-number">5.1.2.2.</span> <span class="nav-text"> Kruskal算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">5.2.</span> <span class="nav-text"> 有向无环图的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text"> 拓扑排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%B7%AF%E5%BE%84"><span class="nav-number">5.2.2.</span> <span class="nav-text"> 关键路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84"><span class="nav-number">5.2.3.</span> <span class="nav-text"> 最短路径</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dijkstra%E7%AE%97%E6%B3%95"><span class="nav-number">5.2.3.1.</span> <span class="nav-text"> Dijkstra算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#floyd%E7%AE%97%E6%B3%95"><span class="nav-number">5.2.3.2.</span> <span class="nav-text"> Floyd算法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZetaChung"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">ZetaChung</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/06/29/%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaChung">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据结构-图 | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构-图
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-29 14:52:20" itemprop="dateCreated datePublished" datetime="2026-06-29T14:52:20+08:00">2026-06-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-01 11:15:58" itemprop="dateModified" datetime="2026-07-01T11:15:58+08:00">2026-07-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>数据结构中，图的学习笔记，包括图的定义、存储结构、遍历和应用等内容，用C语言实现。</p>
+<span id="more"></span>
+<h1 id="图的定义与基本术语"><a class="markdownIt-Anchor" href="#图的定义与基本术语"></a> 图的定义与基本术语</h1>
+<h2 id="图的定义"><a class="markdownIt-Anchor" href="#图的定义"></a> 图的定义</h2>
+<h3 id="图的形式化定义"><a class="markdownIt-Anchor" href="#图的形式化定义"></a> 图的形式化定义：</h3>
+<ol>
+<li>
+<p>Graph = (V,R)</p>
+<p>V = {x|x <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo></mrow><annotation encoding="application/x-tex">\in</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">∈</span></span></span></span> DataObject}</p>
+<p>R = {VR}</p>
+<p>VR = {&lt;x,y&gt;|P(x,y)∧(x,y)∈V}</p>
+<ul>
+<li>
+<p>V:顶点集，所有顶点的集合</p>
+</li>
+<li>
+<p>R:边集，所有边的集合</p>
+</li>
+<li>
+<p>VR:边(x,y)，x,y是顶点</p>
+</li>
+<li>
+<p>P(x,y):x与y之间存在特定关系</p>
+</li>
+</ul>
+</li>
+<li>
+<p>若&lt;x,y&gt; <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo></mrow><annotation encoding="application/x-tex">\in</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">∈</span></span></span></span> VR，则&lt;x,y&gt;表示从顶点x到y的一条<strong>弧</strong>，x称为<strong>弧尾</strong>或<strong>起始点</strong>，y称为<strong>弧头</strong>或<strong>终端点</strong>，此时图为<strong>有向图</strong>。</p>
+</li>
+<li>
+<p>若&lt;x,y&gt;与&lt;y,x&gt;均 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo></mrow><annotation encoding="application/x-tex">\in</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">∈</span></span></span></span> VR，即VR是对称关系，则称&lt;x,y&gt;为<strong>无向边</strong>或<strong>边</strong>，用(x,y)来表示，图为<strong>无向图</strong>。</p>
+</li>
+</ol>
+<h3 id="图的抽象数据类型定义"><a class="markdownIt-Anchor" href="#图的抽象数据类型定义"></a> 图的抽象数据类型定义</h3>
+<ol>
+<li>
+<p>数据对象V：一个<strong>非空</strong>集合，所有元素特性<strong>相同</strong>。</p>
+</li>
+<li>
+<p>数据关系R：R = {VR},VR = {&lt;x,y&gt;|P(x,y)∧(x,y)∈V}</p>
+</li>
+<li>
+<p>基本操作</p>
+<ol>
+<li>创建图G <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CreateGraph(G)</span><br></pre></td></tr></table></figure>
+</li>
+<li>销毁图G <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DestroyGraph(G)</span><br></pre></td></tr></table></figure>
+</li>
+<li>求图中顶点v <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LocateVertex(G,v)</span><br></pre></td></tr></table></figure>
+</li>
+<li>求图G中第i个顶点 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetVertex(G,i)</span><br></pre></td></tr></table></figure>
+</li>
+<li>求顶点的第一个邻接点 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FirstAdjVertex(G,v)</span><br></pre></td></tr></table></figure>
+</li>
+<li>求顶点v在邻接点w后的的下一个邻接点 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NextAdjVertex(G,v,w)</span><br></pre></td></tr></table></figure>
+</li>
+<li>插入顶点u <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InsertVertex(G,u)</span><br></pre></td></tr></table></figure>
+</li>
+<li>删除顶点u <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeleteVertex(G,u)</span><br></pre></td></tr></table></figure>
+</li>
+<li>插入弧&lt;v,u&gt; <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InsertArc(G,v,u)</span><br></pre></td></tr></table></figure>
+</li>
+<li>删除弧&lt;v,u&gt;<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeleteArc(G,v,u)</span><br></pre></td></tr></table></figure>
+</li>
+<li>按某种次序遍历图<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TraverseGraph(G)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="基本术语"><a class="markdownIt-Anchor" href="#基本术语"></a> 基本术语</h2>
+<ol>
+<li>
+<p>完全图: 图中任意两个顶点之间都存在边的图。</p>
+<ol>
+<li>
+<p>无向完全图：n(n-1)/2条边</p>
+</li>
+<li>
+<p>有向完全图：n(n-1)条边</p>
+</li>
+</ol>
+</li>
+<li>
+<p>图中边的数量远小于可能的最大边数的图称作<strong>稀疏图</strong>，反之称作<strong>稠密图</strong>。</p>
+</li>
+<li>
+<p>子图：若G’中所有顶点和边均包含于G，则称G’为G的子图。</p>
+</li>
+<li>
+<p>邻接点：图中一条边上的两条顶点。</p>
+<blockquote>
+<p>在有向图中若&lt;v,v’&gt; <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo></mrow><annotation encoding="application/x-tex">\in</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">∈</span></span></span></span> R,则称v邻接到v’，v’邻接自v</p>
+</blockquote>
+</li>
+<li>
+<p>度(TD)：顶点的度是与该顶点相关联边的条数。</p>
+<ul>
+<li>
+<p>无向图中顶点的度是与该顶点邻接的边的条数。</p>
+</li>
+<li>
+<p>有向图中顶点的度分为<strong>出度</strong>(以v为弧头的弧的条数)(OD)和<strong>入度</strong>(以v为弧尾的弧的条数)(ID)之和。</p>
+</li>
+<li>
+<p>图中所有顶点的度数之和在数值上等于边数量的<strong>2倍</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>权：有一定意义的，与边有关的数。</p>
+</li>
+<li>
+<p>赋权图（网）：带权的图</p>
+</li>
+<li>
+<p>路径：从顶点v到顶点u的一条路径是从v到u的顶点序列<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><msub><mi>v</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>v</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>v</mi><mi>k</mi></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&lt;v_0,v_1,...,v_k&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span>，若<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&lt;v_i,v_{i+1}&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7474em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo></mrow><annotation encoding="application/x-tex">\in</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">∈</span></span></span></span> R，则称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><msub><mi>v</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>v</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>v</mi><mi>k</mi></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&lt;v_0,v_1,...,v_k&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span>为从v到u的路径。</p>
+<ul>
+<li>
+<p>简单路径：各顶点互不相同</p>
+</li>
+<li>
+<p>回路：第一个顶点等于最后一个顶点</p>
+</li>
+<li>
+<p>简单回路：除首尾顶点外，各顶点互不相同</p>
+</li>
+</ul>
+</li>
+<li>
+<p>连通图：图中任意两个顶点之间都存在路径的图。</p>
+<ul>
+<li>
+<p>连通分量：无向图中的极大连通子图。</p>
+</li>
+<li>
+<p>强连通图：有向图中任意两个顶点之间都互相存在路径的图。</p>
+</li>
+<li>
+<p>强连通分量：有向图中的极大强连通子图。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="图的存储结构"><a class="markdownIt-Anchor" href="#图的存储结构"></a> 图的存储结构</h1>
+<h2 id="邻接矩阵"><a class="markdownIt-Anchor" href="#邻接矩阵"></a> 邻接矩阵</h2>
+<h3 id="邻接矩阵的定义"><a class="markdownIt-Anchor" href="#邻接矩阵的定义"></a> 邻接矩阵的定义</h3>
+<p>对于具有n个顶点的图 (G = (V, E))，其 <strong>邻接矩阵（Adjacency Matrix)</strong> 是一个 (n <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> n) 的矩阵 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">A</mi><mo>=</mo><mo stretchy="false">[</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbf{A} = [a_{ij}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span>)，其中：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>1</mn><mspace width="1em"/><mo stretchy="false">(</mo><mtext>或权值 </mtext><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>若 </mtext><mo stretchy="false">(</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>∈</mo><mi>E</mi><mspace width="1em"/><mtext>或</mtext><mspace width="1em"/><mo stretchy="false">⟨</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">⟩</mo><mo>∈</mo><mi>E</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>0</mn><mspace width="1em"/><mo stretchy="false">(</mo><mtext>或 </mtext><mi mathvariant="normal">∞</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>若 </mtext><mo stretchy="false">(</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo mathvariant="normal">∉</mo><mi>E</mi><mspace width="1em"/><mtext>且</mtext><mspace width="1em"/><mo stretchy="false">⟨</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">⟩</mo><mo mathvariant="normal">∉</mo><mi>E</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex"> a_{ij} =
+\begin{cases}
+1 \quad (\text{或权值 } w_{ij}) &amp; \text{若 } (v_i, v_j) \in E \quad \text{或} \quad \langle v_i, v_j \rangle \in E \\[4pt]
+0 \quad (\text{或 } \infty) &amp; \text{若 } (v_i, v_j) \notin E \quad \text{且} \quad \langle v_i, v_j \rangle \notin E
+\end{cases} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.28em;vertical-align:-1.39em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.89em;"><span style="top:-3.89em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord cjk_fallback">或权值</span><span class="mord"> </span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-2.05em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord cjk_fallback">或</span><span class="mord"> </span></span><span class="mord">∞</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.39em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.89em;"><span style="top:-3.89em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">若</span><span class="mord"> </span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord cjk_fallback">或</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">⟨</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span></span></span><span style="top:-2.05em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">若</span><span class="mord"> </span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mord"><span class="mrel">∈</span></span><span class="mord vbox"><span class="thinbox"><span class="llap"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="inner"><span class="mord"><span class="mord">/</span><span class="mspace" style="margin-right:0.0556em;"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord cjk_fallback">且</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">⟨</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mord"><span class="mrel">∈</span></span><span class="mord vbox"><span class="thinbox"><span class="llap"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="inner"><span class="mord"><span class="mord">/</span><span class="mspace" style="margin-right:0.0556em;"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.39em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
+<ul>
+<li>
+<p><strong>无向图</strong>：矩阵关于主对角线<strong>对称</strong>（因为边无方向）。</p>
+</li>
+<li>
+<p><strong>有向图</strong>：矩阵<strong>不一定对称</strong>（弧有方向）。</p>
+</li>
+<li>
+<p><strong>带权图（网）</strong>：邻接矩阵存储权值，不存在的边用**无穷大（∞）**表示。</p>
+</li>
+</ul>
+<h3 id="c语言描述"><a class="markdownIt-Anchor" href="#c语言描述"></a> C语言描述</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_VERTEX_NUM 20     <span class="comment">/* 最多顶点个数 */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INFINITY 32768        <span class="comment">/* 表示极大值，即 ∞ */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 图的种类：DG（有向图）, DN（有向网）, UDG（无向图）, UDN（无向网） */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span> DG, DN, UDG, UDN &#125; GraphKind;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> VertexData;      <span class="comment">/* 代表顶点的唯一标识（如顶点的名字），此处假设顶点数据为字符型 */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> &#123;</span></span><br><span class="line">    AdjType adj;              <span class="comment">/* 对无权图：0/1；对带权图：权值类型 */</span></span><br><span class="line">    OtherInfo info;           <span class="comment">/* 其他信息（可选） */</span></span><br><span class="line">&#125; ArcNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    VertexData vertex[MAX_VERTEX_NUM];               <span class="comment">/* 顶点向量（一维数组） */</span></span><br><span class="line">    ArcNode arcs[MAX_VERTEX_NUM][MAX_VERTEX_NUM];    <span class="comment">/* 邻接矩阵（二维数组） */</span></span><br><span class="line">    <span class="type">int</span> vexnum, arcnum;                              <span class="comment">/* 顶点数和弧数 */</span></span><br><span class="line">    GraphKind kind;                                  <span class="comment">/* 图的种类标志 */</span></span><br><span class="line">&#125; AdjMatrix;</span><br></pre></td></tr></table></figure>
+<h3 id="存储空间分析"><a class="markdownIt-Anchor" href="#存储空间分析"></a> 存储空间分析</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">图类型</th>
+<th style="text-align:left">矩阵特点</th>
+<th style="text-align:left">所需存储空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>无向图</strong></td>
+<td style="text-align:left">邻接矩阵<strong>对称</strong>，只需存储下三角（含对角线）</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mi>n</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{n(n-1)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>（理论压缩），若完整存储则为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>有向图</strong></td>
+<td style="text-align:left">矩阵<strong>不一定对称</strong>，必须完整存储</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>无向图因对称性可采用<strong>压缩存储</strong>（仅存下三角），从而节省近一半空间。</p>
+</blockquote>
+<h3 id="顶点的度degree计算"><a class="markdownIt-Anchor" href="#顶点的度degree计算"></a> 顶点的度（Degree）计算</h3>
+<h4 id="1-无向图"><a class="markdownIt-Anchor" href="#1-无向图"></a> 1. 无向图</h4>
+<p>第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 行元素之和 = 顶点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">v_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的度（Degree）：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi>D</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">TD(v_i) = \sum_{j=1}^{n} a_{ij}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0652em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6514em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<h4 id="2-有向图"><a class="markdownIt-Anchor" href="#2-有向图"></a> 2. 有向图</h4>
+<ul>
+<li><strong>出度（Out-degree）</strong> = 第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 行元素之和：</li>
+</ul>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>O</mi><mi>D</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">OD(v_i) = \sum_{j=1}^{n} a_{ij}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0652em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6514em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<ul>
+<li><strong>入度（In-degree）</strong> = 第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 列元素之和：</li>
+</ul>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>D</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">ID(v_i) = \sum_{j=1}^{n} a_{ji}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0652em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6514em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<h3 id="创建有向网"><a class="markdownIt-Anchor" href="#创建有向网"></a> 创建有向网</h3>
+<ol>
+<li>辅助函数：求顶点位置 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">LocateVertex</span><span class="params">(AdjMatrix *G, VertexData v)</span> <span class="comment">//v是待查找的结点值</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> j = Error, k;</span><br><span class="line">    <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; G-&gt;vexnum; k++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (G-&gt;vertex[k] == v) </span><br><span class="line">        &#123;</span><br><span class="line">            j = k; </span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>创建有向网主函数 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">CreateDN</span><span class="params">(AdjMatrix *G)</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i, j, k, weight;<span class="comment">//i,j表示顶点索引,k表示弧索引,weight表示权值</span></span><br><span class="line">    VertexData v1, v2;  <span class="comment">//v1,v2表示顶点值</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d, %d&quot;</span>, &amp;G-&gt;vexnum, &amp;G-&gt;arcnum);   <span class="comment">// 输入顶点数和弧数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 初始化邻接矩阵：所有边权设为∞</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; G-&gt;vexnum; i++)</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; G-&gt;vexnum; j++)</span><br><span class="line">            G-&gt;arcs[i][j].adj = INFINITY;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 输入顶点信息（输入顺序决定了顶点在数组中的位置）</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; G-&gt;vexnum; i++)</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>, &amp;G-&gt;vertex[i]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 输入弧信息：起点，终点，权值</span></span><br><span class="line">    <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; G-&gt;arcnum; k++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%c, %c, %d&quot;</span>, &amp;v1, &amp;v2, &amp;weight);</span><br><span class="line">        i = LocateVertex(G, v1);</span><br><span class="line">        j = LocateVertex(G, v2);</span><br><span class="line">        G-&gt;arcs[i][j].adj = weight;   <span class="comment">// 建立有向弧</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    G-&gt;kind = DN;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>
+<p>时间复杂度分析:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作</th>
+<th style="text-align:left">时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">初始化邻接矩阵（双重循环）</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:left">每条弧的定位与赋值（e 条弧）</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>e</mi><mo>⋅</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(e \cdot n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>（因为每条弧都需要调用O(n)的 <code>LocateVertex</code>）</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>总时间复杂度</strong></td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><mi>e</mi><mo>⋅</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2 + e \cdot n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>若顶点信息在输入前已编号并直接作为数组下标，则弧的赋值可优化 O(1)，总时间降为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><mi>e</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2 + e)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mclose">)</span></span></span></span>。</p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="邻接表"><a class="markdownIt-Anchor" href="#邻接表"></a> 邻接表</h2>
+<h3 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h3>
+<ul>
+<li>
+<p>邻接矩阵表示稀疏图（边数远小于可能的最大边数）不便，且浪费空间。</p>
+</li>
+<li>
+<p>定义：邻接表（Adjacency List）是图的另一种链式存储结构，只存储结点关联的信息（即<strong>边信息</strong>），不相邻的结点不保留信息。</p>
+</li>
+<li>
+<p>优缺点：</p>
+<ul>
+<li>
+<p>邻接表的优点是：对稠密图，存储空间好，但查找效率不高；对稀疏图，存储空间少，查找效率高。</p>
+</li>
+<li>
+<p>邻接表的缺点是：对稠密图，查找效率不高；对稀疏图，存储空间多，浪费空间。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>邻接表的存储结构：由<strong>表头结点表</strong>和<strong>边表</strong>两部分组成</p>
+<ol>
+<li>
+<p>表头结点表：以顺序结构（向量）的形式存储所有的链表头结点，以便随机访问任一顶点，<strong>表头结点</strong>由<strong>数据域</strong>和<strong>链域</strong>组成。</p>
+<ul>
+<li>
+<p>数据域：存储顶点名和其他有关信息。</p>
+</li>
+<li>
+<p>链域：指向表头结点连接的<strong>第一条</strong>边（ArcNode）。</p>
+<blockquote>
+<p>链域在物理上指向的是“边”，但在逻辑上是在找“顶点”</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>边表：由表示图中顶点间连接关系的<strong>边</strong>组成。由<strong>邻接点域</strong>、<strong>数据域</strong>和<strong>链域</strong>组成。</p>
+<ul>
+<li>
+<p>邻接点域：存储与边或弧有关的两个顶点。</p>
+<blockquote>
+<p>存储的是顶点在顶点数组中的下标</p>
+</blockquote>
+</li>
+<li>
+<p>数据域：存储边或弧的权重等信息。</p>
+</li>
+<li>
+<p>链域：指向与当前边或弧的同一顶点（弧尾）相连的<strong>下一条</strong>边或弧。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="存储结构实现"><a class="markdownIt-Anchor" href="#存储结构实现"></a> 存储结构实现</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> //边表节点</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> adjvex;<span class="comment">//该边指向的顶点下标</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> *<span class="title">nextarc</span>;</span><span class="comment">//指向下一条边的指针</span></span><br><span class="line">    <span class="type">int</span> info;<span class="comment">//边的权重等信息</span></span><br><span class="line">&#125; ArcNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VNode</span>  //表头结点表节点</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    VertexData data;<span class="comment">//顶点数据</span></span><br><span class="line">    ArcNode *firstarc;<span class="comment">//指向第一条边的指针</span></span><br><span class="line">&#125; VNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    VNode vertices[MAXVEXNUM];<span class="comment">//构建顶点数组</span></span><br><span class="line">    <span class="type">int</span> vexnum, arcnum;       <span class="comment">//图的顶点数和边数</span></span><br><span class="line">    GraphKind kind;           <span class="comment">//图的种类</span></span><br><span class="line">&#125; AdjListGraph;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>存储空间分析：
+<table>
+<thead>
+<tr>
+<th style="text-align:left">图类型</th>
+<th style="text-align:left">邻接表特点</th>
+<th style="text-align:left">所需存储空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>无向图</strong></td>
+<td style="text-align:left">邻接表<strong>不一定对称</strong>，必须完整存储</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>+</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">n + e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>有向图</strong></td>
+<td style="text-align:left">邻接表<strong>不一定对称</strong>，必须完整存储</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">2n + e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h2 id="十字链表"><a class="markdownIt-Anchor" href="#十字链表"></a> 十字链表</h2>
+<h3 id="定义-2"><a class="markdownIt-Anchor" href="#定义-2"></a> 定义</h3>
+<ul>
+<li>十字链表（Orthogonal List）是图的另一种链式存储结构，是邻接表和逆邻接表的结合。</li>
+</ul>
+<blockquote>
+<p>邻接表按顺序存放每一个结点的<strong>后继</strong>边（出度），逆邻接表按顺序存放每一个结点的<strong>前驱</strong>边（入度）。</p>
+</blockquote>
+<ul>
+<li>
+<p>十字链表的存储结构：由<strong>弧结点</strong>和<strong>顶点结点</strong>两部分组成。</p>
+</li>
+<li>
+<p>定义方法</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_VERTEX_NUM 20         <span class="comment">//最大顶点个数</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span>DG, DN, UDG, UDN&#125; GraphKind;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span>            //弧结点</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> tailvex, headvex;         <span class="comment">//弧尾和弧头在顶点数组中的下标</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> *<span class="title">hlink</span>;</span>        <span class="comment">//指向与该弧的弧头相同的下一条弧，把到同一个终点的边串成链表（入度链）</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> *<span class="title">tlink</span>;</span>        <span class="comment">//指向与该弧的弧尾相同的下一条弧，把同一个起点出发的边串成链表（出度链）。</span></span><br><span class="line">    <span class="type">int</span> info;                     <span class="comment">//该弧的其他相关信息</span></span><br><span class="line">&#125;ArcNode;       </span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VNode</span>              //顶点结点</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    VertexData data;              <span class="comment">//顶点数据</span></span><br><span class="line">    ArcNode *firstin, *firstout;  <span class="comment">//指向该顶点的第一条入边、出边</span></span><br><span class="line">&#125;VNode;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    VNode vertex[MAX_VERTEX_NUM];</span><br><span class="line">    <span class="type">int</span> vexnum, arcnum;</span><br><span class="line">    GraphKind kind;</span><br><span class="line">&#125;OrthList;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="创建有向图十字链表"><a class="markdownIt-Anchor" href="#创建有向图十字链表"></a> 创建有向图十字链表</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">CrtOrthList</span><span class="params">(OrthList *G)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d, %d&quot;</span>, &amp;G-&gt;vexnum, &amp;G-&gt;arcnum); <span class="comment">//输入顶点数和弧数</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i &lt; G-&gt;vexnum;i++)           <span class="comment">//构建顶点数组</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>, &amp;G-&gt;vertices[i].data);</span><br><span class="line">        G-&gt;vertices[i].firstin = <span class="literal">NULL</span>;</span><br><span class="line">        G-&gt;vertices[i].firstout = <span class="literal">NULL</span>;</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i &lt; G-&gt;arcnum;i++)           <span class="comment">//构建弧数组</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">char</span> tail, head;                     </span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%c %c&quot;</span>, &amp;tail, &amp;head);        <span class="comment">//输入弧的弧尾和弧头</span></span><br><span class="line">        <span class="type">int</span> i = LocateVertex(G, tail);       </span><br><span class="line">        <span class="type">int</span> j = LocateVertex(G, head);</span><br><span class="line">        ArcNode *p = (ArcNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(ArcNode));<span class="comment">//分配内存</span></span><br><span class="line">        p-&gt;tailvex = i;                      <span class="comment">//新弧的弧尾顶点</span></span><br><span class="line">        p-&gt;headvex = j;                      <span class="comment">//新弧的弧头顶点</span></span><br><span class="line">        p-&gt;hlink = G-&gt;vertices[j].firstin;     <span class="comment">//新弧的入度链 指向 弧头顶点的第一条入边</span></span><br><span class="line">        G-&gt;vertices[j].firstin = p;            <span class="comment">//弧头顶点 的 入度链表 的头结点指向新弧</span></span><br><span class="line">        p-&gt;tlink = G-&gt;vertices[i].firstout;    <span class="comment">//新弧的出度链 指向 弧尾顶点的第一条出边</span></span><br><span class="line">        G-&gt;vertices[i].firstout = p;           <span class="comment">//弧尾顶点 的 出度链表 的头结点指向新弧</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="邻接多重表"><a class="markdownIt-Anchor" href="#邻接多重表"></a> 邻接多重表</h2>
+<p>前方施工，尚未开放</p>
+<h1 id="图的基本操作"><a class="markdownIt-Anchor" href="#图的基本操作"></a> 图的基本操作</h1>
+<h2 id="插入边顶点"><a class="markdownIt-Anchor" href="#插入边顶点"></a> 插入边/顶点</h2>
+<h3 id="邻接矩阵-2"><a class="markdownIt-Anchor" href="#邻接矩阵-2"></a> 邻接矩阵</h3>
+<ol>
+<li>插入顶点
+<ul>
+<li>
+<p>算法思想：将新顶点放入顶点数组的下一个空位，顶点数+1，新顶点与其他顶点的边关系默认为<strong>0</strong></p>
+</li>
+<li>
+<p>代码实现</p>
+</li>
+</ul>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">InsertVertex</span><span class="params">(AdjMatrix *G, VertexData v)</span><span class="comment">//在图点</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(G-&gt;vexnum == MAX_VERTEX_NUM)<span class="comment">//判断顶点数是否超过最大值   </span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(LocateVertex(G, v) != Error)<span class="comment">//判断顶点是否重复</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    G-&gt;vertices[G-&gt;vexnum] = v;    <span class="comment">//将新顶点加入顶点数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=G-&gt;vexnum;i++)<span class="comment">//将新顶点插入到顶点数组的下一个空位</span></span><br><span class="line">    &#123;</span><br><span class="line">        G-&gt;arcs[i][G-&gt;vexnum] = <span class="number">0</span>;<span class="comment">//新顶点与其他顶点的边关系默认为0</span></span><br><span class="line">        G-&gt;arcs[G-&gt;vexnum][i] = <span class="number">0</span>;<span class="comment">//其他顶点和新顶点的边关系默认为0</span></span><br><span class="line">    &#125;</span><br><span class="line">    G-&gt;vexnum++;<span class="comment">//顶点数+1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>插入边
+<ul>
+<li>
+<p>算法思想：找两个顶点下标i和j，如果是无向图，对称设置arcs[i][j]和arcs[j][i]，如果是有向图，设置arcs[i][j],边数+1.</p>
+</li>
+<li>
+<p>代码实现</p>
+</li>
+</ul>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">InsertArc</span><span class="params">(AdjMatrix *G, VertexData v1, VertexData v2, GraphKind kind)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = LocateVertex(G, v1);</span><br><span class="line">    <span class="type">int</span> j = LocateVertex(G, v2);</span><br><span class="line">    <span class="keyword">if</span>(i == Error || j == Error)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    G-&gt;arcs[i][j] += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(kind == UDG || kind == UDN)</span><br><span class="line">        G-&gt;arcs[j][i] += <span class="number">1</span>;</span><br><span class="line">    G-&gt;arcnum++;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="邻接表-2"><a class="markdownIt-Anchor" href="#邻接表-2"></a> 邻接表</h3>
+<ol>
+<li>插入顶点
+<ul>
+<li>
+<p>算法思想：将新顶点放入顶点数组的下一个空位，顶点数+1，新顶点的边表指针置为NULL</p>
+</li>
+<li>
+<p>代码实现</p>
+</li>
+</ul>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">InsertVertex</span><span class="params">(AdjListGraph *G, VertexData v)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(G-&gt;vexnum == MAX_VERTEX_NUM)<span class="comment">//判断顶点数是否超过最大值   </span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(LocateVertex(G, v) != Error)<span class="comment">//判断顶点是否重复</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    G-&gt;vertices[G-&gt;vexnum].data = v; <span class="comment">//将新顶点加入顶点数组</span></span><br><span class="line">    G-&gt;vertices[G-&gt;vexnum].firstarc = <span class="literal">NULL</span>; <span class="comment">//新顶点的边表指针置为NULL</span></span><br><span class="line">    G-&gt;vexnum++;<span class="comment">//顶点数+1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>插入边
+<ul>
+<li>
+<p>算法思想：找两个顶点下标i和j，创建一个新的边结点p，如果是无向图，将p插入到顶点i的边表头部，同时创建一个新的边结点q，将q插入到顶点j的边表头部，如果是有向图，只将p插入到顶点i的边表头部，边数+1.</p>
+</li>
+<li>
+<p>代码实现</p>
+</li>
+</ul>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">InsertArc</span><span class="params">(AdjListGraph *G, VertexData v1, VertexData v2, GraphKind kind)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = LocateVertex(G, v1);</span><br><span class="line">    <span class="type">int</span> j = LocateVertex(G, v2);</span><br><span class="line">    <span class="keyword">if</span>(i == Error || j == Error)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    ArcNode *p = (ArcNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(ArcNode));</span><br><span class="line">    p-&gt;adjvex = j;</span><br><span class="line">    p-&gt;nextarc = G-&gt;vertices[i].firstarc;</span><br><span class="line">    G-&gt;vertices[i].firstarc = p;</span><br><span class="line">    <span class="keyword">if</span>(kind == UDG || kind == UDN)</span><br><span class="line">    &#123;</span><br><span class="line">        ArcNode *q = (ArcNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(ArcNode));</span><br><span class="line">        q-&gt;adjvex = i;</span><br><span class="line">        q-&gt;nextarc = G-&gt;vertices[j].firstarc;</span><br><span class="line">        G-&gt;vertices[j].firstarc = q;</span><br><span class="line">    &#125;</span><br><span class="line">    G-&gt;arcnum++;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="计算出度入度"><a class="markdownIt-Anchor" href="#计算出度入度"></a> 计算出度/入度</h2>
+<h3 id="邻接矩阵-3"><a class="markdownIt-Anchor" href="#邻接矩阵-3"></a> 邻接矩阵</h3>
+<ul>
+<li>
+<p>算法思想(对于点i)</p>
+<ul>
+<li>
+<p>出度：遍历第i行，累加所有列</p>
+</li>
+<li>
+<p>入度：遍历第i列，累加所有行</p>
+</li>
+</ul>
+</li>
+<li>
+<p>代码实现</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">OutDegree</span><span class="params">(AdjMatrix *G, VertexData v)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = LocateVertex(G, v);</span><br><span class="line">    <span class="type">int</span> degree = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;G-&gt;vexnum;j++)</span><br><span class="line">        degree += G-&gt;arcs[i][j];</span><br><span class="line">    <span class="keyword">return</span> degree;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">InDegree</span><span class="params">(AdjMatrix *G, VertexData v)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = LocateVertex(G, v);</span><br><span class="line">    <span class="type">int</span> degree = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;G-&gt;vexnum;j++)</span><br><span class="line">        degree += G-&gt;arcs[j][i];</span><br><span class="line">    <span class="keyword">return</span> degree;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="邻接表-3"><a class="markdownIt-Anchor" href="#邻接表-3"></a> 邻接表</h3>
+<ul>
+<li>算法思想(对于点i)
+<ul>
+<li>
+<p>出度：遍历第i个顶点的边表，累加所有边</p>
+</li>
+<li>
+<p>入度：遍历所有顶点的边表，累加所有指向i的边</p>
+</li>
+</ul>
+</li>
+<li>代码实现  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">OutDegree</span><span class="params">(AdjListGraph *G, VertexData v)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = LocateVertex(G, v);</span><br><span class="line">    <span class="type">int</span> degree = <span class="number">0</span>;</span><br><span class="line">    ArcNode *p = G-&gt;vertices[i].firstarc;</span><br><span class="line">    <span class="keyword">while</span>(p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        degree++;</span><br><span class="line">        p = p-&gt;nextarc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> degree;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">InDegree</span><span class="params">(AdjListGraph *G, VertexData v)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = LocateVertex(G, v);</span><br><span class="line">    <span class="type">int</span> degree = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;G-&gt;vexnum;j++)</span><br><span class="line">    &#123;</span><br><span class="line">        ArcNode *p = G-&gt;vertices[j].firstarc;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;adjvex == i)</span><br><span class="line">                degree++;</span><br><span class="line">            p = p-&gt;nextarc;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> degree;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="图的遍历"><a class="markdownIt-Anchor" href="#图的遍历"></a> 图的遍历</h1>
+<h2 id="深度优先搜索dfs"><a class="markdownIt-Anchor" href="#深度优先搜索dfs"></a> 深度优先搜索（DFS）</h2>
+<pre><code>前方施工，尚未开放 
+</code></pre>
+<h2 id="广度优先搜索bfs"><a class="markdownIt-Anchor" href="#广度优先搜索bfs"></a> 广度优先搜索（BFS）</h2>
+<pre><code>前方施工，尚未开放 
+</code></pre>
+<h1 id="图的应用"><a class="markdownIt-Anchor" href="#图的应用"></a> 图的应用</h1>
+<h2 id="求最小生成树"><a class="markdownIt-Anchor" href="#求最小生成树"></a> 求最小生成树</h2>
+<h3 id="定义-3"><a class="markdownIt-Anchor" href="#定义-3"></a> 定义</h3>
+<ul>
+<li>生成树：一个连通图的生成树是该图的极小连通子图，它含有图中全部顶点，但只有足以构成一棵树的n-1条边。</li>
+<li>最小生成树：生成树中权值之和最小的生成树。</li>
+</ul>
+<h3 id="算法"><a class="markdownIt-Anchor" href="#算法"></a> 算法</h3>
+<h4 id="prim算法"><a class="markdownIt-Anchor" href="#prim算法"></a> Prim算法</h4>
+<ol>
+<li>算法思想
+<ul>
+<li>
+<p>从顶点集合V中选取一个顶点u作为起始点，将起始点加入到顶点集合U中，此时边集合E为空。</p>
+</li>
+<li>
+<p>从顶点集合V-U中选取一个顶点v，使得对于U中<strong>任意</strong>顶点u，(u,v)的权重最小,将v加入到顶点集合U中，将(u,v)加入到边集合E中。</p>
+</li>
+<li>
+<p>重复步骤2，直到顶点集合V-U为空。</p>
+</li>
+</ul>
+</li>
+<li>代码实现<br />
+前方施工，尚未开放</li>
+</ol>
+<h4 id="kruskal算法"><a class="markdownIt-Anchor" href="#kruskal算法"></a> Kruskal算法</h4>
+<p>算法思想：</p>
+<ol>
+<li>
+<p>假设N=(V,{E})是连通图，将E看作一个按<strong>权</strong>从小到大排序的线性表，</p>
+</li>
+<li>
+<p>从中选取权值最小的边，若该边加入后<strong>不构成回路</strong>，则将该边加入到最小生成树中，否则舍弃。</p>
+</li>
+<li>
+<p>重复步骤2，直到E为空。</p>
+</li>
+</ol>
+<h2 id="有向无环图的应用"><a class="markdownIt-Anchor" href="#有向无环图的应用"></a> 有向无环图的应用</h2>
+<h3 id="拓扑排序"><a class="markdownIt-Anchor" href="#拓扑排序"></a> 拓扑排序</h3>
+<pre><code>前方施工，尚未开放
+</code></pre>
+<h3 id="关键路径"><a class="markdownIt-Anchor" href="#关键路径"></a> 关键路径</h3>
+<ol>
+<li>
+<p>定义：关键路径是指 AOE 网中从<strong>源点</strong>到<strong>汇点</strong>的<strong>最长路径</strong>（按路径上各活动持续时间的总和计算）。关键路径的长度代表完成整个工程所需的最短时间。</p>
+<ul>
+<li>
+<p>AOE 网：边（弧）表示活动（比如“打地基”），边上的权值表示完成该活动需要的时间（比如 3 天），顶点表示事件（比如“地基打完”）。</p>
+</li>
+<li>
+<p>源点与汇点：源点是整个工程的起点（入度为 0），汇点是整个工程的终点（出度为 0）。</p>
+</li>
+</ul>
+<blockquote>
+<p>注意，这里不是“最短路径”，而是“最长路径”。因为工程是并行的，所有路径必须都走完，工程才能结束，所以耗时最长的路径决定了总工期。</p>
+</blockquote>
+</li>
+<li>
+<p>相关定义</p>
+<ul>
+<li>
+<p>ve(v)（顶点最早发生时间）：从<strong>源点</strong>出发，到达该顶点的最长路径长度。</p>
+<ul>
+<li>
+<p>ve(源点) = 0；ve(j) = Max{ve(i) + weight(i, j)}（其中 i 是 j 的所有前驱顶点）</p>
+</li>
+<li>
+<p>让前面的所有任务全做完花的时间，取最大</p>
+</li>
+</ul>
+</li>
+<li>
+<p>vl(v)（顶点最迟发生时间）：从<strong>汇点</strong>出发，到达该顶点的最长路径长度。</p>
+<ul>
+<li>
+<p>vl(汇点) = ve(汇点)；vl(i) = Min{vl(j) - weight(i, j) }（其中 j 是 i 的所有后继顶点）</p>
+</li>
+<li>
+<p>让后面的所有任务有时间全做完，必须迁就时间最紧的那个，取最小。</p>
+</li>
+<li>
+<p>汇点的ve = 汇点的vl</p>
+</li>
+</ul>
+</li>
+<li>
+<p>e(i)（活动最早开始时间）：从源点出发，经过活动 i 到达活动 i 的终点的时间。</p>
+<ul>
+<li>
+<p>e(边) = ve(这条边的弧尾顶点)</p>
+</li>
+<li>
+<p>前脚（起点事件）一落地，后脚（活动）就能开工</p>
+</li>
+</ul>
+</li>
+<li>
+<p>l(i)（活动最迟开始时间）：从汇点出发，经过活动 i 到达活动 i 的起点的时间。</p>
+<ul>
+<li>
+<p>l(边) = vl(这条边的弧头顶点) - 边的权值</p>
+</li>
+<li>
+<p>必须赶在终点事件的最后期限之前，扣掉活动所需的时间，倒推回来开始。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>算法思想</p>
+<ol>
+<li>
+<p>正推ve(v)，计算e(i)</p>
+</li>
+<li>
+<p>反推vl(v),计算l(i)</p>
+</li>
+<li>
+<p>判别关键活动：若<strong>e(i) = l(i)</strong>，则i是关键活动</p>
+</li>
+</ol>
+</li>
+<li>
+<p>代码实现<br />
+前方施工，尚未开放</p>
+</li>
+</ol>
+<h3 id="最短路径"><a class="markdownIt-Anchor" href="#最短路径"></a> 最短路径</h3>
+<h4 id="dijkstra算法"><a class="markdownIt-Anchor" href="#dijkstra算法"></a> Dijkstra算法</h4>
+<ol>
+<li>
+<p>算法思想：</p>
+<ol>
+<li>
+<p>维护一个集合 S，表示已经确定了最短路径的顶点。初始时 S={s}，并假设s 到自身的距离为0，到其他顶点的距离为无穷大。</p>
+</li>
+<li>
+<p>每一步从尚未加入 S 的顶点中选择一个当前距离最小的顶点u，将其加入S。</p>
+</li>
+<li>
+<p>利用u 来松弛（relax）它的所有邻接边：即如果通过u 到达某个邻居v的距离比当前记录的dist[v] 更小，则更新dist[v]。</p>
+</li>
+<li>
+<p>重复步骤2,3，直到所有顶点都加入 S。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>代码实现<br />
+前方施工，尚未开放</p>
+</li>
+</ol>
+<h4 id="floyd算法"><a class="markdownIt-Anchor" href="#floyd算法"></a> Floyd算法</h4>
+<ol>
+<li>算法思想：
+<ol>
+<li>
+<p>初始化：对于共有n个结点的图，dist[i][j] = weight(i, j)，即dist[i][j] 表示顶点 i 到顶点 j 的距离。对于不存在边的顶点对，dist[i][j] 设为无穷大，dist[i][i] 设为0。</p>
+</li>
+<li>
+<p>动态规划：对于每一对顶点 (i, j)，检查是否通过中间顶点k连接可以得到更短路径，即如果 dist[i][k] + dist[k][j] &lt; dist[i][j]，则更新 dist[i][j]。</p>
+</li>
+<li>
+<p>从k=1开始检查， 每次新增一个结点，直到k=n。更新方法如下：<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>j</mi><mo stretchy="false">]</mo><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>d</mi><mi>i</mi><mi>s</mi><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>j</mi><mo stretchy="false">]</mo><mo separator="true">,</mo><mi>d</mi><mi>i</mi><mi>s</mi><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mo>+</mo><mi>d</mi><mi>i</mi><mi>s</mi><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>j</mi><mo stretchy="false">]</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> dist^{(k)}[i][j]=min(dist^{(k-1)}[i][j],dist^{(k-1)}[i][k]+dist^{(k−1)}[k][j])</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.138em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.138em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.138em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mclose">])</span></span></span></span></p>
+</li>
+</ol>
+</li>
+<li>代码实现<br />
+前方施工，尚未开放</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/06/28/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="prev" title="数据结构-树与二叉树">
+                  <i class="fa fa-angle-left"></i> 数据结构-树与二叉树
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/06/30/%E6%9F%A5%E6%89%BE/" rel="next" title="数据结构-查找">
+                  数据结构-查找 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZetaChung</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Zeta-Chung" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
