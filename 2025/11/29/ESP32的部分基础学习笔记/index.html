@@ -606,19 +606,25 @@
   }
 })();
 </script>
-<!-- 目录点击不产生历史记录：阻止默认锚点行为，改用手动滚动 -->
+<!-- 目录点击不产生历史记录（capture phase + 异常保护） -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.post-toc .nav-link').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      var target = document.getElementById(decodeURIComponent(this.getAttribute('href').slice(1)));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+document.addEventListener('click', function(e) {
+  try {
+    var link = e.target.closest('.post-toc .nav-link');
+    if (link) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        var id = decodeURIComponent(href.slice(1));
+        var target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
-    });
-  });
-});
+    }
+  } catch(err) { console.error('TOC:', err); }
+}, true);
 </script>
 
 </body>
