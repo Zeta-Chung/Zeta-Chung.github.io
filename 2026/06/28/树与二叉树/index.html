@@ -1095,6 +1095,50 @@
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
+<!-- 直接识别 mermaid 代码块并渲染（绕过 NexT page:loaded 事件时序问题） -->
+<script>
+(function() {
+  function initMermaid() {
+    var codeBlocks = document.querySelectorAll('pre > code.mermaid');
+    if (codeBlocks.length === 0) return;
+    codeBlocks.forEach(function(el) {
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = el.textContent;
+      el.parentNode.parentNode.replaceChild(div, el.parentNode);
+    });
+    if (typeof mermaid !== 'undefined') {
+      mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+      return;
+    }
+    var cfg = document.querySelector('.next-config[data-name="mermaid"]');
+    if (!cfg) return;
+    try {
+      var config = JSON.parse(cfg.textContent);
+      if (config.enable && config.js && config.js.url) {
+        var s = document.createElement('script');
+        s.src = config.js.url;
+        s.integrity = config.js.integrity || '';
+        s.crossOrigin = 'anonymous';
+        s.onload = function() {
+          mermaid.initialize({
+            theme: (config.theme || {}).light || 'default',
+            flowchart: { curve: 'linear' },
+            sequence: { actorMargin: 50 }
+          });
+          mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+        };
+        document.head.appendChild(s);
+      }
+    } catch(e) { console.error('Mermaid init error:', e); }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initMermaid, 100);
+  } else {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
+  }
+})();
+</script>
 
 </body>
 </html>

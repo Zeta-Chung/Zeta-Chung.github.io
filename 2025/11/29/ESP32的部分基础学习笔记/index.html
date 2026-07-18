@@ -237,7 +237,15 @@
 <hr />
 <h3 id="系统架构"><a class="markdownIt-Anchor" href="#系统架构"></a> 系统架构</h3>
 <h4 id="整体架构图"><a class="markdownIt-Anchor" href="#整体架构图"></a> 整体架构图</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">    participant A as 网页终端</span><br><span class="line">    participant B as ESP32开发板</span><br><span class="line">    participant C as LED电路</span><br><span class="line">    A-&gt;&gt;B:WiFi连接</span><br><span class="line">    B-&gt;&gt;A:WiFi连接</span><br><span class="line">    B--&gt;&gt;A:Web服务器创造</span><br><span class="line">    B-&gt;&gt;C:GPIO</span><br><span class="line">    C-&gt;&gt;B:GPIO</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight mermaid">sequenceDiagram
+    participant A as 网页终端
+    participant B as ESP32开发板
+    participant C as LED电路
+    A-&gt;&gt;B:WiFi连接
+    B-&gt;&gt;A:WiFi连接
+    B--&gt;&gt;A:Web服务器创造
+    B-&gt;&gt;C:GPIO
+    C-&gt;&gt;B:GPIO</code></pre>
 <h4 id="技术栈"><a class="markdownIt-Anchor" href="#技术栈"></a> 技术栈</h4>
 <h5 id="硬件组件"><a class="markdownIt-Anchor" href="#硬件组件"></a> 硬件组件</h5>
 <ul>
@@ -366,7 +374,12 @@
 <hr />
 <h3 id="系统架构-2"><a class="markdownIt-Anchor" href="#系统架构-2"></a> 系统架构</h3>
 <h4 id="整体架构图-2"><a class="markdownIt-Anchor" href="#整体架构图-2"></a> 整体架构图</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">   A[blink网页] &lt;--&gt; B[WiFi]</span><br><span class="line">   B&lt;--&gt;C[ESP32开发板]</span><br><span class="line">   C--&gt;|作为Web服务器控制|E[LED电路]</span><br><span class="line">   F[DHT11模块]--&gt;|上传数据|C</span><br><span class="line">   B--&gt;|发送HTTP请求|D[Thingspeak网页]</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+<pre><code class="highlight mermaid">graph TD
+   A[blink网页] &lt;--&gt; B[WiFi]
+   B&lt;--&gt;C[ESP32开发板]
+   C--&gt;|作为Web服务器控制|E[LED电路]
+   F[DHT11模块]--&gt;|上传数据|C
+   B--&gt;|发送HTTP请求|D[Thingspeak网页]</code></pre>
 <h4 id="技术栈-2"><a class="markdownIt-Anchor" href="#技术栈-2"></a> 技术栈</h4>
 <h5 id="硬件组件-2"><a class="markdownIt-Anchor" href="#硬件组件-2"></a> 硬件组件</h5>
 <ul>
@@ -484,9 +497,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/ESP32/" rel="tag"># ESP32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/ESP32/" rel="tag"># ESP32</a>
           </div>
 
         
@@ -549,6 +562,50 @@
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
+<!-- 直接识别 mermaid 代码块并渲染（绕过 NexT page:loaded 事件时序问题） -->
+<script>
+(function() {
+  function initMermaid() {
+    var codeBlocks = document.querySelectorAll('pre > code.mermaid');
+    if (codeBlocks.length === 0) return;
+    codeBlocks.forEach(function(el) {
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = el.textContent;
+      el.parentNode.parentNode.replaceChild(div, el.parentNode);
+    });
+    if (typeof mermaid !== 'undefined') {
+      mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+      return;
+    }
+    var cfg = document.querySelector('.next-config[data-name="mermaid"]');
+    if (!cfg) return;
+    try {
+      var config = JSON.parse(cfg.textContent);
+      if (config.enable && config.js && config.js.url) {
+        var s = document.createElement('script');
+        s.src = config.js.url;
+        s.integrity = config.js.integrity || '';
+        s.crossOrigin = 'anonymous';
+        s.onload = function() {
+          mermaid.initialize({
+            theme: (config.theme || {}).light || 'default',
+            flowchart: { curve: 'linear' },
+            sequence: { actorMargin: 50 }
+          });
+          mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+        };
+        document.head.appendChild(s);
+      }
+    } catch(e) { console.error('Mermaid init error:', e); }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initMermaid, 100);
+  } else {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
+  }
+})();
+</script>
 
 </body>
 </html>
