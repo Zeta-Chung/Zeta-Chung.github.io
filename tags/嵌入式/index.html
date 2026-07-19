@@ -392,5 +392,145 @@ document.addEventListener('click', function(e) {
 }, true);
 </script>
 
+<!-- 文章内关键字搜索 -->
+<style>
+#articleSearchWrap { display: none; position: sticky; top: 0; z-index: 100; background: var(--card-bg-color, #f7fdf9); padding: 10px 16px; border-bottom: 2px solid var(--theme-color, #059669); align-items: center; gap: 8px; }
+#articleSearchWrap.show { display: flex; }
+#articleSearchWrap input { flex: 1; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 14px; outline: none; }
+#articleSearchWrap input:focus { border-color: var(--theme-color, #059669); }
+#articleSearchWrap .count { font-size: 12px; color: #888; white-space: nowrap; min-width: 50px; text-align: center; }
+#articleSearchWrap button { background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; padding: 4px 8px; font-size: 13px; line-height: 1; }
+#articleSearchWrap button:hover { background: #eee; }
+#articleSearchBtn { position: fixed; right: 20px; bottom: 80px; z-index: 99; width: 36px; height: 36px; border-radius: 50%; background: var(--theme-color, #059669); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity .2s; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+#articleSearchBtn:hover { opacity: 1; }
+mark.ah-match { background: #ffeb3b; color: inherit; padding: 0 1px; border-radius: 1px; }
+mark.ah-current { background: #ff9800; color: #fff; }
+</style>
+
+<div id="articleSearchWrap">
+  <input type="text" id="articleSearchInput" placeholder="搜索本文内容…" autofocus>
+  <span class="count" id="articleSearchCount"></span>
+  <button id="articleSearchPrev" title="上一个">▲</button>
+  <button id="articleSearchNext" title="下一个">▼</button>
+  <button id="articleSearchClose" title="关闭">✕</button>
+</div>
+
+<button id="articleSearchBtn" title="搜索本文" style="display:none;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+</button>
+
+<script>
+(function() {
+  var postBody = document.querySelector('.post-body');
+  if (!postBody) return;
+
+  var wrap = document.getElementById('articleSearchWrap');
+  var input = document.getElementById('articleSearchInput');
+  var count = document.getElementById('articleSearchCount');
+  var btn = document.getElementById('articleSearchBtn');
+  var matches = [], currentIdx = 0;
+
+  function clearHighlights() {
+    matches.forEach(function(m) {
+      var parent = m.parentNode;
+      if (parent) {
+        parent.replaceChild(document.createTextNode(m.textContent), m);
+        parent.normalize();
+      }
+    });
+    matches = [];
+    currentIdx = 0;
+    count.textContent = '';
+  }
+
+  function search(keyword) {
+    clearHighlights();
+    if (!keyword) return;
+    var nodes = [];
+    var walker = document.createTreeWalker(postBody, 4, null, false);
+    var n;
+    while (n = walker.nextNode()) {
+      var idx = n.textContent.toLowerCase().indexOf(keyword.toLowerCase());
+      if (idx !== -1) nodes.push(n);
+    }
+    if (nodes.length === 0) { count.textContent = '无结果'; return; }
+    nodes.forEach(function(node) {
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var kw = keyword.toLowerCase();
+      var frag = document.createDocumentFragment();
+      var lastIdx = 0;
+      var idx;
+      while ((idx = lower.indexOf(kw, lastIdx)) !== -1) {
+        if (idx > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, idx)));
+        var mark = document.createElement('mark');
+        mark.className = 'ah-match';
+        mark.textContent = text.slice(idx, idx + kw.length);
+        frag.appendChild(mark);
+        matches.push(mark);
+        lastIdx = idx + kw.length;
+      }
+      if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    currentIdx = 0;
+    if (matches.length) {
+      matches[0].className = 'ah-current';
+      matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    count.textContent = '1/' + matches.length;
+  }
+
+  function goTo(idx) {
+    if (!matches.length) return;
+    if (matches[currentIdx]) matches[currentIdx].className = 'ah-match';
+    currentIdx = (idx + matches.length) % matches.length;
+    matches[currentIdx].className = 'ah-current';
+    matches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    count.textContent = (currentIdx + 1) + '/' + matches.length;
+  }
+
+  // Show search button only on article pages (has .post-body)
+  btn.style.display = '';
+  btn.addEventListener('click', function() {
+    wrap.classList.add('show');
+    input.focus();
+    input.select();
+  });
+
+  document.getElementById('articleSearchClose').addEventListener('click', function() {
+    clearHighlights();
+    wrap.classList.remove('show');
+    input.value = '';
+  });
+
+  document.getElementById('articleSearchNext').addEventListener('click', function() { goTo(currentIdx + 1); });
+  document.getElementById('articleSearchPrev').addEventListener('click', function() { goTo(currentIdx - 1); });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) { goTo(currentIdx - 1); }
+      else { search(input.value.trim()); }
+    }
+    if (e.key === 'Escape') {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+      input.blur();
+    }
+  });
+
+  // Close on click outside
+  document.addEventListener('click', function(e) {
+    if (wrap.classList.contains('show') && !wrap.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
