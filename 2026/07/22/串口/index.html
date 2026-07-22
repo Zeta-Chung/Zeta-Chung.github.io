@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#059669"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#059669">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="stm32串口模块的学习笔记（基于铁头山羊STM32教程）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串口">
+<meta property="og:url" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/index.html">
+<meta property="og:site_name" content="ZetaC">
+<meta property="og:description" content="stm32串口模块的学习笔记（基于铁头山羊STM32教程）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/%E4%B8%B2%E5%8F%A3%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/USART%E6%A8%A1%E5%9D%97%E4%BD%8D%E7%BD%AE.png">
+<meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/USART%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/%E6%B3%A2%E7%89%B9%E7%8E%87.png">
+<meta property="article:published_time" content="2026-07-22T01:44:10.000Z">
+<meta property="article:modified_time" content="2026-07-22T06:25:34.516Z">
+<meta property="article:author" content="ZetaChung">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/%E4%B8%B2%E5%8F%A3%E7%BB%93%E6%9E%84.png">
+
+
+<link rel="canonical" href="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/","path":"2026/07/22/串口/","title":"串口"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>串口 | ZetaC</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<!-- source/_data/head.njk -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZetaC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 串口的概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text"> 通信协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8Fuart%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text"> 串口数据传输的基本格式（UART串口通讯协议）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#usart%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> USART模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text"> USART的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E4%B8%B2%E5%B9%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 移位寄存器与串并转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E7%AB%AF"><span class="nav-number">3.3.1.</span> <span class="nav-text"> 发送端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E7%AB%AF"><span class="nav-number">3.3.2.</span> <span class="nav-text"> 接收端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%A7%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.4.</span> <span class="nav-text"> 数据帧格式的设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A2%E7%89%B9%E7%8E%87%E7%9A%84%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text"> 波特率的设置方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.6.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.6.1.</span> <span class="nav-text"> 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.2.</span> <span class="nav-text"> 发送数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.3.</span> <span class="nav-text"> 接收数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97"><span class="nav-number">3.6.4.</span> <span class="nav-text"> 查询状态标志</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZetaChung"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">ZetaChung</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaChung">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="串口 | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          串口
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-22 09:44:10 / 修改时间：14:25:34" itemprop="dateCreated datePublished" datetime="2026-07-22T09:44:10+08:00">2026-07-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>stm32串口模块的学习笔记（基于铁头山羊STM32教程）</p>
+<span id="more"></span>
+<h1 id="串口的概念"><a class="markdownIt-Anchor" href="#串口的概念"></a> 串口的概念</h1>
+<ol>
+<li>串口通信是一种<strong>异步串行通信</strong>方式，数据在<strong>单根线</strong>上<strong>逐位</strong>传输，不需要时钟信号同步，收发双方需要事先约定好<strong>通信速率（波特率）</strong>。它的核心作用就是将数据<strong>按位（bit）依次发送或接收</strong>，实现设备间的通信。<br />
+<img src="%E4%B8%B2%E5%8F%A3%E7%BB%93%E6%9E%84.png" alt="串口结构" /></li>
+<li>如图所示，两个芯片上各有一个Tx引脚和Rx引脚，数据从Tx引脚通过单根导线连接到Rx引脚。</li>
+</ol>
+<h1 id="通信协议"><a class="markdownIt-Anchor" href="#通信协议"></a> 通信协议</h1>
+<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
+<p>串口通信时，数据的<strong>发送方</strong>和<strong>接收方</strong>必须约定交流规则，采用相同的<strong>数据格式</strong>、<strong>波特率</strong>等，避免数据传输混乱。这种交流规则就是通信协议。</p>
+<h2 id="串口数据传输的基本格式uart串口通讯协议"><a class="markdownIt-Anchor" href="#串口数据传输的基本格式uart串口通讯协议"></a> 串口数据传输的基本格式（UART串口通讯协议）</h2>
+<p>一帧完整的数据包含以下部分（按顺序）：</p>
+<ol>
+<li>
+<p>起始位：发送一个<strong>低电平</strong>（逻辑0），表示一帧开始。</p>
+</li>
+<li>
+<p>数据位：实际要发送的数据，通常8位（一个字节）。<strong>先</strong>发送<strong>低</strong>位数据，<strong>后</strong>发送<strong>高</strong>位数据</p>
+</li>
+<li>
+<p>校验位：可选，1位，通常用于简单的错误检测。</p>
+<ul>
+<li>
+<p>奇校验：在数据位后面追加一个额外的校验位，使得整个数据帧中“1”的个数为<strong>奇数</strong>。</p>
+</li>
+<li>
+<p>偶校验：在数据位后面追加一个额外的校验位，使得整个数据帧中“1”的个数为<strong>偶数</strong>。</p>
+</li>
+<li>
+<p>接收端收到数据后，会重新计算“1”的个数，如果不满足约定规则，就认为数据在传输过程中被破坏了（发生了<strong>单比特错误</strong>）。</p>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>从软件层面看，数据位和校验位包含所有有效信息，因此它们合称一个数据帧，stm32中数据帧可设置为8或9位。常用8位数据无校验或8位数据+1位校验</p>
+</blockquote>
+<ol start="4">
+<li>停止位：发送<strong>高电平</strong>（逻辑1），表示一帧结束，通常1位。</li>
+</ol>
+<blockquote>
+<p>串口空闲状态为高电平。如果需要发送多帧数据，每一帧结束后都需要发送终止位，下一帧开始时再发送起始位。</p>
+</blockquote>
+<h1 id="usart模块的使用"><a class="markdownIt-Anchor" href="#usart模块的使用"></a> USART模块的使用</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p><img src="USART%E6%A8%A1%E5%9D%97%E4%BD%8D%E7%BD%AE.png" alt="USART模块位置" /><br />
+USART模块在总线上的位置</p>
+<ol>
+<li>
+<p>概念：USART（通用同步/异步收发传输器）是STM32中一个极其核心的外设。简单来说，它是一个<strong>串并转换器</strong>：CPU要发数据时，它把并行的字节数据（如0x55）拆成一根线上的高低电平（串行）发出去；接收数据时，它把一根线上的串行高低电平重新拼成一个字节交给CPU。</p>
+</li>
+<li>
+<p>与UART的区别</p>
+<ul>
+<li>
+<p>UART（通用异步收发器）：是<strong>逻辑层面</strong>的传输协议或功能。</p>
+</li>
+<li>
+<p>USART（通用同步/异步收发器）：是<strong>物理层面</strong>的硬件模块，把USART模块配置为**异步模式（Asynchronous Mode）<strong>时，它就只执行UART的功能（只靠TX/RX收发数据）。配置为</strong>同步模式（Synchronous Mode）**时，它会在TX/RX基础上，额外输出一个时钟信号（SCLK）来同步传输。</p>
+</li>
+</ul>
+<blockquote>
+<p>STM32中，USART在绝大多数情况下配置为异步模式。</p>
+</blockquote>
+</li>
+</ol>
+<p><a id="USART"></a></p>
+<h2 id="usart的基本用法"><a class="markdownIt-Anchor" href="#usart的基本用法"></a> USART的基本用法</h2>
+<p><img src="USART%E7%BB%93%E6%9E%84.png" alt="USART结构" /><br />
+USART结构</p>
+<ol>
+<li>
+<p>发送：将待发送的数据写入<strong>发送数据寄存器</strong>中，数据会通过Tx引脚，以数据帧的形式发送至另一设备。</p>
+</li>
+<li>
+<p>接收：Rx引脚接收到数据帧的波之后，会解析出对应的数据帧，存储在<strong>接受数据寄存器</strong>中，再从寄存器读出数据即可。</p>
+</li>
+</ol>
+<h2 id="移位寄存器与串并转换"><a class="markdownIt-Anchor" href="#移位寄存器与串并转换"></a> 移位寄存器与串并转换</h2>
+<h3 id="发送端"><a class="markdownIt-Anchor" href="#发送端"></a> 发送端</h3>
+<ol>
+<li>
+<p>并行转串行：数据写入发送数据寄存器时，是多个比特位同时写入（并行）;Tx发送出数据时，是逐个发送比特位（串行）。</p>
+</li>
+<li>
+<p>移位寄存器操作：</p>
+<ol>
+<li>
+<p><a href="#USART">如图所示</a>，<strong>移位寄存器</strong>（Transmit Shift Register）实际上是一个由多个<strong>触发器</strong>组成的<strong>寄存器组</strong>，通常由8个或9个D触发器<strong>级联</strong>构成，每个<strong>触发器</strong>存储<strong>1个bit</strong>。</p>
+</li>
+<li>
+<p>写入发送数据寄存器的数据会自动移动到移位寄存器中，随后发送数据寄存器清空。</p>
+</li>
+<li>
+<p>移位寄存器的数据每个周期整体<strong>右移</strong>一位，将最右端<strong>溢出</strong>的数据以电平形式，通过Tx发送出去。这样就实现了每次发送一位的效果。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="接收端"><a class="markdownIt-Anchor" href="#接收端"></a> 接收端</h3>
+<ol>
+<li>
+<p>串行转并行：数据写入移位寄存器时，是逐位写入；接收数据寄存器从移位寄存器中读数据时，是同时读出多个比特位。</p>
+</li>
+<li>
+<p>移位寄存器操作</p>
+<ol>
+<li>
+<p>Rx引脚接收到起始位后，从<strong>最左端</strong>开始向移位寄存器中写入数据，每个周期所有数据整体<strong>右移</strong>一位。</p>
+</li>
+<li>
+<p>Rx引脚接收到结束位后，移位寄存器的数据写入接收数据寄存器中。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="数据帧格式的设置"><a class="markdownIt-Anchor" href="#数据帧格式的设置"></a> 数据帧格式的设置</h2>
+<p><a href="#USART">如图所示</a>，数据在发送前会先经过<strong>控制电路</strong>，在此处可以设置串口的数据帧（数据位8/9，停止位0.5/1/1.5/2）</p>
+<blockquote>
+<p>从硬件角度来看，起始位和停止位是不能忽略的占用时间宽度（bit时间）的电平信号，因此也算作数据帧。</p>
+</blockquote>
+<h2 id="波特率的设置方法"><a class="markdownIt-Anchor" href="#波特率的设置方法"></a> 波特率的设置方法</h2>
+<ol>
+<li>
+<p>波特率：每秒可传输的最多位数，常用9600，115200，921600</p>
+</li>
+<li>
+<p>设置：<a href="#USART">如USART整体结构图左上所示</a>，时钟信号输入后，会经过<strong>波特率寄存器</strong>(BRR)控制的分频器，和另一个分频系数为<strong>16</strong>的分频器。BRR控制分频器的分频系数就是<strong>BRR的值</strong>，实际波特率就是 <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>时钟信号</mtext><mo>÷</mo><mi>B</mi><mi>R</mi><mi>R</mi><mo>÷</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">时钟信号\div BRR\div16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">时钟信号</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span></strong>。通过设置BRR，即可改变波特率。</p>
+</li>
+<li>
+<p>具体设置方法：如下图所示，波特率寄存器由12位整数部分和4位小数部分组成，将需要设置的分频系数转换成二进制后，在寄存器的相应位填1，其余位填0.<br />
+<img src="%E6%B3%A2%E7%89%B9%E7%8E%87.png" alt="波特率寄存器展开结构" /><br />
+例：时钟信号为72MHz，需设置波特率为115200，则有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>72</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup><mo>÷</mo><mi>B</mi><mi>R</mi><mi>R</mi><mo>÷</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">72\times10^6 \div BRR \div16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">72</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>=115200，解得BRR = 39.625 = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>5</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><msup><mn>2</mn><mn>0</mn></msup><mo>+</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^5+2^2+2^1+2^0+2^{-4} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span>，因此在BRR中的M5，M2，M1，M0与F0中写入1。</p>
+</li>
+</ol>
+<h2 id="编程接口"><a class="markdownIt-Anchor" href="#编程接口"></a> 编程接口</h2>
+<h3 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h3>
+<p><code>void USART_Init(USARTTypeDef *USARTx,USART_InitTypeDef *USART_InitStruct)</code></p>
+<ul>
+<li>
+<p>作用：初始化USART串口。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>USARTx：串口名称，可选<code>USART1</code> <code>USART2</code>和<code>USART3</code>。</p>
+</li>
+<li>
+<p>USART_InitStruct:初始化结构体，参数如下：</p>
+<ul>
+<li>
+<p>USART_BaudRate:波特率，表示每秒传输的比特数，常用值有<code>9600</code>、<code>115200</code>和<code>921600</code>等。发送端和接收端的波特率必须保持一致。</p>
+</li>
+<li>
+<p>USART_WordLength:数据帧长度，可选<code>USART_WordLength_8b</code>（8位）或<code>USART_WordLength_9b</code>（9位）。需要注意的是，这里的长度包含数据位和校验位；启用校验时，最高位会作为校验位使用。</p>
+</li>
+<li>
+<p>USART_StopBits:停止位长度，可选<code>USART_StopBits_1</code>（1位）、<code>USART_StopBits_0_5</code>（0.5位）、<code>USART_StopBits_2</code>（2位）和<code>USART_StopBits_1_5</code>（1.5位）。最常用的是<code>USART_StopBits_1</code>。</p>
+</li>
+<li>
+<p>USART_Parity:校验方式，可选<code>USART_Parity_No</code>（无校验）、<code>USART_Parity_Even</code>（偶校验）或<code>USART_Parity_Odd</code>（奇校验）。最常用的是<code>USART_Parity_No</code>。</p>
+</li>
+<li>
+<p>USART_Mode:USART工作模式，可选<code>USART_Mode_Rx</code>（只接收）、<code>USART_Mode_Tx</code>（只发送）或<code>USART_Mode_Rx | USART_Mode_Tx</code>（收发）。使用按位或运算符<code>|</code>可以同时开启发送和接收功能。(实际控制的是<a href="#USART">图中</a>的Rx和Tx开关)</p>
+</li>
+<li>
+<p>USART_HardwareFlowControl:硬件流控制方式，可选<code>USART_HardwareFlowControl_None</code>（不使用硬件流控）、<code>USART_HardwareFlowControl_RTS</code>（使用RTS）、<code>USART_HardwareFlowControl_CTS</code>（使用CTS）或<code>USART_HardwareFlowControl_RTS_CTS</code>（同时使用RTS和CTS）。普通的Tx/Rx串口通信一般选择<code>USART_HardwareFlowControl_None</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>void USART_Cmd(USART_TypeDef *USARTx, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或关闭指定的USART外设。USART初始化完成后，还需要调用此函数使能USART，才能进行正常的数据收发。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>USARTx：串口名称，可选<code>USART1</code>、<code>USART2</code>和<code>USART3</code>。</p>
+</li>
+<li>
+<p>NewState：外设状态。传入<code>ENABLE</code>使能USART，传入<code>DISABLE</code>关闭USART。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="发送数据"><a class="markdownIt-Anchor" href="#发送数据"></a> 发送数据</h3>
+<p><code>void USART_SendData(USART_TypeDef *USARTx, uint16_t Data)</code></p>
+<ul>
+<li>
+<p>作用：向指定USART的发送数据寄存器写入待发送的数据。USART会自动将数据转换为串行数据，并按照设置好的数据帧格式从Tx引脚发送出去。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>USARTx：串口名称，可选<code>USART1</code>、<code>USART2</code>和<code>USART3</code>。</p>
+</li>
+<li>
+<p>Data：需要发送的数据。通常发送8位数据，使用9位数据帧时可以发送16位变量中的有效数据。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>发送数据前，需要确认发送数据寄存器为空。可以通过查询<code>USART_FLAG_TXE</code>标志，等待上一次写入的数据被转移到移位寄存器后，再写入新的数据：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);</span><br><span class="line">USART_SendData(USART1, Data);</span><br></pre></td></tr></table></figure>
+<h3 id="接收数据"><a class="markdownIt-Anchor" href="#接收数据"></a> 接收数据</h3>
+<p><code>uint16_t USART_ReceiveData(USART_TypeDef *USARTx)</code></p>
+<ul>
+<li>
+<p>作用：读取指定USART的接收数据寄存器，获取已经接收完成的数据。调用该函数后，接收数据寄存器中的数据会被读出，程序可以进一步对数据进行处理。</p>
+</li>
+<li>
+<p>参数：USARTx：串口名称，可选<code>USART1</code>、<code>USART2</code>和<code>USART3</code>。</p>
+</li>
+<li>
+<p>返回值：返回接收到的数据，返回类型为<code>uint16_t</code>。使用8位数据帧时，通常只需要使用返回值的低8位。</p>
+</li>
+</ul>
+<p>读取数据前，需要确认接收数据寄存器中已经有新数据。可以通过查询<code>USART_FLAG_RXNE</code>标志，等待接收完成后再读取：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);</span><br><span class="line"><span class="type">uint16_t</span> Data = USART_ReceiveData(USART1);</span><br></pre></td></tr></table></figure>
+<h3 id="查询状态标志"><a class="markdownIt-Anchor" href="#查询状态标志"></a> 查询状态标志</h3>
+<p><code>FlagStatus USART_GetFlagStatus(USART_TypeDef *USARTx, uint16_t USART_FLAG)</code></p>
+<ul>
+<li>
+<p>作用：查询USART的状态标志，用于判断数据是否发送完成、是否接收完成以及通信过程中是否发生错误。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>USARTx：串口名称，可选<code>USART1</code>、<code>USART2</code>和<code>USART3</code>。</p>
+</li>
+<li>
+<p>USART_FLAG：需要查询的状态标志。常用标志如下：</p>
+<ul>
+<li>
+<p><code>USART_FLAG_TXE</code>：发送数据寄存器为空，可以写入新的数据。</p>
+</li>
+<li>
+<p><code>USART_FLAG_TC</code>：发送完成，表示包括停止位在内的整帧数据已经发送完毕。</p>
+</li>
+<li>
+<p><code>USART_FLAG_RXNE</code>：接收数据寄存器非空，表示已经接收到新的数据。</p>
+</li>
+<li>
+<p><code>USART_FLAG_ORE</code>：发生过载错误，表示新的数据到达时，旧数据还没有被及时读取。</p>
+</li>
+<li>
+<p><code>USART_FLAG_NE</code>：发生噪声错误。</p>
+</li>
+<li>
+<p><code>USART_FLAG_FE</code>：发生帧错误，通常表示停止位检测异常。</p>
+</li>
+<li>
+<p><code>USART_FLAG_PE</code>：发生奇偶校验错误。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>返回值：返回<code>SET</code>表示标志已经置位，返回<code>RESET</code>表示标志没有置位。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在最简单的查询方式中，发送和接收都可以通过轮询状态标志完成。发送时通常查询<code>TXE</code>，接收时通常查询<code>RXNE</code>；如果需要确认整帧已经从Tx引脚发送完毕，则应查询<code>TC</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/01/%E6%8E%92%E5%BA%8F/" rel="prev" title="数据结构-排序">
+                  <i class="fa fa-angle-left"></i> 数据结构-排序
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZetaChung</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Zeta-Chung" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<!-- 直接识别 mermaid 代码块并渲染（绕过 NexT page:loaded 事件时序问题） -->
+<script>
+(function() {
+  function initMermaid() {
+    var codeBlocks = document.querySelectorAll('pre > code.mermaid');
+    if (codeBlocks.length === 0) return;
+    codeBlocks.forEach(function(el) {
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = el.textContent;
+      el.parentNode.parentNode.replaceChild(div, el.parentNode);
+    });
+    if (typeof mermaid !== 'undefined') {
+      mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+      return;
+    }
+    var cfg = document.querySelector('.next-config[data-name="mermaid"]');
+    if (!cfg) return;
+    try {
+      var config = JSON.parse(cfg.textContent);
+      if (config.enable && config.js && config.js.url) {
+        var s = document.createElement('script');
+        s.src = config.js.url;
+        s.integrity = config.js.integrity || '';
+        s.crossOrigin = 'anonymous';
+        s.onload = function() {
+          mermaid.initialize({
+            theme: (config.theme || {}).light || 'default',
+            flowchart: { curve: 'linear' },
+            sequence: { actorMargin: 50 }
+          });
+          mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+        };
+        document.head.appendChild(s);
+      }
+    } catch(e) { console.error('Mermaid init error:', e); }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initMermaid, 100);
+  } else {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
+  }
+})();
+</script>
+<!-- 目录点击不产生历史记录（capture phase + 异常保护） -->
+<script>
+document.addEventListener('click', function(e) {
+  try {
+    var link = e.target.closest('.post-toc .nav-link');
+    if (link) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        var id = decodeURIComponent(href.slice(1));
+        var target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+  } catch(err) { console.error('TOC:', err); }
+}, true);
+</script>
+
+<!-- 文章内关键字搜索 -->
+<style>
+#articleSearchWrap { display: none; position: sticky; top: 0; z-index: 100; background: var(--card-bg-color, #f7fdf9); padding: 10px 16px; border-bottom: 2px solid var(--theme-color, #059669); align-items: center; gap: 8px; }
+#articleSearchWrap.show { display: flex; }
+#articleSearchWrap input { flex: 1; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 14px; outline: none; }
+#articleSearchWrap input:focus { border-color: var(--theme-color, #059669); }
+#articleSearchWrap .count { font-size: 12px; color: #888; white-space: nowrap; min-width: 50px; text-align: center; }
+#articleSearchWrap button { background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; padding: 4px 8px; font-size: 13px; line-height: 1; }
+#articleSearchWrap button:hover { background: #eee; }
+#articleSearchBtn { position: fixed; right: 20px; bottom: 80px; z-index: 99; width: 36px; height: 36px; border-radius: 50%; background: var(--theme-color, #059669); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity .2s; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+#articleSearchBtn:hover { opacity: 1; }
+mark.ah-match { background: #ffeb3b; color: inherit; padding: 0 1px; border-radius: 1px; }
+mark.ah-current { background: #ff9800; color: #fff; }
+</style>
+
+<div id="articleSearchWrap">
+  <input type="text" id="articleSearchInput" placeholder="搜索本文内容…" autofocus>
+  <span class="count" id="articleSearchCount"></span>
+  <button id="articleSearchPrev" title="上一个">▲</button>
+  <button id="articleSearchNext" title="下一个">▼</button>
+  <button id="articleSearchClose" title="关闭">✕</button>
+</div>
+
+<button id="articleSearchBtn" title="搜索本文" style="display:none;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+</button>
+
+<script>
+(function() {
+  var postBody = document.querySelector('.post-body');
+  if (!postBody) return;
+
+  var wrap = document.getElementById('articleSearchWrap');
+  var input = document.getElementById('articleSearchInput');
+  var count = document.getElementById('articleSearchCount');
+  var btn = document.getElementById('articleSearchBtn');
+  var matches = [], currentIdx = 0;
+
+  function clearHighlights() {
+    matches.forEach(function(m) {
+      var parent = m.parentNode;
+      if (parent) {
+        parent.replaceChild(document.createTextNode(m.textContent), m);
+        parent.normalize();
+      }
+    });
+    matches = [];
+    currentIdx = 0;
+    count.textContent = '';
+  }
+
+  function search(keyword) {
+    clearHighlights();
+    if (!keyword) return;
+    var nodes = [];
+    var walker = document.createTreeWalker(postBody, 4, null, false);
+    var n;
+    while (n = walker.nextNode()) {
+      var idx = n.textContent.toLowerCase().indexOf(keyword.toLowerCase());
+      if (idx !== -1) nodes.push(n);
+    }
+    if (nodes.length === 0) { count.textContent = '无结果'; return; }
+    nodes.forEach(function(node) {
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var kw = keyword.toLowerCase();
+      var frag = document.createDocumentFragment();
+      var lastIdx = 0;
+      var idx;
+      while ((idx = lower.indexOf(kw, lastIdx)) !== -1) {
+        if (idx > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, idx)));
+        var mark = document.createElement('mark');
+        mark.className = 'ah-match';
+        mark.textContent = text.slice(idx, idx + kw.length);
+        frag.appendChild(mark);
+        matches.push(mark);
+        lastIdx = idx + kw.length;
+      }
+      if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    currentIdx = 0;
+    if (matches.length) {
+      matches[0].className = 'ah-current';
+      matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    count.textContent = '1/' + matches.length;
+  }
+
+  function goTo(idx) {
+    if (!matches.length) return;
+    if (matches[currentIdx]) matches[currentIdx].className = 'ah-match';
+    currentIdx = (idx + matches.length) % matches.length;
+    matches[currentIdx].className = 'ah-current';
+    matches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    count.textContent = (currentIdx + 1) + '/' + matches.length;
+  }
+
+  // Show search button only on article pages (has .post-body)
+  btn.style.display = '';
+  btn.addEventListener('click', function() {
+    wrap.classList.add('show');
+    input.focus();
+    input.select();
+  });
+
+  document.getElementById('articleSearchClose').addEventListener('click', function() {
+    clearHighlights();
+    wrap.classList.remove('show');
+    input.value = '';
+  });
+
+  document.getElementById('articleSearchNext').addEventListener('click', function() { goTo(currentIdx + 1); });
+  document.getElementById('articleSearchPrev').addEventListener('click', function() { goTo(currentIdx - 1); });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) { goTo(currentIdx - 1); }
+      else { search(input.value.trim()); }
+    }
+    if (e.key === 'Escape') {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+      input.blur();
+    }
+  });
+
+  // Close on click outside
+  document.addEventListener('click', function(e) {
+    if (wrap.classList.contains('show') && !wrap.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
