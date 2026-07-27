@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/%E4%B8%B2%E5%8F%A3%5CUSART%E5%BC%95%E8%84%9A.png">
 <meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/%E4%B8%B2%E5%8F%A3%5CUSART%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE.png">
 <meta property="article:published_time" content="2026-07-22T01:44:10.000Z">
-<meta property="article:modified_time" content="2026-07-27T03:49:49.773Z">
+<meta property="article:modified_time" content="2026-07-27T11:29:39.731Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -140,7 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 串口的概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text"> 通信协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8Fuart%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text"> 串口数据传输的基本格式（UART串口通讯协议）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#usart%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> USART模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text"> USART的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E4%B8%B2%E5%B9%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 移位寄存器与串并转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E7%AB%AF"><span class="nav-number">3.3.1.</span> <span class="nav-text"> 发送端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E7%AB%AF"><span class="nav-number">3.3.2.</span> <span class="nav-text"> 接收端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%A7%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.4.</span> <span class="nav-text"> 数据帧格式的设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A2%E7%89%B9%E7%8E%87%E7%9A%84%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text"> 波特率的设置方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.6.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.6.1.</span> <span class="nav-text"> 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.2.</span> <span class="nav-text"> 发送数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.3.</span> <span class="nav-text"> 接收数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97"><span class="nav-number">3.6.4.</span> <span class="nav-text"> 查询状态标志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%B8%B2%E5%8F%A3%E5%88%9D%E5%A7%8B%E5%8C%96io%E5%BC%95%E8%84%9A"><span class="nav-number">4.</span> <span class="nav-text"> 为串口初始化IO引脚</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E7%9A%84%E5%BC%95%E8%84%9A%E7%BB%84%E6%88%90"><span class="nav-number">4.1.</span> <span class="nav-text"> USART的引脚组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E5%BC%95%E8%84%9A%E5%9C%A8io%E5%8F%A3%E4%B8%8A%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">4.2.</span> <span class="nav-text"> USART引脚在IO口上的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.3.</span> <span class="nav-text"> 引脚配置模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%8F%8C%E5%B7%A5full-duplex"><span class="nav-number">4.3.1.</span> <span class="nav-text"> 全双工（Full-Duplex）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8A%E5%8F%8C%E5%B7%A5half-duplex"><span class="nav-number">4.3.2.</span> <span class="nav-text"> 半双工（Half-Duplex）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%98%A0%E5%B0%84"><span class="nav-number">4.3.3.</span> <span class="nav-text"> 重映射</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE-2"><span class="nav-number">5.</span> <span class="nav-text"> 发送数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#txe%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">5.1.</span> <span class="nav-text"> TxE标志位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E4%B9%89"><span class="nav-number">5.1.1.</span> <span class="nav-text"> 含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">5.1.2.</span> <span class="nav-text"> 作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">5.2.</span> <span class="nav-text"> TC标志位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E4%B9%89-2"><span class="nav-number">5.2.1.</span> <span class="nav-text"> 含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">5.2.2.</span> <span class="nav-text"> 原因</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 串口的概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text"> 通信协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8Fuart%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text"> 串口数据传输的基本格式（UART串口通讯协议）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#usart%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> USART模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text"> USART的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E4%B8%B2%E5%B9%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text"> 移位寄存器与串并转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E7%AB%AF"><span class="nav-number">3.3.1.</span> <span class="nav-text"> 发送端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E7%AB%AF"><span class="nav-number">3.3.2.</span> <span class="nav-text"> 接收端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%A7%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.4.</span> <span class="nav-text"> 数据帧格式的设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A2%E7%89%B9%E7%8E%87%E7%9A%84%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text"> 波特率的设置方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.6.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.6.1.</span> <span class="nav-text"> 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.2.</span> <span class="nav-text"> 发送数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.3.</span> <span class="nav-text"> 接收数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97"><span class="nav-number">3.6.4.</span> <span class="nav-text"> 查询状态标志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%B8%B2%E5%8F%A3%E5%88%9D%E5%A7%8B%E5%8C%96io%E5%BC%95%E8%84%9A"><span class="nav-number">4.</span> <span class="nav-text"> 为串口初始化IO引脚</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E7%9A%84%E5%BC%95%E8%84%9A%E7%BB%84%E6%88%90"><span class="nav-number">4.1.</span> <span class="nav-text"> USART的引脚组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usart%E5%BC%95%E8%84%9A%E5%9C%A8io%E5%8F%A3%E4%B8%8A%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">4.2.</span> <span class="nav-text"> USART引脚在IO口上的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.3.</span> <span class="nav-text"> 引脚配置模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%8F%8C%E5%B7%A5full-duplex"><span class="nav-number">4.3.1.</span> <span class="nav-text"> 全双工（Full-Duplex）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8A%E5%8F%8C%E5%B7%A5half-duplex"><span class="nav-number">4.3.2.</span> <span class="nav-text"> 半双工（Half-Duplex）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%98%A0%E5%B0%84"><span class="nav-number">4.3.3.</span> <span class="nav-text"> 重映射</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE-2"><span class="nav-number">5.</span> <span class="nav-text"> 发送数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#txe%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">5.1.</span> <span class="nav-text"> TxE标志位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E4%B9%89"><span class="nav-number">5.1.1.</span> <span class="nav-text"> 含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">5.1.2.</span> <span class="nav-text"> 作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">5.2.</span> <span class="nav-text"> TC标志位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E4%B9%89-2"><span class="nav-number">5.2.1.</span> <span class="nav-text"> 含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">5.2.2.</span> <span class="nav-text"> 原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-2"><span class="nav-number">5.2.3.</span> <span class="nav-text"> 作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%88%B6%E5%87%BD%E6%95%B0%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.3.</span> <span class="nav-text"> 自制函数示例：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ttl%E8%BD%ACusb%E4%B8%B2%E5%8F%A3%E6%A8%A1%E5%9D%97"><span class="nav-number">5.4.</span> <span class="nav-text"> TTL转USB串口模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E4%B9%89-3"><span class="nav-number">5.4.1.</span> <span class="nav-text"> 含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">5.4.2.</span> <span class="nav-text"> 工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">5.4.3.</span> <span class="nav-text"> 电路连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%89%93%E5%8D%B0%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">5.5.</span> <span class="nav-text"> 格式化打印字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0-2"><span class="nav-number">5.5.1.</span> <span class="nav-text"> 原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">5.5.2.</span> <span class="nav-text"> 基本原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">5.5.3.</span> <span class="nav-text"> 实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.5.4.</span> <span class="nav-text"> 使用示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.5.5.</span> <span class="nav-text"> 注意事项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE-2"><span class="nav-number">6.</span> <span class="nav-text"> 接收数据</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +224,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-27 11:49:49" itemprop="dateModified" datetime="2026-07-27T11:49:49+08:00">2026-07-27</time>
+      <time title="修改时间：2026-07-27 19:29:39" itemprop="dateModified" datetime="2026-07-27T19:29:39+08:00">2026-07-27</time>
     </span>
 
   
@@ -447,6 +447,9 @@ USART结构</p>
 </li>
 </ul>
 <p>发送数据前，需要确认发送数据寄存器为空。可以通过查询<code>USART_FLAG_TXE</code>标志，等待上一次写入的数据被转移到移位寄存器后，再写入新的数据：</p>
+<blockquote>
+<p>采用无符号16位整形原因：当数据位为9位时，无符号8位整型不能覆盖完全数据。</p>
+</blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);</span><br><span class="line">USART_SendData(USART1, Data);</span><br></pre></td></tr></table></figure>
 <h3 id="接收数据"><a class="markdownIt-Anchor" href="#接收数据"></a> 接收数据</h3>
 <p><code>uint16_t USART_ReceiveData(USART_TypeDef *USARTx)</code></p>
@@ -659,6 +662,122 @@ USART结构</p>
 <p>TC标志位(Transmit Complete-发送完成)，当TDR与移位寄存器均为空时，TC=1，开关闭合；否则TC=0，开关断开。</p>
 <h3 id="原因"><a class="markdownIt-Anchor" href="#原因"></a> 原因</h3>
 <p>当TDR为空时，移位寄存器不一定为空；当移位寄存器为空时，TDR不一定为空。都为空才说明发送完成。</p>
+<h3 id="作用-2"><a class="markdownIt-Anchor" href="#作用-2"></a> 作用</h3>
+<p>判断数据传输是否完成。</p>
+<h2 id="自制函数示例"><a class="markdownIt-Anchor" href="#自制函数示例"></a> 自制函数示例：</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//@作用：使用串口一次性发送多个字节</span></span><br><span class="line"><span class="comment">//@参数：USARTx:串口名称，pdata：要发送的参数，size:字节数量</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MY_USART_SEND</span><span class="params">(USART_TypeDef *USARTx,<span class="type">uint8_t</span> *pdata,<span class="type">uint16_t</span> size)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">uint16_t</span> i =<span class="number">0</span>;i&lt;size;i++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">//#1.等待发送数据寄存器空</span></span><br><span class="line">    <span class="keyword">while</span>(USART_GetFlagStatus(USARTx,USART_FLAG_TXE) == RESET);</span><br><span class="line">    <span class="comment">//#2.向发送数据寄存器中写入数据</span></span><br><span class="line">    USART_SendData(USARTx,pdata[i]);</span><br><span class="line">    <span class="keyword">while</span>(USART_GetFlagStatus(USARTx,USART_FLAG_TC) == RESET);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="ttl转usb串口模块"><a class="markdownIt-Anchor" href="#ttl转usb串口模块"></a> TTL转USB串口模块</h2>
+<h3 id="含义-3"><a class="markdownIt-Anchor" href="#含义-3"></a> 含义</h3>
+<ol>
+<li>
+<p>TTL（Transistor-Transistor Logic） 一般是从单片机或者芯片中发出的电平，高电平为 5V(51单片机)或者 3.3V(stm32)。</p>
+</li>
+<li>
+<p>USB 转 TTL 模块的作用就是把电平转换到双方都能识别进行通信。</p>
+</li>
+<li>
+<p>模块的芯片通常是CH340或CP2102</p>
+</li>
+</ol>
+<h3 id="工作原理"><a class="markdownIt-Anchor" href="#工作原理"></a> 工作原理</h3>
+<p>USB 转串口即实现计算机 USB 接口到物理串口之间的转换。可以为没有串口的计算机或其他 USB 主机增加串口，使用 USB 转串口设备等于将传统的串口设备变成了即插即用的 USB 设备</p>
+<ul>
+<li>
+<p>串口发送：串口应用发送数据 -&gt; USB 串口驱动获取数据 -&gt; 驱动将数据经过 USB 通道发送给 USB 串口设备 -&gt; USB 串口设备接收到数据通过串口发送</p>
+</li>
+<li>
+<p>串口接收：sUSB 串口设备接收串口数据 -&gt; 将串口数据经过 USB 打包后上传给 USB 主机 -&gt; USB 串口驱动获取到通过 USB 上传的串口数据 -&gt; 驱动将数据保存在串口缓冲区提供给串口应用读取</p>
+</li>
+</ul>
+<h3 id="电路连接"><a class="markdownIt-Anchor" href="#电路连接"></a> 电路连接</h3>
+<pre><code class="highlight mermaid">graph TD
+subgraph 转串口模块 
+  RxD引脚
+  TxD引脚
+  GND引脚
+  VCC引脚
+end
+subgraph 开发板
+  Rx
+  Tx
+  GND
+  3V3或5V
+end
+RxD引脚 --&gt; Rx
+TxD引脚 --&gt; Tx
+GND引脚 --&gt; GND
+VCC引脚 --&gt;|在转串口模块给开发板供电时| 3V3或5V
+VCC引脚 --&gt;|在开发板有电时| 不接</code></pre>
+<h2 id="格式化打印字符串"><a class="markdownIt-Anchor" href="#格式化打印字符串"></a> 格式化打印字符串</h2>
+<p>格式化打印字符串，本质上是把普通的<strong>调试输出</strong>变成通过串口发送出去的文本信息。在嵌入式开发中，尤其是调试程序时，我们经常希望把变量值、状态信息或错误提示实时打印出来，这时就会用到类似 <code>printf</code> 这种格式化输出函数。</p>
+<h3 id="原因-2"><a class="markdownIt-Anchor" href="#原因-2"></a> 原因</h3>
+<p>在<strong>裸机</strong>开发或<strong>没有操作系统</strong>的情况下，串口是最常见的输出通道之一。相比手动一字节一字节地调用 <code>USART_SendData</code>，格式化打印字符串可以让代码更简洁、可读性更强。</p>
+<h3 id="基本原理"><a class="markdownIt-Anchor" href="#基本原理"></a> 基本原理</h3>
+<ol>
+<li>C语言标准库中 printf 的内部逻辑：<code>printf </code>本身<strong>不直接输出</strong>到任何地方，它把所有格式化工作做完后，通过调用<code>fputc</code>来完成实际的字符输出。</li>
+</ol>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *format, ...)</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 解析格式字符串，识别 %d、%x 等占位符</span></span><br><span class="line">    <span class="comment">// 2. 将变量值转换成字符串（如 25 → &quot;25&quot;）</span></span><br><span class="line">    <span class="comment">// 3. 循环调用 fputc 输出每一个字符</span></span><br><span class="line">    <span class="keyword">for</span> (每个字符 ch) &#123;</span><br><span class="line">        fputc(ch, <span class="built_in">stdout</span>);   <span class="comment">// 关键：依赖 fputc</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>fputc 是 C标准库中定义的一个底层输出函数，原型为：</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">fputc</span><span class="params">(<span class="type">int</span> ch, FILE *f)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>参数</p>
+<ul>
+<li>
+<p>ch：要输出的字符（ASCII码）</p>
+</li>
+<li>
+<p>f：文件指针</p>
+</li>
+</ul>
+</li>
+<li>
+<p>返回值：成功返回 ch，失败返回 EOF</p>
+</li>
+<li>
+<p>作用：在PC上，fputc 把字符输出到控制台上，每次<strong>一个</strong>字符。</p>
+</li>
+<li>
+<p>注意：<code>fputc </code>是一个<strong>弱符号</strong>（Weak Symbol）：如果没有自己写 fputc，编译器使用标准库的默认版本（在单片机上无效）;如果自己写了 <code>fputc</code>，编译器会<strong>替换</strong>默认版本</p>
+</li>
+</ul>
+<blockquote>
+<p>在嵌入式平台上：没有屏幕，所以需要自己实现 fputc，把字符输出到 USART 串口。</p>
+</blockquote>
+<ol start="3">
+<li>
+<p>在 STM32 的开发中，通常是通过重写 <code>fputc</code>（或 <code>putchar</code>）函数来格式化打印字符串。具体步骤：</p>
+</li>
+<li>
+<p>先初始化串口，使其能够正常发送数据。</p>
+</li>
+<li>
+<p>重写输出函数，让它把字符发送给串口。</p>
+</li>
+<li>
+<p>然后就可以直接使用 <code>printf</code>、<code>sprintf</code> 等函数。</p>
+</li>
+</ol>
+<h3 id="实现方式"><a class="markdownIt-Anchor" href="#实现方式"></a> 实现方式</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span><span class="comment">//必须含C语言头文件保证printf正常使用</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//USART1已初始化完成</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fputc</span><span class="params">(<span class="type">int</span> ch, FILE *f)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span> (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);</span><br><span class="line">    USART_SendData(USART1, (<span class="type">uint8_t</span>)ch);</span><br><span class="line">    <span class="keyword">while</span> (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);</span><br><span class="line">    <span class="keyword">return</span> ch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样，<code>printf</code> 输出的每一个字符都会先进入 <code>fputc</code>，再由 <code>USART_SendData</code> 通过串口发出去。</p>
+<h3 id="使用示例"><a class="markdownIt-Anchor" href="#使用示例"></a> 使用示例</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 先初始化 USART1 */</span></span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="type">float</span> b = <span class="number">3.14f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world!\r\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a = %d\r\n&quot;</span>, a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;b = %.2f\r\n&quot;</span>, b);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h3>
+<ol>
+<li>
+<p><code>printf</code> 输出速度相对较慢，适合调试和日志输出，不适合高频大量数据传输。</p>
+</li>
+<li>
+<p>由于串口波特率和发送时间有限，打印过多内容可能会影响程序实时性。</p>
+</li>
+<li>
+<p>输出字符串时，建议在末尾加入 <code>\r\n</code>，这样在串口助手中能更稳定地换行。</p>
+</li>
+</ol>
+<h1 id="接收数据-2"><a class="markdownIt-Anchor" href="#接收数据-2"></a> 接收数据</h1>
 
     </div>
 
