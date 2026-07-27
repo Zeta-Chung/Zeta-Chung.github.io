@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E7%94%B5%E8%B7%AF%E4%BE%8B%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9.png">
 <meta property="article:published_time" content="2026-05-25T11:30:41.000Z">
-<meta property="article:modified_time" content="2026-07-22T06:27:31.552Z">
+<meta property="article:modified_time" content="2026-07-27T03:45:36.657Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text"> 定时器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%A7%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text"> 定时器大体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text"> 定时器类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text"> 时基单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%BB%84%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text"> 各组件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%9D%A5%E6%BA%90%E6%8F%90%E4%BE%9B%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 时钟来源：提供时钟信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%88%86%E9%A2%91%E5%99%A8%E7%BB%99%E4%BF%A1%E5%8F%B7%E9%99%8D%E4%BD%8E%E9%A2%91%E7%8E%87%E5%AE%9E%E9%99%85%E9%99%8D%E9%A2%91%E7%B3%BB%E6%95%B0-psc%E8%AE%BE%E5%AE%9A%E7%9A%84%E9%99%8D%E9%A2%91%E5%80%BC-1"><span class="nav-number">2.1.2.</span> <span class="nav-text"> 预分频器：给信号降低频率，实际降频系数 &#x3D; PSC（设定的降频值） + 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E8%A3%85%E5%AF%84%E5%AD%98%E5%99%A8%E8%AE%BE%E7%BD%AE%E5%AE%9A%E6%97%B6%E5%91%A8%E6%9C%9Farr1"><span class="nav-number">2.1.3.</span> <span class="nav-text"> 自动重装寄存器：设置定时周期（ARR+1）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8%E6%A0%B9%E6%8D%AE%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%91%A8%E6%9C%9F%E8%AE%A1%E6%95%B0%E6%AF%8F%E6%8E%A5%E5%8F%97%E4%B8%80%E6%AC%A1%E4%BF%A1%E5%8F%B7%E8%AE%A1%E6%95%B0%E4%B8%80%E6%AC%A1%E5%91%A8%E6%9C%9F%E6%BB%A1%E5%90%8E%E6%BA%A2%E5%87%BA%E9%87%8D%E6%96%B0%E8%AE%A1%E6%95%B0"><span class="nav-number">2.1.4.</span> <span class="nav-text"> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E5%88%86%E5%89%B2%E8%AE%BE%E7%BD%AE%E6%97%B6%E9%92%9F%E5%88%86%E5%89%B2%E7%B3%BB%E6%95%B0"><span class="nav-number">2.1.5.</span> <span class="nav-text"> 时钟分割：设置时钟分割系数，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E5%99%A8%E8%AE%BE%E7%BD%AE%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E6%AC%A1%E6%95%B0%E5%91%A8%E6%9C%9F%E6%95%B0%E6%AC%A1%E6%95%B0%E6%BB%A1%E5%90%8Eupdate%E4%B8%80%E6%AC%A1"><span class="nav-number">2.1.6.</span> <span class="nav-text"> 重复计数器：设置重复计数次数（周期数），次数满后update一次。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text"> 预加载功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 预加载功能的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E7%AD%96%E7%95%A5stm32f103c8t6"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 开启策略（STM32F103C8T6）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 编程接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3-2"><span class="nav-number">2.3.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"><span class="nav-number">2.3.1.</span> <span class="nav-text"> void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_cmdtim_typedef-timx-functionalstate-newstate"><span class="nav-number">2.3.2.</span> <span class="nav-text"> void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"><span class="nav-number">2.3.3.</span> <span class="nav-text"> void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E7%9B%B8%E5%85%B3"><span class="nav-number">2.3.4.</span> <span class="nav-text"> 状态相关</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E5%88%A9%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%87%AA%E5%88%B6%E5%BB%B6%E6%97%B6%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text"> 示例：利用定时器自制延时函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text"> 输出比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E9%80%9A%E9%81%93"><span class="nav-number">3.1.1.</span> <span class="nav-text"> 定时器通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.2.</span> <span class="nav-text"> 输出比较原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwmpulse-width-modulation%E8%84%89%E5%86%B2%E5%AE%BD%E5%BA%A6%E8%B0%83%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text"> PWM（Pulse Width Modulation）（脉冲宽度调制）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">3.2.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.2.</span> <span class="nav-text"> 具体方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.3.</span> <span class="nav-text"> 输出比较的工作模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%A1%A5%E8%BE%93%E5%87%BA"><span class="nav-number">3.4.</span> <span class="nav-text"> 互补输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9"><span class="nav-number">3.5.</span> <span class="nav-text"> 极性选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">3.6.</span> <span class="nav-text"> 配置函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8Bpwm%E5%AE%9E%E7%8E%B0led%E5%91%BC%E5%90%B8%E7%81%AF"><span class="nav-number">3.7.</span> <span class="nav-text"> 工程示例：PWM实现LED呼吸灯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="nav-number">3.7.1.</span> <span class="nav-text"> 实现效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BC%E5%90%B8%E7%81%AF%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.7.2.</span> <span class="nav-text"> 呼吸灯工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.7.3.</span> <span class="nav-text"> 电路连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%87%BD%E6%95%B0"><span class="nav-number">3.7.4.</span> <span class="nav-text"> 主函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7"><span class="nav-number">4.</span> <span class="nav-text"> 输入捕获</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text"> 从模式控制器</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text"> 定时器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%A7%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text"> 定时器大体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text"> 定时器类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E5%8D%95%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text"> 时基单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%BB%84%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text"> 各组件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%9D%A5%E6%BA%90%E6%8F%90%E4%BE%9B%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 时钟来源：提供时钟信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%88%86%E9%A2%91%E5%99%A8%E7%BB%99%E4%BF%A1%E5%8F%B7%E9%99%8D%E4%BD%8E%E9%A2%91%E7%8E%87%E5%AE%9E%E9%99%85%E9%99%8D%E9%A2%91%E7%B3%BB%E6%95%B0-psc%E8%AE%BE%E5%AE%9A%E7%9A%84%E9%99%8D%E9%A2%91%E5%80%BC-1"><span class="nav-number">2.1.2.</span> <span class="nav-text"> 预分频器：给信号降低频率，实际降频系数 &#x3D; PSC（设定的降频值） + 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E8%A3%85%E5%AF%84%E5%AD%98%E5%99%A8%E8%AE%BE%E7%BD%AE%E5%AE%9A%E6%97%B6%E5%91%A8%E6%9C%9Farr1"><span class="nav-number">2.1.3.</span> <span class="nav-text"> 自动重装寄存器：设置定时周期（ARR+1）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8%E6%A0%B9%E6%8D%AE%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%91%A8%E6%9C%9F%E8%AE%A1%E6%95%B0%E6%AF%8F%E6%8E%A5%E5%8F%97%E4%B8%80%E6%AC%A1%E4%BF%A1%E5%8F%B7%E8%AE%A1%E6%95%B0%E4%B8%80%E6%AC%A1%E5%91%A8%E6%9C%9F%E6%BB%A1%E5%90%8E%E6%BA%A2%E5%87%BA%E9%87%8D%E6%96%B0%E8%AE%A1%E6%95%B0"><span class="nav-number">2.1.4.</span> <span class="nav-text"> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E5%88%86%E5%89%B2%E8%AE%BE%E7%BD%AE%E6%97%B6%E9%92%9F%E5%88%86%E5%89%B2%E7%B3%BB%E6%95%B0"><span class="nav-number">2.1.5.</span> <span class="nav-text"> 时钟分割：设置时钟分割系数，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E5%99%A8%E8%AE%BE%E7%BD%AE%E9%87%8D%E5%A4%8D%E8%AE%A1%E6%95%B0%E6%AC%A1%E6%95%B0%E5%91%A8%E6%9C%9F%E6%95%B0%E6%AC%A1%E6%95%B0%E6%BB%A1%E5%90%8Eupdate%E4%B8%80%E6%AC%A1"><span class="nav-number">2.1.6.</span> <span class="nav-text"> 重复计数器：设置重复计数次数（周期数），次数满后update一次。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text"> 预加载功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 预加载功能的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E7%AD%96%E7%95%A5stm32f103c8t6"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 开启策略（STM32F103C8T6）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 预加载相关接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E5%88%A9%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%87%AA%E5%88%B6%E5%BB%B6%E6%97%B6%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text"> 示例：利用定时器自制延时函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text"> 输出比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E9%80%9A%E9%81%93"><span class="nav-number">3.1.1.</span> <span class="nav-text"> 定时器通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.2.</span> <span class="nav-text"> 输出比较原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwmpulse-width-modulation%E8%84%89%E5%86%B2%E5%AE%BD%E5%BA%A6%E8%B0%83%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text"> PWM（Pulse Width Modulation）（脉冲宽度调制）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">3.2.1.</span> <span class="nav-text"> 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.2.</span> <span class="nav-text"> 具体方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.3.</span> <span class="nav-text"> 输出比较的工作模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%A1%A5%E8%BE%93%E5%87%BA"><span class="nav-number">3.4.</span> <span class="nav-text"> 互补输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9"><span class="nav-number">3.5.</span> <span class="nav-text"> 极性选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8Bpwm%E5%AE%9E%E7%8E%B0led%E5%91%BC%E5%90%B8%E7%81%AF"><span class="nav-number">3.6.</span> <span class="nav-text"> 工程示例：PWM实现LED呼吸灯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="nav-number">3.6.1.</span> <span class="nav-text"> 实现效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BC%E5%90%B8%E7%81%AF%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.6.2.</span> <span class="nav-text"> 呼吸灯工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.6.3.</span> <span class="nav-text"> 电路连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%87%BD%E6%95%B0"><span class="nav-number">3.6.4.</span> <span class="nav-text"> 主函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7"><span class="nav-number">4.</span> <span class="nav-text"> 输入捕获</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text"> 从模式控制器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3%E6%80%BB%E8%A7%88"><span class="nav-number">6.</span> <span class="nav-text"> 编程接口总览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%9F%BA%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.1.</span> <span class="nav-text"> 时基相关接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.2.</span> <span class="nav-text"> 状态相关接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3-2"><span class="nav-number">6.3.</span> <span class="nav-text"> 预加载相关接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.4.</span> <span class="nav-text"> 输出比较相关接口</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -229,7 +229,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-22 14:27:31" itemprop="dateModified" datetime="2026-07-22T14:27:31+08:00">2026-07-22</time>
+      <time title="修改时间：2026-07-27 11:45:36" itemprop="dateModified" datetime="2026-07-27T11:45:36+08:00">2026-07-27</time>
     </span>
 
   
@@ -387,234 +387,8 @@
 <p>当追求<strong>波形稳定</strong>时，建议<strong>开启</strong>预加载；当更看重<strong>响应速度</strong>，并且对短时间内参数切换的平滑性要求较低时，可以适当<strong>关闭</strong>。</p>
 </li>
 </ol>
-<h3 id="编程接口"><a class="markdownIt-Anchor" href="#编程接口"></a> 编程接口</h3>
-<ol>
-<li>
-<p><code>void ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
-<ul>
-<li>
-<p>作用：使能或失能指定定时器的自动重装寄存器预加载功能。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
-</li>
-<li>
-<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void TIM_PSCPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
-<ul>
-<li>
-<p>作用：使能或失能指定定时器的预分频器预加载功能。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
-</li>
-<li>
-<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void TIM_OCxPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
-<ul>
-<li>
-<p>作用：使能或失能<strong>指定定时器的通道x</strong>输出比较寄存器预加载功能。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
-</li>
-<li>
-<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
-<ul>
-<li>
-<p>作用：使能或失能指定定时器的<strong>所有通道</strong>输出比较寄存器预加载功能</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
-</li>
-<li>
-<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="编程接口-2"><a class="markdownIt-Anchor" href="#编程接口-2"></a> 编程接口</h2>
-<h3 id="void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"><a class="markdownIt-Anchor" href="#void-tim_timebaseinittim_typedef-timx-tim_timebaseinittypedef-tim_timebaseinitstruct"></a> <code>void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</code></h3>
-<ul>
-<li>
-<p>作用：初始化定时器的时基单元，设置预分频器、自动重装寄存器、计数模式等参数。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要初始化的定时器（如TIM1、TIM2等）。</p>
-</li>
-<li>
-<p>TIM_TimeBaseInitStruct：指向一个结构体，结构体成员：</p>
-<ul>
-<li>
-<p><code>TIM_Prescaler</code>：预分频器的值，决定了定时器计数的频率，可以取<strong>任意非负整数</strong>，实际分频系数为<strong>TIM_Prescaler + 1</strong>。</p>
-</li>
-<li>
-<p><code>TIM_CounterMode</code>：计数模式（上计数、下计数、中心对齐），可以取<code>TIM_CounterMode_Up</code>（上计数）、<code>TIM_CounterMode_Down</code>（下计数）、<code>TIM_CounterMode_CenterAligned1</code>（中心对齐模式1）等。</p>
-</li>
-<li>
-<p><code>TIM_Period</code>：自动重装寄存器的值，决定了定时器的周期，可以取<strong>任意非负整数</strong>，实际周期为<strong>TIM_Period + 1</strong>。</p>
-</li>
-<li>
-<p><code>TIM_RepetitionCounter</code>：重复计数器的值，决定了周期数，可以取<strong>任意非负整数</strong>，实际周期数为<strong>TIM_RepetitionCounter + 1</strong>。</p>
-</li>
-<li>
-<p><code>TIM_ClockDivision</code>（<strong>只有高级计数器才需要配置</strong>）：时钟分割，可以取<code>TIM_CKD_DIV1</code>（不分割）、<code>TIM_CKD_DIV2</code>（分割2）与<code>TIM_CKD_DIV4</code>（分割4），通常设置为0（<code>TIM_CKD_DIV1</code>）（不分割）。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="void-tim_cmdtim_typedef-timx-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-tim_cmdtim_typedef-timx-functionalstate-newstate"></a> <code>void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</code></h3>
-<ul>
-<li>
-<p>作用：使能或失能指定的定时器。（打开或闭合时基单元的开关）</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
-</li>
-<li>
-<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-tim_itconfigtim_typedef-timx-uint16_t-tim_it-functionalstate-newstate"></a> <code>void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</code></h3>
-<ul>
-<li>
-<p>作用：使能或失能指定定时器的中断。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
-</li>
-<li>
-<p>TIM_IT：指定要配置的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
-</li>
-<li>
-<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="状态相关"><a class="markdownIt-Anchor" href="#状态相关"></a> 状态相关</h3>
-<p><code>FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</code></p>
-<ul>
-<li>
-<p>作用：查询指定定时器的标志位状态。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要查询的定时器（如TIM1、TIM2等）。</p>
-</li>
-<li>
-<p>TIM_FLAG：指定要查询的标志位，可以取<code>TIM_FLAG_Update</code>（更新标志）、<code>TIM_FLAG_CC1</code>（捕获/比较1标志）等。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>返回值：<code>SET</code>（标志位被置位）或<code>RESET</code>（标志位未被置位）。</p>
-</li>
-</ul>
-<p><code>void TIM_ClearFlag(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</code></p>
-<ul>
-<li>
-<p>作用：清除指定定时器的标志位。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</li>
-<li>TIM_FLAG：指定要清除的标志位，可以取<code>TIM_FLAG_Update</code>（更新标志）、<code>TIM_FLAG_CC1</code>（捕获/比较1标志）等。</li>
-</ul>
-</li>
-</ul>
-<p><code>ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)</code></p>
-<ul>
-<li>
-<p>作用：查询指定定时器的中断状态。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要查询的定时器（如TIM1、TIM2等）。</p>
-</li>
-<li>
-<p>TIM_IT：指定要查询的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>返回值：<code>SET</code>（中断被触发）或<code>RESET</code>（中断未被触发）。</p>
-</li>
-</ul>
-<blockquote>
-<p>flagstatus与itstatus的区别：flagstatus是标志位状态，itstatus是中断状态。标志位状态是指定时器的某个标志位是否被置位，而中断状态是指定时器的某个中断是否被触发。通常情况下，当标志位被置位时，中断也会被触发，但也有例外情况，比如当中断被屏蔽时，标志位可能被置位，但中断不会被触发。<br />
-<code>void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)</code></p>
-</blockquote>
-<ul>
-<li>
-<p>作用：清除指定定时器的中断挂起位。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
-</li>
-<li>
-<p>TIM_IT：指定要清除的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
-</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>中断挂起位是指定时器的某个中断是否被触发，但还没有被处理。通常情况下，当中断被触发时，中断挂起位会被置位，但中断处理程序还没有执行完毕，此时中断挂起位仍然被置位。当中断处理程序执行完毕后，中断挂起位会被清除。</p>
-</blockquote>
+<h3 id="预加载相关接口"><a class="markdownIt-Anchor" href="#预加载相关接口"></a> 预加载相关接口</h3>
+<p>相关接口说明已集中到 <a href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3%E6%80%BB%E8%A7%88">编程接口总览</a> 中的 <a href="#arrpreloadconfig">ARRPreloadConfig</a>、<a href="#tim_pscpreloadconfig">TIM_PSCPreloadConfig</a>、<a href="#tim_ocxpreloadconfig">TIM_OCxPreloadConfig</a> 和 <a href="#tim_ccpreloadcontrol">TIM_CCPreloadControl</a>。</p>
 <h2 id="示例利用定时器自制延时函数"><a class="markdownIt-Anchor" href="#示例利用定时器自制延时函数"></a> 示例：利用定时器自制延时函数</h2>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"><span class="comment">//# 1.获取当前时间</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint32_t</span> current_time = <span class="number">0</span>;<span class="comment">//定义当前时间，volatile作用是告诉编译器这个变量可能会被中断服务程序修改，禁止优化</span></span><br><span class="line"><span class="comment">//# 2.实现延迟函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">delay_ms</span><span class="params">(<span class="type">uint32_t</span> ms)</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> end_time = current_time + ms;<span class="comment">//记录结束时间</span></span><br><span class="line">    <span class="keyword">while</span> (current_time &lt; end_time) ;</span><br><span class="line">&#125;<span class="comment">//delay_ms函数会阻塞当前程序，直到current_time达到end_time为止</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2Init</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//# 3. 配置时基单元</span></span><br><span class="line">    <span class="comment">//使能时钟</span></span><br><span class="line">    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);</span><br><span class="line">    <span class="comment">//初始化时基单元</span></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler = <span class="number">71</span>;    <span class="comment">//预分频器设置为71，实际分频系数为72，定时器计数频率为1MHz（72MHz/72）</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;<span class="comment">//计数模式为上计数</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period = <span class="number">999</span>;<span class="comment">//自动重装寄存器设置为999，实际周期为1000，定时器溢出频率为1kHz（1MHz/1000）</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>;<span class="comment">//重复计数器设置为0，实际周期数为1，定时器每溢出一次就会产生一次中断</span></span><br><span class="line">    </span><br><span class="line">    TIM_TimeBaseInit(TIM2,&amp;TIM_TimeBaseInitStruct);     <span class="comment">//初始化时基单元</span></span><br><span class="line">    TIM_Cmd(TIM2,ENABLE);                               <span class="comment">//使能定时器</span></span><br><span class="line">    <span class="comment">//# 4.使能定时器中断</span></span><br><span class="line">    TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);            <span class="comment">//使能定时器更新中断</span></span><br><span class="line"></span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;                   <span class="comment">//初始化NVIC结构体</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;        <span class="comment">//指定中断通道为TIM2</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;<span class="comment">//抢占优先级为0，最高优先级</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority = <span class="number">0</span>;     <span class="comment">//子优先级为0，最高优先级</span></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;        <span class="comment">//使能中断通道</span></span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);                        <span class="comment">//初始化NVIC</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 5.编写中断响应函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2_IRQHandler</span><span class="params">(<span class="type">void</span>)</span><span class="comment">//该函数的名字是固定的，不能随意修改，通过查阅stm32f10x.h头文件中的IRQn_Type枚举类型可以找到对应的中断向量表</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(TIM_GetFlagStatus(TIM2,TIM_FLAG_Update) == SET)<span class="comment">//判断是否是定时器溢出中断</span></span><br><span class="line">    &#123;</span><br><span class="line">        TIM_ClearFlag(TIM2,TIM_FLAG_Update);          <span class="comment">//清除中断标志位</span></span><br><span class="line">        current_time++;                               <span class="comment">//每次定时器溢出，current_time加1，表示经过了1ms</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//# 6.主函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);</span><br><span class="line">    TIM2Init();</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="输出比较"><a class="markdownIt-Anchor" href="#输出比较"></a> 输出比较</h1>
@@ -706,7 +480,267 @@
 <p>通过选择不同的极性，可以实现<strong>高电平有效</strong>或<strong>低电平有效</strong>的输出信号，从而满足不同的应用需求。</p>
 </li>
 </ol>
-<h2 id="配置函数"><a class="markdownIt-Anchor" href="#配置函数"></a> 配置函数</h2>
+<blockquote>
+<p>相关接口说明请见 <a href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3%E6%80%BB%E8%A7%88">编程接口总览</a> 中的 <a href="#%E8%BE%93%E5%87%BA%E6%AF%94%E8%BE%83%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3">输出比较相关接口</a>。</p>
+</blockquote>
+<h2 id="工程示例pwm实现led呼吸灯"><a class="markdownIt-Anchor" href="#工程示例pwm实现led呼吸灯"></a> 工程示例：PWM实现LED呼吸灯</h2>
+<h3 id="实现效果"><a class="markdownIt-Anchor" href="#实现效果"></a> 实现效果</h3>
+<p>两颗LED灯交替亮灭，亮度呈现呼吸灯效果，即亮度逐渐增强到最大值，然后逐渐减弱到最小值，形成一个完整的呼吸周期。且两颗LED亮度变化的相位差为180°，即一颗LED亮度增强时，另一颗LED亮度减弱。</p>
+<h3 id="呼吸灯工作原理"><a class="markdownIt-Anchor" href="#呼吸灯工作原理"></a> 呼吸灯工作原理</h3>
+<ol>
+<li>
+<p>LED灯亮度呈现正弦函数变化，例如函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0.5</mn><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><mi>t</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y = 0.5sin(2\pi t+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0.5</span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0359em;">π</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>,形成一个完整的<strong>呼吸周期</strong>。</p>
+</li>
+<li>
+<p>由于输出引脚的电平只有高和低，通过<strong>改变PWM信号的占空比</strong>，可以实现LED亮度的平滑过渡。</p>
+</li>
+<li>
+<p>配置目的：配置PWM输出模式，设置比较寄存器的值，使得PWM信号的占空比每1ms变化一次，视觉上实现亮度稳定变化效果，从而实现LED呼吸灯效果。</p>
+</li>
+</ol>
+<h3 id="电路连接"><a class="markdownIt-Anchor" href="#电路连接"></a> 电路连接</h3>
+<p>使用TIM1的通道的主输出和互补输出分别控制两颗LED灯，连接方式如下：</p>
+<pre><code class="highlight mermaid">graph LR
+    TIM1_CH1 --&gt;|PA8| LED1 --&gt; 电阻 --&gt; GND
+    TIM1_CH1N --&gt;|PB13| LED2 --&gt; 电阻 --&gt; GND
+</code></pre>
+<h3 id="主函数"><a class="markdownIt-Anchor" href="#主函数"></a> 主函数</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 圆周率 π，用于 sinf 计算 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.14f</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 正弦波相位计数器：每 1ms 自增 1，0~999 循环，1000 步完成一个正弦周期 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint16_t</span> curtime = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  初始化 TIM1 的 CH1（PA8）和 CH1N（PB13）为 PWM 输出</span></span><br><span class="line"><span class="comment"> * @note   TIM1 时钟 72 MHz → PSC = 71 → 计数频率 1 MHz</span></span><br><span class="line"><span class="comment"> *         ARR = 999 → PWM 频率 = 1 MHz / 1000 = 1 kHz</span></span><br><span class="line"><span class="comment"> *         TIM1 为高级定时器，互补输出需使能 MOE（主输出使能）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">APP_PWM_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 1. 时钟使能</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * TIM1  挂在 APB2 总线，72 MHz</span></span><br><span class="line"><span class="comment">     * GPIOA 挂 PA8  (TIM1_CH1  主输出)</span></span><br><span class="line"><span class="comment">     * GPIOB 挂 PB13 (TIM1_CH1N 互补输出)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,  ENABLE);</span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 2. GPIO 初始化 —— 复用推挽输出</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * PA8  → TIM1_CH1  （主输出通道，接 LED）</span></span><br><span class="line"><span class="comment">     * PB13 → TIM1_CH1N （互补输出通道，接另一路 LED）</span></span><br><span class="line"><span class="comment">     * 均为默认映射，无需 AFIO 重映射</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct;</span><br><span class="line">    GPIO_InitStruct.GPIO_Mode  = GPIO_Mode_AF_PP;     <span class="comment">// 复用推挽，由定时器外设驱动</span></span><br><span class="line">    GPIO_InitStruct.GPIO_Pin   = GPIO_Pin_8;          <span class="comment">// PA8</span></span><br><span class="line">    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;</span><br><span class="line">    GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct1;</span><br><span class="line">    GPIO_InitStruct1.GPIO_Mode  = GPIO_Mode_AF_PP;     <span class="comment">// 复用推挽</span></span><br><span class="line">    GPIO_InitStruct1.GPIO_Pin   = GPIO_Pin_13;         <span class="comment">// PB13</span></span><br><span class="line">    GPIO_InitStruct1.GPIO_Speed = GPIO_Speed_2MHz;</span><br><span class="line">    GPIO_Init(GPIOB, &amp;GPIO_InitStruct1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 3. 定时器时基配置</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * TIM1_CLK = 72 MHz</span></span><br><span class="line"><span class="comment">     * PSC = 71            → CNT_CLK = 72 MHz / (71 + 1) = 1 MHz</span></span><br><span class="line"><span class="comment">     * ARR = 999           → PWM 周期 = 1000 个计数 = 1 ms → PWM 频率 = 1 kHz</span></span><br><span class="line"><span class="comment">     * RepetitionCounter=0 → 每次溢出都产生更新事件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler         = <span class="number">71</span>;                 <span class="comment">// 72MHz / 72 = 1MHz</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period            = <span class="number">999</span>;                <span class="comment">// 1MHz / 1000 = 1kHz</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode       = TIM_CounterMode_Up;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_ClockDivision     = <span class="number">0</span>;</span><br><span class="line">    TIM_TimeBaseInit(TIM1, &amp;TIM_TimeBaseInitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 TIM1 更新中断，每次溢出（1 kHz）触发 ISR 以更新占空比 */</span></span><br><span class="line">    TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 ARR 预装载：影子寄存器在溢出时刻才更新，避免 PWM 中间态异常 */</span></span><br><span class="line">    TIM_ARRPreloadConfig(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 4. 输出比较通道初始化 —— PWM1 模式</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * PWM1 模式行为（极性 High）：</span></span><br><span class="line"><span class="comment">     *   CNT &lt; CCR → 输出高电平（LED 亮）</span></span><br><span class="line"><span class="comment">     *   CNT ≥ CCR → 输出低电平（LED 灭）</span></span><br><span class="line"><span class="comment">     * 初始占空比设为 0，由 ISR 在首次溢出后更新</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TIM_OCInitTypeDef TIM_OCInitStruct;</span><br><span class="line">    TIM_OCInitStruct.TIM_OCMode        = TIM_OCMode_PWM1;              <span class="comment">// PWM 模式 1</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OutputState   = TIM_OutputState_Enable;       <span class="comment">// 使能 CH1  主输出 (PA8)</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OutputNState  = TIM_OutputNState_Enable;      <span class="comment">// 使能 CH1N 互补输出 (PB13)</span></span><br><span class="line">    TIM_OCInitStruct.TIM_Pulse         = <span class="number">0</span>;                            <span class="comment">// 初始 CCR = 0</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCPolarity    = TIM_OCPolarity_High;          <span class="comment">// CH1  极性：高电平有效</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCNPolarity   = TIM_OCNPolarity_High;         <span class="comment">// CH1N 极性：高电平有效</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCIdleState   = TIM_OCIdleState_Set;          <span class="comment">// 空闲态：CH1  输出有效电平</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCNIdleState  = TIM_OCIdleState_Set;          <span class="comment">// 空闲态：CH1N 输出有效电平</span></span><br><span class="line">    TIM_OC1Init(TIM1, &amp;TIM_OCInitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 TIM1 主输出（MOE = 1）：高级定时器必须置位此位，否则所有通道无输出 */</span></span><br><span class="line">    TIM_CtrlPWMOutputs(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 CCR 预装载：CCR 更新在溢出时刻生效，避免 PWM 中间态毛刺 */</span></span><br><span class="line">    TIM_OC1PreloadConfig(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 启动定时器 */</span></span><br><span class="line">    TIM_Cmd(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 5. NVIC 中断配置</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * TIM1 更新中断，抢占优先级 0，子优先级 0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel                   = TIM1_UP_IRQn;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority        = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd                = ENABLE;</span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  TIM1 更新中断服务函数</span></span><br><span class="line"><span class="comment"> * @note   每 1 ms 触发一次，计算正弦波对应的 CCR 值并更新 PWM 占空比</span></span><br><span class="line"><span class="comment"> *         curtime 在 [0, 999] 内循环 → sin 相位在 [0, 2π) 内连续变化</span></span><br><span class="line"><span class="comment"> *         duty = 0.5 + 0.5 × sin(…) → 范围 [0, 1]，映射后 CCR ∈ [0, 999]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM1_UP_IRQHandler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)</span><br><span class="line">    &#123;</span><br><span class="line">        TIM_ClearITPendingBit(TIM1, TIM_IT_Update);   <span class="comment">// 清除中断标志</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 相位计数器：0 → 999 → 0 循环，1000 步对应一个完整正弦周期 */</span></span><br><span class="line">        curtime++;</span><br><span class="line">        <span class="keyword">if</span> (curtime &gt;= <span class="number">1000</span>)</span><br><span class="line">            curtime = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 正弦波占空比计算</span></span><br><span class="line"><span class="comment">         * sin(2π · curtime / 1000) → 一个完整的 [0, 2π) 正弦周期</span></span><br><span class="line"><span class="comment">         * 映射：duty = 0.5 + 0.5 × sin → 范围 [0, 1]</span></span><br><span class="line"><span class="comment">         * CCR  = duty × 1000 + 0.5    → 四舍五入到整数，范围 [0, 1000] */</span></span><br><span class="line">        <span class="type">float</span>    duty = <span class="number">0.5f</span> + <span class="number">0.5f</span> * sinf(<span class="number">2.0f</span> * PI * curtime / <span class="number">1000.0f</span>);</span><br><span class="line">        <span class="type">uint16_t</span> ccr  = (<span class="type">uint16_t</span>)(duty * <span class="number">1000</span> + <span class="number">0.5f</span>);  <span class="comment">//每次计算ccr都向上取整，保证亮度变换的连续性</span></span><br><span class="line">        <span class="keyword">if</span> (ccr &gt; <span class="number">999</span>) ccr = <span class="number">999</span>;                        <span class="comment">//防止 CCR 达到或超过 ARR</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 更新捕获比较寄存器，在下次溢出时自动加载到影子寄存器 */</span></span><br><span class="line">        TIM_SetCompare1(TIM1, ccr);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  主函数</span></span><br><span class="line"><span class="comment"> * @note   配置 NVIC 优先级分组为 2 位抢占 / 2 位响应</span></span><br><span class="line"><span class="comment"> *         初始化 PWM 后进入空循环，所有呼吸灯更新由 ISR 驱动</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* NVIC 优先级分组：2 位抢占优先级 + 2 位子优先级（共 16 级） */</span></span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 初始化 TIM1 CH1 + CH1N PWM 输出 */</span></span><br><span class="line">    APP_PWM_Init();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 所有 LED 呼吸效果由 TIM1_UP_IRQHandler 在中断中驱动 */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="输入捕获"><a class="markdownIt-Anchor" href="#输入捕获"></a> 输入捕获</h1>
+<p><a id="my-anchor"></a></p>
+<h1 id="从模式控制器"><a class="markdownIt-Anchor" href="#从模式控制器"></a> 从模式控制器</h1>
+<h1 id="编程接口总览"><a class="markdownIt-Anchor" href="#编程接口总览"></a> 编程接口总览</h1>
+<h2 id="时基相关接口"><a class="markdownIt-Anchor" href="#时基相关接口"></a> 时基相关接口</h2>
+<p><a id="tim_timebaseinit"></a></p>
+<p><code>void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</code></p>
+<ul>
+<li>
+<p>作用：初始化定时器的时基单元，设置预分频器、自动重装寄存器、计数模式等参数。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要初始化的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_TimeBaseInitStruct：指向一个结构体，结构体成员：</p>
+<ul>
+<li>
+<p><code>TIM_Prescaler</code>：预分频器的值，决定了定时器计数的频率，可以取<strong>任意非负整数</strong>，实际分频系数为<strong>TIM_Prescaler + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_CounterMode</code>：计数模式（上计数、下计数、中心对齐），可以取<code>TIM_CounterMode_Up</code>（上计数）、<code>TIM_CounterMode_Down</code>（下计数）、<code>TIM_CounterMode_CenterAligned1</code>（中心对齐模式1）等。</p>
+</li>
+<li>
+<p><code>TIM_Period</code>：自动重装寄存器的值，决定了定时器的周期，可以取<strong>任意非负整数</strong>，实际周期为<strong>TIM_Period + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_RepetitionCounter</code>：重复计数器的值，决定了周期数，可以取<strong>任意非负整数</strong>，实际周期数为<strong>TIM_RepetitionCounter + 1</strong>。</p>
+</li>
+<li>
+<p><code>TIM_ClockDivision</code>（<strong>只有高级计数器才需要配置</strong>）：时钟分割，可以取<code>TIM_CKD_DIV1</code>（不分割）、<code>TIM_CKD_DIV2</code>（分割2）与<code>TIM_CKD_DIV4</code>（分割4），通常设置为0（<code>TIM_CKD_DIV1</code>）（不分割）。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_cmd"></a></p>
+<p><code>void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或失能指定的定时器。（打开或闭合时基单元的开关）</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_itconfig"></a></p>
+<p><code>void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或失能指定定时器的中断。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_IT：指定要配置的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
+</li>
+<li>
+<p>NewState：新的状态，可以取<code>ENABLE</code>（使能）或<code>DISABLE</code>（失能）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="状态相关接口"><a class="markdownIt-Anchor" href="#状态相关接口"></a> 状态相关接口</h2>
+<p><a id="tim_getflagstatus"></a></p>
+<p><code>FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</code></p>
+<ul>
+<li>
+<p>作用：查询指定定时器的标志位状态。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要查询的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_FLAG：指定要查询的标志位，可以取<code>TIM_FLAG_Update</code>（更新标志）、<code>TIM_FLAG_CC1</code>（捕获/比较1标志）等。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>返回值：<code>SET</code>（标志位被置位）或<code>RESET</code>（标志位未被置位）。</p>
+</li>
+</ul>
+<p><a id="tim_clearflag"></a></p>
+<p><code>void TIM_ClearFlag(TIM_TypeDef* TIMx, uint32_t TIM_FLAG)</code></p>
+<ul>
+<li>
+<p>作用：清除指定定时器的标志位。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</li>
+<li>TIM_FLAG：指定要清除的标志位，可以取<code>TIM_FLAG_Update</code>（更新标志）、<code>TIM_FLAG_CC1</code>（捕获/比较1标志）等。</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_getitstatus"></a></p>
+<p><code>ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)</code></p>
+<ul>
+<li>
+<p>作用：查询指定定时器的中断状态。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要查询的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_IT：指定要查询的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>返回值：<code>SET</code>（中断被触发）或<code>RESET</code>（中断未被触发）。</p>
+</li>
+</ul>
+<blockquote>
+<p>flagstatus与itstatus的区别：flagstatus是标志位状态，itstatus是中断状态。标志位状态是指定时器的某个标志位是否被置位，而中断状态是指定时器的某个中断是否被触发。通常情况下，当标志位被置位时，中断也会被触发，但也有例外情况，比如当中断被屏蔽时，标志位可能被置位，但中断不会被触发。</p>
+</blockquote>
+<p><a id="tim_clearitpendingbit"></a></p>
+<p><code>void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)</code></p>
+<ul>
+<li>
+<p>作用：清除指定定时器的中断挂起位。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如TIM1、TIM2等）。</p>
+</li>
+<li>
+<p>TIM_IT：指定要清除的中断，可以取<code>TIM_IT_Update</code>（更新中断）、<code>TIM_IT_CC1</code>（捕获/比较1中断）等。</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>中断挂起位是指定时器的某个中断是否被触发，但还没有被处理。通常情况下，当中断被触发时，中断挂起位会被置位，但中断处理程序还没有执行完毕，此时中断挂起位仍然被置位。当中断处理程序执行完毕后，中断挂起位会被清除。</p>
+</blockquote>
+<h2 id="预加载相关接口-2"><a class="markdownIt-Anchor" href="#预加载相关接口-2"></a> 预加载相关接口</h2>
+<p><a id="arrpreloadconfig"></a></p>
+<p><code>void ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或失能指定定时器的自动重装寄存器预加载功能。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_pscpreloadconfig"></a></p>
+<p><code>void TIM_PSCPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或失能指定定时器的预分频器预加载功能。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_ocxpreloadconfig"></a></p>
+<p><code>void TIM_OCxPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或失能<strong>指定定时器的通道x</strong>输出比较寄存器预加载功能。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_ccpreloadcontrol"></a></p>
+<p><code>void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或失能指定定时器的<strong>所有通道</strong>输出比较寄存器预加载功能</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>TIMx：指定要操作的定时器（如 TIM1、TIM2 等）。</p>
+</li>
+<li>
+<p>NewState：新的状态，可取 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="输出比较相关接口"><a class="markdownIt-Anchor" href="#输出比较相关接口"></a> 输出比较相关接口</h2>
+<p><a id="tim_ocxinit"></a></p>
 <p><code>void TIM_OCxInit(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)</code></p>
 <ul>
 <li>作用：初始化定时器的输出比较模块，设置比较寄存器、输出模式、极性等参数。</li>
@@ -755,6 +789,7 @@
 <blockquote>
 <p>注：函数名中OCx与实际使用的通道有关，x需与通道编号一致。</p>
 </blockquote>
+<p><a id="tim_ctrlpwmoutputs"></a></p>
 <p><code>void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
 <ul>
 <li>
@@ -782,6 +817,7 @@
 </ul>
 </li>
 </ul>
+<p><a id="tim_setcomparex"></a></p>
 <p><code>void TIM_SetComparex(TIM_TypeDef* TIMx,uint16_t Comparex)</code></p>
 <ul>
 <li>
@@ -799,32 +835,6 @@
 </ul>
 </li>
 </ul>
-<h2 id="工程示例pwm实现led呼吸灯"><a class="markdownIt-Anchor" href="#工程示例pwm实现led呼吸灯"></a> 工程示例：PWM实现LED呼吸灯</h2>
-<h3 id="实现效果"><a class="markdownIt-Anchor" href="#实现效果"></a> 实现效果</h3>
-<p>两颗LED灯交替亮灭，亮度呈现呼吸灯效果，即亮度逐渐增强到最大值，然后逐渐减弱到最小值，形成一个完整的呼吸周期。且两颗LED亮度变化的相位差为180°，即一颗LED亮度增强时，另一颗LED亮度减弱。</p>
-<h3 id="呼吸灯工作原理"><a class="markdownIt-Anchor" href="#呼吸灯工作原理"></a> 呼吸灯工作原理</h3>
-<ol>
-<li>
-<p>LED灯亮度呈现正弦函数变化，例如函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0.5</mn><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><mi>t</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y = 0.5sin(2\pi t+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0.5</span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0359em;">π</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>,形成一个完整的<strong>呼吸周期</strong>。</p>
-</li>
-<li>
-<p>由于输出引脚的电平只有高和低，通过<strong>改变PWM信号的占空比</strong>，可以实现LED亮度的平滑过渡。</p>
-</li>
-<li>
-<p>配置目的：配置PWM输出模式，设置比较寄存器的值，使得PWM信号的占空比每1ms变化一次，视觉上实现亮度稳定变化效果，从而实现LED呼吸灯效果。</p>
-</li>
-</ol>
-<h3 id="电路连接"><a class="markdownIt-Anchor" href="#电路连接"></a> 电路连接</h3>
-<p>使用TIM1的通道的主输出和互补输出分别控制两颗LED灯，连接方式如下：</p>
-<pre><code class="highlight mermaid">graph LR
-    TIM1_CH1 --&gt;|PA8| LED1 --&gt; 电阻 --&gt; GND
-    TIM1_CH1N --&gt;|PB13| LED2 --&gt; 电阻 --&gt; GND
-</code></pre>
-<h3 id="主函数"><a class="markdownIt-Anchor" href="#主函数"></a> 主函数</h3>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 圆周率 π，用于 sinf 计算 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.14f</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 正弦波相位计数器：每 1ms 自增 1，0~999 循环，1000 步完成一个正弦周期 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint16_t</span> curtime = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  初始化 TIM1 的 CH1（PA8）和 CH1N（PB13）为 PWM 输出</span></span><br><span class="line"><span class="comment"> * @note   TIM1 时钟 72 MHz → PSC = 71 → 计数频率 1 MHz</span></span><br><span class="line"><span class="comment"> *         ARR = 999 → PWM 频率 = 1 MHz / 1000 = 1 kHz</span></span><br><span class="line"><span class="comment"> *         TIM1 为高级定时器，互补输出需使能 MOE（主输出使能）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">APP_PWM_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 1. 时钟使能</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * TIM1  挂在 APB2 总线，72 MHz</span></span><br><span class="line"><span class="comment">     * GPIOA 挂 PA8  (TIM1_CH1  主输出)</span></span><br><span class="line"><span class="comment">     * GPIOB 挂 PB13 (TIM1_CH1N 互补输出)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,  ENABLE);</span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 2. GPIO 初始化 —— 复用推挽输出</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * PA8  → TIM1_CH1  （主输出通道，接 LED）</span></span><br><span class="line"><span class="comment">     * PB13 → TIM1_CH1N （互补输出通道，接另一路 LED）</span></span><br><span class="line"><span class="comment">     * 均为默认映射，无需 AFIO 重映射</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct;</span><br><span class="line">    GPIO_InitStruct.GPIO_Mode  = GPIO_Mode_AF_PP;     <span class="comment">// 复用推挽，由定时器外设驱动</span></span><br><span class="line">    GPIO_InitStruct.GPIO_Pin   = GPIO_Pin_8;          <span class="comment">// PA8</span></span><br><span class="line">    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;</span><br><span class="line">    GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct1;</span><br><span class="line">    GPIO_InitStruct1.GPIO_Mode  = GPIO_Mode_AF_PP;     <span class="comment">// 复用推挽</span></span><br><span class="line">    GPIO_InitStruct1.GPIO_Pin   = GPIO_Pin_13;         <span class="comment">// PB13</span></span><br><span class="line">    GPIO_InitStruct1.GPIO_Speed = GPIO_Speed_2MHz;</span><br><span class="line">    GPIO_Init(GPIOB, &amp;GPIO_InitStruct1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 3. 定时器时基配置</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * TIM1_CLK = 72 MHz</span></span><br><span class="line"><span class="comment">     * PSC = 71            → CNT_CLK = 72 MHz / (71 + 1) = 1 MHz</span></span><br><span class="line"><span class="comment">     * ARR = 999           → PWM 周期 = 1000 个计数 = 1 ms → PWM 频率 = 1 kHz</span></span><br><span class="line"><span class="comment">     * RepetitionCounter=0 → 每次溢出都产生更新事件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler         = <span class="number">71</span>;                 <span class="comment">// 72MHz / 72 = 1MHz</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period            = <span class="number">999</span>;                <span class="comment">// 1MHz / 1000 = 1kHz</span></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode       = TIM_CounterMode_Up;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_ClockDivision     = <span class="number">0</span>;</span><br><span class="line">    TIM_TimeBaseInit(TIM1, &amp;TIM_TimeBaseInitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 TIM1 更新中断，每次溢出（1 kHz）触发 ISR 以更新占空比 */</span></span><br><span class="line">    TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 ARR 预装载：影子寄存器在溢出时刻才更新，避免 PWM 中间态异常 */</span></span><br><span class="line">    TIM_ARRPreloadConfig(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 4. 输出比较通道初始化 —— PWM1 模式</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * PWM1 模式行为（极性 High）：</span></span><br><span class="line"><span class="comment">     *   CNT &lt; CCR → 输出高电平（LED 亮）</span></span><br><span class="line"><span class="comment">     *   CNT ≥ CCR → 输出低电平（LED 灭）</span></span><br><span class="line"><span class="comment">     * 初始占空比设为 0，由 ISR 在首次溢出后更新</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TIM_OCInitTypeDef TIM_OCInitStruct;</span><br><span class="line">    TIM_OCInitStruct.TIM_OCMode        = TIM_OCMode_PWM1;              <span class="comment">// PWM 模式 1</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OutputState   = TIM_OutputState_Enable;       <span class="comment">// 使能 CH1  主输出 (PA8)</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OutputNState  = TIM_OutputNState_Enable;      <span class="comment">// 使能 CH1N 互补输出 (PB13)</span></span><br><span class="line">    TIM_OCInitStruct.TIM_Pulse         = <span class="number">0</span>;                            <span class="comment">// 初始 CCR = 0</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCPolarity    = TIM_OCPolarity_High;          <span class="comment">// CH1  极性：高电平有效</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCNPolarity   = TIM_OCNPolarity_High;         <span class="comment">// CH1N 极性：高电平有效</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCIdleState   = TIM_OCIdleState_Set;          <span class="comment">// 空闲态：CH1  输出有效电平</span></span><br><span class="line">    TIM_OCInitStruct.TIM_OCNIdleState  = TIM_OCIdleState_Set;          <span class="comment">// 空闲态：CH1N 输出有效电平</span></span><br><span class="line">    TIM_OC1Init(TIM1, &amp;TIM_OCInitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 TIM1 主输出（MOE = 1）：高级定时器必须置位此位，否则所有通道无输出 */</span></span><br><span class="line">    TIM_CtrlPWMOutputs(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 CCR 预装载：CCR 更新在溢出时刻生效，避免 PWM 中间态毛刺 */</span></span><br><span class="line">    TIM_OC1PreloadConfig(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 启动定时器 */</span></span><br><span class="line">    TIM_Cmd(TIM1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 5. NVIC 中断配置</span></span><br><span class="line"><span class="comment">     * -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">     * TIM1 更新中断，抢占优先级 0，子优先级 0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel                   = TIM1_UP_IRQn;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority        = <span class="number">0</span>;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd                = ENABLE;</span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  TIM1 更新中断服务函数</span></span><br><span class="line"><span class="comment"> * @note   每 1 ms 触发一次，计算正弦波对应的 CCR 值并更新 PWM 占空比</span></span><br><span class="line"><span class="comment"> *         curtime 在 [0, 999] 内循环 → sin 相位在 [0, 2π) 内连续变化</span></span><br><span class="line"><span class="comment"> *         duty = 0.5 + 0.5 × sin(…) → 范围 [0, 1]，映射后 CCR ∈ [0, 999]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM1_UP_IRQHandler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)</span><br><span class="line">    &#123;</span><br><span class="line">        TIM_ClearITPendingBit(TIM1, TIM_IT_Update);   <span class="comment">// 清除中断标志</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 相位计数器：0 → 999 → 0 循环，1000 步对应一个完整正弦周期 */</span></span><br><span class="line">        curtime++;</span><br><span class="line">        <span class="keyword">if</span> (curtime &gt;= <span class="number">1000</span>)</span><br><span class="line">            curtime = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 正弦波占空比计算</span></span><br><span class="line"><span class="comment">         * sin(2π · curtime / 1000) → 一个完整的 [0, 2π) 正弦周期</span></span><br><span class="line"><span class="comment">         * 映射：duty = 0.5 + 0.5 × sin → 范围 [0, 1]</span></span><br><span class="line"><span class="comment">         * CCR  = duty × 1000 + 0.5    → 四舍五入到整数，范围 [0, 1000] */</span></span><br><span class="line">        <span class="type">float</span>    duty = <span class="number">0.5f</span> + <span class="number">0.5f</span> * sinf(<span class="number">2.0f</span> * PI * curtime / <span class="number">1000.0f</span>);</span><br><span class="line">        <span class="type">uint16_t</span> ccr  = (<span class="type">uint16_t</span>)(duty * <span class="number">1000</span> + <span class="number">0.5f</span>);  <span class="comment">//每次计算ccr都向上取整，保证亮度变换的连续性</span></span><br><span class="line">        <span class="keyword">if</span> (ccr &gt; <span class="number">999</span>) ccr = <span class="number">999</span>;                        <span class="comment">//防止 CCR 达到或超过 ARR</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 更新捕获比较寄存器，在下次溢出时自动加载到影子寄存器 */</span></span><br><span class="line">        TIM_SetCompare1(TIM1, ccr);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  主函数</span></span><br><span class="line"><span class="comment"> * @note   配置 NVIC 优先级分组为 2 位抢占 / 2 位响应</span></span><br><span class="line"><span class="comment"> *         初始化 PWM 后进入空循环，所有呼吸灯更新由 ISR 驱动</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* NVIC 优先级分组：2 位抢占优先级 + 2 位子优先级（共 16 级） */</span></span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 初始化 TIM1 CH1 + CH1N PWM 输出 */</span></span><br><span class="line">    APP_PWM_Init();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 所有 LED 呼吸效果由 TIM1_UP_IRQHandler 在中断中驱动 */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="输入捕获"><a class="markdownIt-Anchor" href="#输入捕获"></a> 输入捕获</h1>
-<p><a id="my-anchor"></a></p>
-<h1 id="从模式控制器"><a class="markdownIt-Anchor" href="#从模式控制器"></a> 从模式控制器</h1>
 
     </div>
 
@@ -834,9 +844,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/STM32/" rel="tag"># STM32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
           </div>
 
         
