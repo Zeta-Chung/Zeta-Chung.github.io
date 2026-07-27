@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image6.png">
 <meta property="og:image" content="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/image7.png">
 <meta property="article:published_time" content="2026-05-15T11:27:22.000Z">
-<meta property="article:modified_time" content="2026-07-19T13:43:34.673Z">
+<meta property="article:modified_time" content="2026-07-27T04:15:45.038Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -136,7 +136,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E5%92%8C%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 时钟和时钟树的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%8C%81%E7%BB%AD%E6%8C%AF%E8%8D%A1-%E9%AB%98%E4%BD%8E%E7%94%B5%E5%B9%B3%E4%BA%A4%E6%9B%BF%E5%8F%98%E5%8C%96%E7%9A%84%E6%96%B9%E6%B3%A2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.</span> <span class="nav-text"> 时钟：持续振荡、高低电平交替变化的方波信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91-%E4%B8%8D%E5%90%8C%E5%A4%96%E8%AE%BE%E5%A6%82-gpio-usart-%E5%AE%9A%E6%97%B6%E5%99%A8%E5%8F%AF%E8%83%BD%E5%B7%A5%E4%BD%9C%E5%9C%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87%E4%B8%8B%E5%9B%A0%E6%AD%A4%E9%9C%80%E8%A6%81%E4%B8%80%E5%A5%97-%E6%97%B6%E9%92%9F%E5%88%86%E9%85%8D%E5%92%8C%E5%80%8D%E9%A2%91%E5%88%86%E9%A2%91%E7%BD%91%E7%BB%9C%E8%BF%99%E5%B0%B1%E6%98%AF%E6%97%B6%E9%92%9F%E6%A0%91"><span class="nav-number">1.2.</span> <span class="nav-text"> 时钟树： 不同外设（如 GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套 时钟分配和倍频&#x2F;分频网络，这就是时钟树。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E9%A2%91%E5%99%A8-%E9%94%81%E7%9B%B8%E7%8E%AF%E5%92%8C%E5%A4%8D%E7%94%A8%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text"> 分频器、锁相环和复用器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A2%91%E5%99%A8%E5%AF%B9%E9%A2%91%E7%8E%87%E5%81%9A%E9%99%A4%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text"> 分频器：对频率做除法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E7%9B%B8%E7%8E%AFphase-lock-looppll%E5%AF%B9%E9%A2%91%E7%8E%87%E5%81%9A%E4%B9%98%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text"> 锁相环（phase lock loop,PLL）：对频率做乘法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E7%94%A8%E5%99%A8%E5%AF%B9%E9%A2%91%E7%8E%87%E5%81%9A%E9%80%89%E6%8B%A9"><span class="nav-number">2.3.</span> <span class="nav-text"> 复用器：对频率做选择。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E6%A0%B9"><span class="nav-number">3.</span> <span class="nav-text"> 树根</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E4%B8%AA%E6%97%B6%E9%92%9F%E6%BA%90"><span class="nav-number">3.1.</span> <span class="nav-text"> 四个时钟源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E5%B9%B2"><span class="nav-number">4.</span> <span class="nav-text"> 树干</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E6%9E%9D"><span class="nav-number">5.</span> <span class="nav-text"> 树枝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E7%BC%96%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text"> 时钟树的编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81"><span class="nav-number">6.1.</span> <span class="nav-text"> 时钟树的初始状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E5%90%ABsysteminit%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">6.1.1.</span> <span class="nav-text"> 头文件含SystemInit的状态:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E5%8E%BB%E6%8E%89systeminit%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">6.1.2.</span> <span class="nav-text"> 头文件去掉SystemInit的状态()：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.2.</span> <span class="nav-text"> 时钟树的编程接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%A0%91"><span class="nav-number">6.3.</span> <span class="nav-text"> 配置时钟树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEflash%E6%8C%87%E4%BB%A4%E9%A2%84%E5%8F%96"><span class="nav-number">6.4.</span> <span class="nav-text"> 配置Flash指令预取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%92%9F%E6%A0%91%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.5.</span> <span class="nav-text"> 启动时钟树示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%87%E4%B8%8A%E5%A4%96%E8%AE%BE%E7%9A%84%E6%97%B6%E9%92%9F%E5%BC%80%E5%85%B3%E5%92%8C%E5%A4%8D%E4%BD%8D"><span class="nav-number">6.6.</span> <span class="nav-text"> 片上外设的时钟开关和复位</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E5%92%8C%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 时钟和时钟树的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%8C%81%E7%BB%AD%E6%8C%AF%E8%8D%A1-%E9%AB%98%E4%BD%8E%E7%94%B5%E5%B9%B3%E4%BA%A4%E6%9B%BF%E5%8F%98%E5%8C%96%E7%9A%84%E6%96%B9%E6%B3%A2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.</span> <span class="nav-text"> 时钟：持续振荡、高低电平交替变化的方波信号。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91-%E4%B8%8D%E5%90%8C%E5%A4%96%E8%AE%BE%E5%A6%82-gpio-usart-%E5%AE%9A%E6%97%B6%E5%99%A8%E5%8F%AF%E8%83%BD%E5%B7%A5%E4%BD%9C%E5%9C%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87%E4%B8%8B%E5%9B%A0%E6%AD%A4%E9%9C%80%E8%A6%81%E4%B8%80%E5%A5%97-%E6%97%B6%E9%92%9F%E5%88%86%E9%85%8D%E5%92%8C%E5%80%8D%E9%A2%91%E5%88%86%E9%A2%91%E7%BD%91%E7%BB%9C%E8%BF%99%E5%B0%B1%E6%98%AF%E6%97%B6%E9%92%9F%E6%A0%91"><span class="nav-number">1.2.</span> <span class="nav-text"> 时钟树： 不同外设（如 GPIO、USART、定时器）可能工作在不同的时钟频率下，因此需要一套 时钟分配和倍频&#x2F;分频网络，这就是时钟树。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E9%A2%91%E5%99%A8-%E9%94%81%E7%9B%B8%E7%8E%AF%E5%92%8C%E5%A4%8D%E7%94%A8%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text"> 分频器、锁相环和复用器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A2%91%E5%99%A8%E5%AF%B9%E9%A2%91%E7%8E%87%E5%81%9A%E9%99%A4%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text"> 分频器：对频率做除法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E7%9B%B8%E7%8E%AFphase-lock-looppll%E5%AF%B9%E9%A2%91%E7%8E%87%E5%81%9A%E4%B9%98%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text"> 锁相环（phase lock loop,PLL）：对频率做乘法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E7%94%A8%E5%99%A8%E5%AF%B9%E9%A2%91%E7%8E%87%E5%81%9A%E9%80%89%E6%8B%A9"><span class="nav-number">2.3.</span> <span class="nav-text"> 复用器：对频率做选择。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E6%A0%B9"><span class="nav-number">3.</span> <span class="nav-text"> 树根</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E4%B8%AA%E6%97%B6%E9%92%9F%E6%BA%90"><span class="nav-number">3.1.</span> <span class="nav-text"> 四个时钟源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E5%B9%B2"><span class="nav-number">4.</span> <span class="nav-text"> 树干</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E6%9E%9D"><span class="nav-number">5.</span> <span class="nav-text"> 树枝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E7%BC%96%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text"> 时钟树的编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81"><span class="nav-number">6.1.</span> <span class="nav-text"> 时钟树的初始状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E5%90%ABsysteminit%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">6.1.1.</span> <span class="nav-text"> 头文件含SystemInit的状态:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E5%8E%BB%E6%8E%89systeminit%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">6.1.2.</span> <span class="nav-text"> 头文件去掉SystemInit的状态()：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%A0%91%E7%9A%84%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.2.</span> <span class="nav-text"> 时钟树的编程接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%A0%91"><span class="nav-number">6.3.</span> <span class="nav-text"> 配置时钟树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEflash%E6%8C%87%E4%BB%A4%E9%A2%84%E5%8F%96"><span class="nav-number">6.4.</span> <span class="nav-text"> 配置Flash指令预取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%92%9F%E6%A0%91%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.5.</span> <span class="nav-text"> 启动时钟树示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%87%E4%B8%8A%E5%A4%96%E8%AE%BE%E7%9A%84%E6%97%B6%E9%92%9F%E5%BC%80%E5%85%B3%E5%92%8C%E5%A4%8D%E4%BD%8D"><span class="nav-number">6.6.</span> <span class="nav-text"> 片上外设的时钟开关和复位</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">7.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%BA%90%E4%B8%8E-pll-%E7%9B%B8%E5%85%B3"><span class="nav-number">7.1.</span> <span class="nav-text"> 时钟源与 PLL 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_deinitvoid"><span class="nav-number">7.1.1.</span> <span class="nav-text"> void RCC_DeInit(void)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_hseconfiguint32_t-rcc_hse"><span class="nav-number">7.1.2.</span> <span class="nav-text"> void RCC_HSEConfig(uint32_t RCC_HSE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_pllconfiguint32_t-rcc_pllsource-uint32_t-rcc_pllmul"><span class="nav-number">7.1.3.</span> <span class="nav-text"> void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_pllcmdfunctionalstate-newstate"><span class="nav-number">7.1.4.</span> <span class="nav-text"> void RCC_PLLCmd(FunctionalState NewState)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F%E4%B8%8E%E6%80%BB%E7%BA%BF%E5%88%86%E9%A2%91%E7%9B%B8%E5%85%B3"><span class="nav-number">7.2.</span> <span class="nav-text"> 系统时钟与总线分频相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_sysclkconfiguint32_t-rcc_sysclksource"><span class="nav-number">7.2.1.</span> <span class="nav-text"> void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uint32_t-rcc_getsysclksourcevoid"><span class="nav-number">7.2.2.</span> <span class="nav-text"> uint32_t RCC_GetSYSCLKSource(void)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_hclkconfiguint32_t-rcc_sysclk"><span class="nav-number">7.2.3.</span> <span class="nav-text"> void RCC_HCLKConfig(uint32_t RCC_SYSCLK)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_pclk1configuint32_t-rcc_hclk"><span class="nav-number">7.2.4.</span> <span class="nav-text"> void RCC_PCLK1Config(uint32_t RCC_HCLK)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_pclk2configuint32_t-rcc_hclk"><span class="nav-number">7.2.5.</span> <span class="nav-text"> void RCC_PCLK2Config(uint32_t RCC_HCLK)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flagstatus-rcc_getflagstatusuint8_t-rcc_flag"><span class="nav-number">7.2.6.</span> <span class="nav-text"> FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E8%AE%BE%E6%97%B6%E9%92%9F%E4%B8%8E%E5%A4%8D%E4%BD%8D%E7%9B%B8%E5%85%B3"><span class="nav-number">7.3.</span> <span class="nav-text"> 外设时钟与复位相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_apb2periphclockcmduint32_t-rcc_apb2periph-functionalstate-newstate"><span class="nav-number">7.3.1.</span> <span class="nav-text"> void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_apb1periphclockcmduint32_t-rcc_apb1periph-functionalstate-newstate"><span class="nav-number">7.3.2.</span> <span class="nav-text"> void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_ahbperiphclockcmduint32_t-rcc_ahbperiph-functionalstate-newstate"><span class="nav-number">7.3.3.</span> <span class="nav-text"> void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_apb2periphresetcmduint32_t-rcc_apb2periph-functionalstate-newstate"><span class="nav-number">7.3.4.</span> <span class="nav-text"> void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-rcc_apb1periphresetcmduint32_t-rcc_apb1periph-functionalstate-newstate"><span class="nav-number">7.3.5.</span> <span class="nav-text"> void RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph, FunctionalState NewState)</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +220,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-19 21:43:34" itemprop="dateModified" datetime="2026-07-19T21:43:34+08:00">2026-07-19</time>
+      <time title="修改时间：2026-07-27 12:15:45" itemprop="dateModified" datetime="2026-07-27T12:15:45+08:00">2026-07-27</time>
     </span>
 
   
@@ -343,140 +343,7 @@
 <p>注：此后的笔记均在去掉SystemInit的状态下进行，除非特别说明。</p>
 </blockquote>
 <h2 id="时钟树的编程接口"><a class="markdownIt-Anchor" href="#时钟树的编程接口"></a> 时钟树的编程接口</h2>
-<ol>
-<li>
-<p><code>void RCC_DeInit(void)</code></p>
-<ul>
-<li>
-<p>功能：复位所有 RCC 寄存器到默认值（系统时钟恢复为 HSI，所有外设时钟关闭）。</p>
-</li>
-<li>
-<p>参数：无。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_HSEConfig(uint32_t RCC_HSE)</code></p>
-<ul>
-<li>
-<p>功能：配置外部高速振荡器（HSE）的工作模式（ON/OFF/Bypass）。</p>
-</li>
-<li>
-<p>参数：<code>RCC_HSE_ON</code>、<code>RCC_HSE_OFF</code>、<code>RCC_HSE_Bypass</code>。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul)</code></p>
-<ul>
-<li>
-<p>功能：配置 PLL 的时钟源和倍频系数（例如 HSE/2 × 9 = 72MHz）。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p>RCC_PLLSource（选择PLL的输入源）：<code>RCC_PLLSource_HSI_Div2</code>、<code>RCC_PLLSource_HSE_Div1</code>、<code>RCC_PLLSource_HSE_Div2</code></p>
-</li>
-<li>
-<p>RCC_PLLMul（选择PLL的倍频系数）：<code>RCC_PLLMul_2</code> ~ <code>RCC_PLLMul_16</code>（常用 <code>RCC_PLLMul_9</code>）。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_PLLCmd(FunctionalState NewState)</code></p>
-<ul>
-<li>
-<p>功能：使能或失能 PLL（锁相环）。在配置好 PLL 参数后，调用此函数启动 PLL。</p>
-</li>
-<li>
-<p>参数：</p>
-<ul>
-<li>
-<p><code>ENABLE</code>：使能 PLL</p>
-</li>
-<li>
-<p><code>DISABLE</code>：失能 PLL</p>
-</li>
-</ul>
-</li>
-<li>
-<p>典型用法：在 <code>RCC_PLLConfig()</code> 之后调用 <code>RCC_PLLCmd(ENABLE)</code>，然后等待 PLL 就绪标志（可用 <code>RCC_GetFlagStatus(RCC_FLAG_PLLRDY)</code> 查询）。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource)</code></p>
-<ul>
-<li>
-<p>功能：选择系统时钟源（HSI/HSE/PLL）。</p>
-</li>
-<li>
-<p>参数：<code>RCC_SYSCLKSource_HSI</code>、<code>RCC_SYSCLKSource_HSE</code>、<code>RCC_SYSCLKSource_PLLCLK</code>。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>uint32_t RCC_GetSYSCLKSource(void)</code></p>
-<ul>
-<li>
-<p>功能：查询当前系统时钟源。</p>
-</li>
-<li>
-<p>返回值：<code>RCC_SYSCLKSource_HSI</code>(0x00)、<code>RCC_SYSCLKSource_HSE</code>(0x04)、<code>RCC_SYSCLKSource_PLLCLK</code>(0x08)。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_HCLKConfig(uint32_t RCC_SYSCLK)</code></p>
-<ul>
-<li>
-<p>功能：配置 AHB 总线时钟（HCLK）的分频系数。</p>
-</li>
-<li>
-<p>参数：<code>RCC_SYSCLK_Div1 ~ ````RCC_SYSCLK_Div512</code>（常用 Div1）。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_PCLK1Config(uint32_t RCC_HCLK)</code></p>
-<ul>
-<li>
-<p>功能：配置 APB1 总线时钟（PCLK1）的分频系数（最高 36MHz）。</p>
-</li>
-<li>
-<p>参数：<code>RCC_HCLK_Div1 ~ RCC_HCLK_Div16</code>（常用 Div2 当 HCLK=72MHz）。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>void RCC_PCLK2Config(uint32_t RCC_HCLK)</code></p>
-<ul>
-<li>
-<p>功能：配置 APB2 总线时钟（PCLK2）的分频系数（最高 72MHz）。</p>
-</li>
-<li>
-<p>参数：<code>RCC_HCLK_Div1 ~ RCC_HCLK_Div16</code>（常用 Div1）。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG)</code></p>
-<ul>
-<li>
-<p>功能：查询 RCC 标志位（HSIRDY、HSERDY、PLLRDY 等）。</p>
-</li>
-<li>
-<p>参数：<code>RCC_FLAG_HSIRDY</code>、<code>RCC_FLAG_HSERDY</code>、<code>RCC_FLAG_PLLRDY</code> 等。</p>
-</li>
-<li>
-<p>返回：<code>SET</code> 或 <code>RESET</code>。</p>
-</li>
-</ul>
-</li>
-</ol>
+<p>相关说明已收录于文末的 <a href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3">编程接口</a>，其中包含 <a href="#rcc_deinit">RCC_DeInit</a>、<a href="#rcc_hseconfig">RCC_HSEConfig</a>、<a href="#rcc_pllconfig">RCC_PLLConfig</a>、<a href="#rcc_pllcmd">RCC_PLLCmd</a>、<a href="#rcc_sysclkconfig">RCC_SYSCLKConfig</a>、<a href="#rcc_getsysclksource">RCC_GetSYSCLKSource</a>、<a href="#rcc_hclkconfig">RCC_HCLKConfig</a>、<a href="#rcc_pclk1config">RCC_PCLK1Config</a>、<a href="#rcc_pclk2config">RCC_PCLK2Config</a> 和 <a href="#rcc_getflagstatus">RCC_GetFlagStatus</a> 的说明。</p>
 <h2 id="配置时钟树"><a class="markdownIt-Anchor" href="#配置时钟树"></a> 配置时钟树</h2>
 <ol>
 <li>
@@ -524,85 +391,202 @@
 <p>可以通过以下函数启用 Flash预取：</p>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意：需在SYSCLK&lt;=24MHz时启用</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x_flash.h&quot;</span> </span></span><br><span class="line">FLASH_PrefetchBufferCmd(Enable);<span class="comment">//启用预取功能</span></span><br><span class="line">FLASH_SetLatency(FLASH_Latency_2);<span class="comment">//设置等待周期数为2</span></span><br><span class="line"><span class="comment">//低于24MHz时配置原因：当系统时钟低于24MHz时，CPU访问Flash无需插入等待周期，此时总线时序最简单稳定</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意：需在SYSCLK&lt;=24MHz时启用</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x_flash.h&quot;</span> </span></span><br><span class="line">FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);<span class="comment">//启用预取功能</span></span><br><span class="line">FLASH_SetLatency(FLASH_Latency_2);<span class="comment">//设置等待周期数为2</span></span><br><span class="line"><span class="comment">//低于24MHz时配置原因：当系统时钟低于24MHz时，CPU访问Flash无需插入等待周期，此时总线时序最简单稳定</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>flash预取在低频环境下配置，在高频环境下运行，以保证flash访问的稳定性和效率。</p>
 </blockquote>
 <h2 id="启动时钟树示例"><a class="markdownIt-Anchor" href="#启动时钟树示例"></a> 启动时钟树示例</h2>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x_rcc.h&quot;</span> </span></span><br><span class="line"><span class="type">void</span> <span class="title function_">App_SystemClock_Init</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//#0 配置 Flash 预取和等待周期</span></span><br><span class="line">  FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable); </span><br><span class="line">  FLASH_SetLatency(FLASH_Latency_2); <span class="comment">//设置等待周期数为2</span></span><br><span class="line">  <span class="comment">//#1 打开外部高速振荡器</span></span><br><span class="line">  RCC_HSEConfig(RCC_HSE_ON);</span><br><span class="line">  <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET); <span class="comment">//等待HSE稳定</span></span><br><span class="line">  <span class="comment">//#2 配置PLL为HSE×9=72MHz</span></span><br><span class="line">  RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9); </span><br><span class="line">  RCC_PLLCmd(ENABLE); <span class="comment">//使能PLL</span></span><br><span class="line">  <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET); <span class="comment">//等待PLL锁定</span></span><br><span class="line">  <span class="comment">//#3 配置总线分频器</span></span><br><span class="line">  RCC_HCLKConfig(RCC_SYSCLK_Div1); <span class="comment">//AHB分频系数为1，HCLK=72MHz</span></span><br><span class="line">  RCC_PCLK1Config(RCC_HCLK_Div2); <span class="comment">//APB1分频系数为2，PCLK1=36MHz</span></span><br><span class="line">  RCC_PCLK2Config(RCC_HCLK_Div1); <span class="comment">//APB2分频系数为1，PCLK2=72MHz</span></span><br><span class="line">  <span class="comment">//#4 切换系统时钟到PLL输出</span></span><br><span class="line">  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);</span><br><span class="line">  <span class="keyword">while</span> (RCC_GetSYSCLKSource() != <span class="number">0x08</span>); <span class="comment">//等待系统时钟切换完成</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="片上外设的时钟开关和复位"><a class="markdownIt-Anchor" href="#片上外设的时钟开关和复位"></a> 片上外设的时钟开关和复位</h2>
-<ol>
+<p>相关接口说明请见文末的 <a href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3">编程接口</a> 中的 <a href="#rcc_apb2periphclockcmd">RCC_APB2PeriphClockCmd</a>、<a href="#rcc_apb1periphclockcmd">RCC_APB1PeriphClockCmd</a>、<a href="#rcc_ahbperiphclockcmd">RCC_AHBPeriphClockCmd</a>、<a href="#rcc_apb2periphresetcmd">RCC_APB2PeriphResetCmd</a> 和 <a href="#rcc_apb1periphresetcmd">RCC_APB1PeriphResetCmd</a>。</p>
+<h1 id="编程接口"><a class="markdownIt-Anchor" href="#编程接口"></a> 编程接口</h1>
+<h2 id="时钟源与-pll-相关"><a class="markdownIt-Anchor" href="#时钟源与-pll-相关"></a> 时钟源与 PLL 相关</h2>
+<p><a id="rcc_deinit"></a></p>
+<h3 id="void-rcc_deinitvoid"><a class="markdownIt-Anchor" href="#void-rcc_deinitvoid"></a> <code>void RCC_DeInit(void)</code></h3>
+<ul>
 <li>
-<p><strong><code>RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</code></strong></p>
+<p>功能：复位所有 RCC 寄存器到默认值（系统时钟恢复为 HSI，所有外设时钟关闭）。</p>
+</li>
+<li>
+<p>参数：无。</p>
+</li>
+</ul>
+<p><a id="rcc_hseconfig"></a></p>
+<h3 id="void-rcc_hseconfiguint32_t-rcc_hse"><a class="markdownIt-Anchor" href="#void-rcc_hseconfiguint32_t-rcc_hse"></a> <code>void RCC_HSEConfig(uint32_t RCC_HSE)</code></h3>
+<ul>
+<li>
+<p>功能：配置外部高速振荡器（HSE）的工作模式（ON/OFF/Bypass）。</p>
+</li>
+<li>
+<p>参数：<code>RCC_HSE_ON</code>、<code>RCC_HSE_OFF</code>、<code>RCC_HSE_Bypass</code>。</p>
+</li>
+</ul>
+<p><a id="rcc_pllconfig"></a></p>
+<h3 id="void-rcc_pllconfiguint32_t-rcc_pllsource-uint32_t-rcc_pllmul"><a class="markdownIt-Anchor" href="#void-rcc_pllconfiguint32_t-rcc_pllsource-uint32_t-rcc_pllmul"></a> <code>void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul)</code></h3>
+<ul>
+<li>功能：配置 PLL 的时钟源和倍频系数（例如 HSE/2 × 9 = 72MHz）。</li>
+<li>参数：
+<ul>
+<li>
+<p><code>RCC_PLLSource</code>（选择 PLL 的输入源）：<code>RCC_PLLSource_HSI_Div2</code>、<code>RCC_PLLSource_HSE_Div1</code>、<code>RCC_PLLSource_HSE_Div2</code>。</p>
+</li>
+<li>
+<p><code>RCC_PLLMul</code>（选择 PLL 的倍频系数）：<code>RCC_PLLMul_2</code> ~ <code>RCC_PLLMul_16</code>（常用 <code>RCC_PLLMul_9</code>）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="rcc_pllcmd"></a></p>
+<h3 id="void-rcc_pllcmdfunctionalstate-newstate"><a class="markdownIt-Anchor" href="#void-rcc_pllcmdfunctionalstate-newstate"></a> <code>void RCC_PLLCmd(FunctionalState NewState)</code></h3>
+<ul>
+<li>
+<p>功能：使能或失能 PLL（锁相环）。在配置好 PLL 参数后，调用此函数启动 PLL。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p><code>ENABLE</code>：使能 PLL。</p>
+</li>
+<li>
+<p><code>DISABLE</code>：失能 PLL。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>典型用法：在 <code>RCC_PLLConfig()</code> 之后调用 <code>RCC_PLLCmd(ENABLE)</code>，然后等待 PLL 就绪标志（可用 <code>RCC_GetFlagStatus(RCC_FLAG_PLLRDY)</code> 查询）。</p>
+</li>
+</ul>
+<h2 id="系统时钟与总线分频相关"><a class="markdownIt-Anchor" href="#系统时钟与总线分频相关"></a> 系统时钟与总线分频相关</h2>
+<p><a id="rcc_sysclkconfig"></a></p>
+<h3 id="void-rcc_sysclkconfiguint32_t-rcc_sysclksource"><a class="markdownIt-Anchor" href="#void-rcc_sysclkconfiguint32_t-rcc_sysclksource"></a> <code>void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource)</code></h3>
+<ul>
+<li>
+<p>功能：选择系统时钟源（HSI/HSE/PLL）。</p>
+</li>
+<li>
+<p>参数：<code>RCC_SYSCLKSource_HSI</code>、<code>RCC_SYSCLKSource_HSE</code>、<code>RCC_SYSCLKSource_PLLCLK</code>。</p>
+</li>
+</ul>
+<p><a id="rcc_getsysclksource"></a></p>
+<h3 id="uint32_t-rcc_getsysclksourcevoid"><a class="markdownIt-Anchor" href="#uint32_t-rcc_getsysclksourcevoid"></a> <code>uint32_t RCC_GetSYSCLKSource(void)</code></h3>
+<ul>
+<li>
+<p>功能：查询当前系统时钟源。</p>
+</li>
+<li>
+<p>返回值：<code>RCC_SYSCLKSource_HSI</code>（0x00）、<code>RCC_SYSCLKSource_HSE</code>（0x04）、<code>RCC_SYSCLKSource_PLLCLK</code>（0x08）。</p>
+</li>
+</ul>
+<p><a id="rcc_hclkconfig"></a></p>
+<h3 id="void-rcc_hclkconfiguint32_t-rcc_sysclk"><a class="markdownIt-Anchor" href="#void-rcc_hclkconfiguint32_t-rcc_sysclk"></a> <code>void RCC_HCLKConfig(uint32_t RCC_SYSCLK)</code></h3>
+<ul>
+<li>
+<p>功能：配置 AHB 总线时钟（HCLK）的分频系数。</p>
+</li>
+<li>
+<p>参数：<code>RCC_SYSCLK_Div1</code> ~ <code>RCC_SYSCLK_Div512</code>（常用 Div1）。</p>
+</li>
+</ul>
+<p><a id="rcc_pclk1config"></a></p>
+<h3 id="void-rcc_pclk1configuint32_t-rcc_hclk"><a class="markdownIt-Anchor" href="#void-rcc_pclk1configuint32_t-rcc_hclk"></a> <code>void RCC_PCLK1Config(uint32_t RCC_HCLK)</code></h3>
+<ul>
+<li>
+<p>功能：配置 APB1 总线时钟（PCLK1）的分频系数（最高 36MHz）。</p>
+</li>
+<li>
+<p>参数：<code>RCC_HCLK_Div1</code> ~ <code>RCC_HCLK_Div16</code>（常用 Div2 当 HCLK=72MHz）。</p>
+</li>
+</ul>
+<p><a id="rcc_pclk2config"></a></p>
+<h3 id="void-rcc_pclk2configuint32_t-rcc_hclk"><a class="markdownIt-Anchor" href="#void-rcc_pclk2configuint32_t-rcc_hclk"></a> <code>void RCC_PCLK2Config(uint32_t RCC_HCLK)</code></h3>
+<ul>
+<li>
+<p>功能：配置 APB2 总线时钟（PCLK2）的分频系数（最高 72MHz）。</p>
+</li>
+<li>
+<p>参数：<code>RCC_HCLK_Div1</code> ~ <code>RCC_HCLK_Div16</code>（常用 Div1）。</p>
+</li>
+</ul>
+<p><a id="rcc_getflagstatus"></a></p>
+<h3 id="flagstatus-rcc_getflagstatusuint8_t-rcc_flag"><a class="markdownIt-Anchor" href="#flagstatus-rcc_getflagstatusuint8_t-rcc_flag"></a> <code>FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG)</code></h3>
+<ul>
+<li>
+<p>功能：查询 RCC 标志位（HSIRDY、HSERDY、PLLRDY 等）。</p>
+</li>
+<li>
+<p>参数：<code>RCC_FLAG_HSIRDY</code>、<code>RCC_FLAG_HSERDY</code>、<code>RCC_FLAG_PLLRDY</code> 等。</p>
+</li>
+<li>
+<p>返回：<code>SET</code> 或 <code>RESET</code>。</p>
+</li>
+</ul>
+<h2 id="外设时钟与复位相关"><a class="markdownIt-Anchor" href="#外设时钟与复位相关"></a> 外设时钟与复位相关</h2>
+<p><a id="rcc_apb2periphclockcmd"></a></p>
+<h3 id="void-rcc_apb2periphclockcmduint32_t-rcc_apb2periph-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-rcc_apb2periphclockcmduint32_t-rcc_apb2periph-functionalstate-newstate"></a> <code>void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</code></h3>
 <ul>
 <li>
 <p>功能：使能或失能 APB2 总线上的外设时钟。</p>
 </li>
 <li>
-<p><code>RCC_APB2Periph</code>：指定 APB2 总线上的外设，例如 <code>RCC_APB2Periph_GPIOA</code>、<code>RCC_APB2Periph_ADC1</code>、<code>RCC_APB2Periph_SPI1</code>。</p>
+<p>参数：<code>RCC_APB2Periph</code> 指定 APB2 总线上的外设，例如 <code>RCC_APB2Periph_GPIOA</code>、<code>RCC_APB2Periph_ADC1</code>、<code>RCC_APB2Periph_SPI1</code>。</p>
 </li>
 <li>
 <p><code>NewState</code>：<code>ENABLE</code>（开启时钟）或 <code>DISABLE</code>（关闭时钟）。</p>
 </li>
 </ul>
-</li>
-<li>
-<p><strong><code>RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState)</code></strong></p>
+<p><a id="rcc_apb1periphclockcmd"></a></p>
+<h3 id="void-rcc_apb1periphclockcmduint32_t-rcc_apb1periph-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-rcc_apb1periphclockcmduint32_t-rcc_apb1periph-functionalstate-newstate"></a> <code>void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState)</code></h3>
 <ul>
 <li>
 <p>功能：使能或失能 APB1 总线上的外设时钟。</p>
 </li>
 <li>
-<p><code>RCC_APB1Periph</code>：指定 APB1 总线上的外设，例如 <code>RCC_APB1Periph_TIM2</code>、<code>RCC_APB1Periph_I2C1</code>、<code>RCC_APB1Periph_USART2</code>。</p>
+<p>参数：<code>RCC_APB1Periph</code> 指定 APB1 总线上的外设，例如 <code>RCC_APB1Periph_TIM2</code>、<code>RCC_APB1Periph_I2C1</code>、<code>RCC_APB1Periph_USART2</code>。</p>
 </li>
 <li>
 <p><code>NewState</code>：<code>ENABLE</code>（开启时钟）或 <code>DISABLE</code>（关闭时钟）。</p>
 </li>
 </ul>
-</li>
-<li>
-<p><strong><code>RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState)</code></strong></p>
+<p><a id="rcc_ahbperiphclockcmd"></a></p>
+<h3 id="void-rcc_ahbperiphclockcmduint32_t-rcc_ahbperiph-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-rcc_ahbperiphclockcmduint32_t-rcc_ahbperiph-functionalstate-newstate"></a> <code>void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState)</code></h3>
 <ul>
 <li>
 <p>功能：使能或失能 AHB 总线上的外设时钟。</p>
 </li>
 <li>
-<p><code>RCC_AHBPeriph</code>：指定 AHB 总线上的外设，例如 <code>RCC_AHBPeriph_DMA1</code>、<code>RCC_AHBPeriph_CRC</code>、<code>RCC_AHBPeriph_FSMC</code>。</p>
+<p>参数：<code>RCC_AHBPeriph</code> 指定 AHB 总线上的外设，例如 <code>RCC_AHBPeriph_DMA1</code>、<code>RCC_AHBPeriph_CRC</code>、<code>RCC_AHBPeriph_FSMC</code>。</p>
 </li>
 <li>
 <p><code>NewState</code>：<code>ENABLE</code>（开启时钟）或 <code>DISABLE</code>（关闭时钟）。</p>
 </li>
 </ul>
-</li>
-<li>
-<p><strong><code>RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</code></strong></p>
+<p><a id="rcc_apb2periphresetcmd"></a></p>
+<h3 id="void-rcc_apb2periphresetcmduint32_t-rcc_apb2periph-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-rcc_apb2periphresetcmduint32_t-rcc_apb2periph-functionalstate-newstate"></a> <code>void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</code></h3>
 <ul>
 <li>
 <p>功能：复位 APB2 总线上的外设。</p>
 </li>
 <li>
-<p><code>RCC_APB2Periph</code>：指定 APB2 总线上的外设（同上 <code>RCC_APB2PeriphClockCmd</code> 的参数）。</p>
+<p>参数：<code>RCC_APB2Periph</code> 指定 APB2 总线上的外设（同上 <code>RCC_APB2PeriphClockCmd</code> 的参数）。</p>
 </li>
 <li>
 <p><code>NewState</code>：<code>ENABLE</code>（将外设置于复位状态）或 <code>DISABLE</code>（释放复位）。</p>
 </li>
 </ul>
-</li>
-<li>
-<p><strong><code>RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph, FunctionalState NewState)</code></strong></p>
+<p><a id="rcc_apb1periphresetcmd"></a></p>
+<h3 id="void-rcc_apb1periphresetcmduint32_t-rcc_apb1periph-functionalstate-newstate"><a class="markdownIt-Anchor" href="#void-rcc_apb1periphresetcmduint32_t-rcc_apb1periph-functionalstate-newstate"></a> <code>void RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph, FunctionalState NewState)</code></h3>
 <ul>
 <li>
 <p>功能：复位 APB1 总线上的外设。</p>
 </li>
 <li>
-<p><code>RCC_APB1Periph</code>：指定 APB1 总线上的外设（同上 <code>RCC_APB1PeriphClockCmd</code> 的参数）。</p>
+<p>参数：<code>RCC_APB1Periph</code> 指定 APB1 总线上的外设（同上 <code>RCC_APB1PeriphClockCmd</code> 的参数）。</p>
 </li>
 <li>
 <p><code>NewState</code>：<code>ENABLE</code>（将外设置于复位状态）或 <code>DISABLE</code>（释放复位）。</p>
 </li>
 </ul>
-</li>
-</ol>
 
     </div>
 
