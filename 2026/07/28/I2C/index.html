@@ -19,16 +19,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="stm32中I2C通信模块的学习笔记   基本概念  串口的缺点 只能进行一对一的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。   I2C总线的物理层结构    I2C总线由SCL(时钟线)和SDA(数据线)两条导线组成.   SCL（Serial Clock Line）:时钟由主机产生，用于同步数据传输。   SDA（Serial Data Line）:数据线，用于传输地">
+    <meta name="description" content="stm32中I2C通信模块的学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="I2C">
 <meta property="og:url" content="http://example.com/2026/07/28/I2C/index.html">
 <meta property="og:site_name" content="ZetaC">
-<meta property="og:description" content="stm32中I2C通信模块的学习笔记   基本概念  串口的缺点 只能进行一对一的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。   I2C总线的物理层结构    I2C总线由SCL(时钟线)和SDA(数据线)两条导线组成.   SCL（Serial Clock Line）:时钟由主机产生，用于同步数据传输。   SDA（Serial Data Line）:数据线，用于传输地">
+<meta property="og:description" content="stm32中I2C通信模块的学习笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2026/07/28/I2C/I2C%E6%80%BB%E7%BA%BF.png">
 <meta property="article:published_time" content="2026-07-28T07:34:55.000Z">
-<meta property="article:modified_time" content="2026-07-28T08:56:13.257Z">
+<meta property="article:modified_time" content="2026-07-28T09:05:39.739Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -135,7 +135,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text"> 串口的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text"> I2C总线的物理层结构</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text"> 串口的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text"> I2C总线的物理层结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 电路结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%8F%91%E9%80%81%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 信号发送方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.2.1.</span> <span class="nav-text"> 时钟信号</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -213,7 +213,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2026-07-28 15:34:55 / 修改时间：16:56:13" itemprop="dateCreated datePublished" datetime="2026-07-28T15:34:55+08:00">2026-07-28</time>
+      <time title="创建时间：2026-07-28 15:34:55 / 修改时间：17:05:39" itemprop="dateCreated datePublished" datetime="2026-07-28T15:34:55+08:00">2026-07-28</time>
     </span>
 
   
@@ -226,12 +226,13 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>stm32中I2C通信模块的学习笔记</p>
-<!--more--->
+<span id="more"></span>
 <h1 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h1>
 <h2 id="串口的缺点"><a class="markdownIt-Anchor" href="#串口的缺点"></a> 串口的缺点</h2>
 <p>只能进行<strong>一对一</strong>的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。</p>
 <p><a id="I2C"></a></p>
 <h2 id="i2c总线的物理层结构"><a class="markdownIt-Anchor" href="#i2c总线的物理层结构"></a> I2C总线的物理层结构</h2>
+<h3 id="电路结构"><a class="markdownIt-Anchor" href="#电路结构"></a> 电路结构</h3>
 <p><img src="I2C%E6%80%BB%E7%BA%BF.png" alt="I2C总线" /></p>
 <ol>
 <li>
@@ -283,6 +284,8 @@
 </ul>
 </li>
 </ol>
+<h3 id="信号发送方式"><a class="markdownIt-Anchor" href="#信号发送方式"></a> 信号发送方式</h3>
+<h4 id="时钟信号"><a class="markdownIt-Anchor" href="#时钟信号"></a> 时钟信号</h4>
 
     </div>
 
@@ -292,9 +295,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
-              <a href="/tags/STM32/" rel="tag"># STM32</a>
           </div>
 
         
