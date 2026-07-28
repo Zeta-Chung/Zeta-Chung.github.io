@@ -19,25 +19,31 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://example.com/tags/index.html">
+    <meta name="description" content="stm32中I2C通信模块的学习笔记   基本概念  串口的缺点 只能进行一对一的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。   I2C总线的物理层结构    I2C总线由SCL(时钟线)和SDA(数据线)两条导线组成.   SCL（Serial Clock Line）:时钟由主机产生，用于同步数据传输。   SDA（Serial Data Line）:数据线，用于传输地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="I2C">
+<meta property="og:url" content="http://example.com/2026/07/28/I2C/index.html">
 <meta property="og:site_name" content="ZetaC">
+<meta property="og:description" content="stm32中I2C通信模块的学习笔记   基本概念  串口的缺点 只能进行一对一的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。   I2C总线的物理层结构    I2C总线由SCL(时钟线)和SDA(数据线)两条导线组成.   SCL（Serial Clock Line）:时钟由主机产生，用于同步数据传输。   SDA（Serial Data Line）:数据线，用于传输地">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-05-14T11:49:39.000Z">
-<meta property="article:modified_time" content="2026-05-14T11:51:04.205Z">
+<meta property="og:image" content="http://example.com/2026/07/28/I2C/I2C%E6%80%BB%E7%BA%BF.png">
+<meta property="article:published_time" content="2026-07-28T07:34:55.000Z">
+<meta property="article:modified_time" content="2026-07-28T08:56:13.257Z">
 <meta property="article:author" content="ZetaChung">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2026/07/28/I2C/I2C%E6%80%BB%E7%BA%BF.png">
 
 
-<link rel="canonical" href="http://example.com/tags/">
+<link rel="canonical" href="http://example.com/2026/07/28/I2C/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"http://example.com/tags/index.html","path":"tags/index.html","title":"标签"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/28/I2C/","path":"2026/07/28/I2C/","title":"I2C"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签 | ZetaC
-</title>
+<title>I2C | ZetaC</title>
   
 
 
@@ -116,7 +122,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -129,6 +135,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text"> 串口的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text"> I2C总线的物理层结构</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,42 +172,149 @@
 
     </div>
 
-    <div class="main-inner page posts-expand">
+    <div class="main-inner post posts-expand">
 
 
-    
-    
-    
-    <div class="post-block" lang="zh-CN"><header class="post-header">
+  
 
-<h1 class="post-title" itemprop="name headline">标签
-</h1>
 
-<div class="post-meta-container">
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/28/I2C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaChung">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="I2C | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          I2C
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-28 15:34:55 / 修改时间：16:56:13" itemprop="dateCreated datePublished" datetime="2026-07-28T15:34:55+08:00">2026-07-28</time>
+    </span>
+
+  
 </div>
 
-</header>
+        </div>
+      </header>
 
-      
-      
-      
-      <div class="post-body"><div class="tag-cloud">
-  <div class="tag-cloud-title">
-    目前共计 7 个标签
-  </div>
-  <div class="tag-cloud-tags">
-    <a href="/tags/C%E8%AF%AD%E8%A8%80/" style="font-size: 16.5px;" class="tag-cloud-3">C语言</a> <a href="/tags/ESP32/" style="font-size: 12px;" class="tag-cloud-0">ESP32</a> <a href="/tags/STM32/" style="font-size: 21px;" class="tag-cloud-5">STM32</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 30px;" class="tag-cloud-10">学习笔记</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 25.5px;" class="tag-cloud-8">嵌入式</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.5px;" class="tag-cloud-3">数据结构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.5px;" class="tag-cloud-3">算法</a>
-  </div>
-</div>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>stm32中I2C通信模块的学习笔记</p>
+<!--more--->
+<h1 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h1>
+<h2 id="串口的缺点"><a class="markdownIt-Anchor" href="#串口的缺点"></a> 串口的缺点</h2>
+<p>只能进行<strong>一对一</strong>的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。</p>
+<p><a id="I2C"></a></p>
+<h2 id="i2c总线的物理层结构"><a class="markdownIt-Anchor" href="#i2c总线的物理层结构"></a> I2C总线的物理层结构</h2>
+<p><img src="I2C%E6%80%BB%E7%BA%BF.png" alt="I2C总线" /></p>
+<ol>
+<li>
+<p>I2C总线由SCL(时钟线)和SDA(数据线)两条导线组成.</p>
+<ul>
+<li>
+<p>SCL（Serial Clock Line）:时钟由<strong>主机</strong>产生，用于同步数据传输。</p>
+</li>
+<li>
+<p>SDA（Serial Data Line）:数据线，用于传输地址、命令和数据。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>I2C总线只有一个<strong>主机</strong>,通常就是单片机;其余挂载在I2C总线上的设备成为从机,主机和从机都有一个SCL引脚与SCL总线相连,一个SDA引脚与SDA总线相连.</p>
+</li>
+<li>
+<p>从机的地址为<strong>7位</strong>,范围是0000000(0)到1111111(127),除去某些特殊地址,最多能同时挂载100多个从机.</p>
+</li>
+<li>
+<p>所有的SCL和SDA引脚都要设置为开漏输出,原因如下:</p>
+<ol>
+<li>
+<p>如果使用<strong>推挽输出</strong>,各从机分别输出高电平和低电平时,会造成VCC直接连到GND<strong>导致短路</strong>.如果每个设备的引脚都主动输出高或低，总线必将发生冲突和短路。</p>
+</li>
+<li>
+<p><strong>开漏输出</strong>实现 <strong>线与（Wired-AND）逻辑</strong>：只要总线上任何一个设备输出低电平，整条总线就是低电平；只有当所有设备都输出高电平（即全部进入高阻态） 时，总线才被允许变为高电平。</p>
+<blockquote>
+<p>线与逻辑:在硬件上实现逻辑与运算.</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li>
+<p>SCL线与SDA线各连接一个上拉电阻,原因如下:</p>
+<ul>
+<li>
+<p>开漏模式下引脚无法主动输出高电平,<strong>所有设备</strong>都不拉低电平时,通过上拉电阻可以将总线拉到高电平</p>
+</li>
+<li>
+<p>默认状态（<strong>空闲时</strong>）：所有设备都不拉低总线，上拉电阻把总线电平拉到 VCC，即<strong>高电平</strong>。这就是总线的<strong>空闲状态</strong>（IDLE）。</p>
+</li>
+<li>
+<p>当某个设备要 <strong>发送“1”</strong> 时：它把自己的引脚设置为高阻态，上拉电阻自动把总线拉高到<strong>VCC</strong>。</p>
+</li>
+<li>
+<p>当某个设备要 <strong>发送“0”</strong> 时：它把自己的 NMOS 导通，强行将总线<strong>拉低到 GND</strong>。这个“拉低”的力度很强，大于上拉电阻“拉高”的力度，使总线电平降到<strong>接近 0V</strong>。</p>
+</li>
+</ul>
+</li>
+</ol>
 
-      </div>
-      
-      
-      
     </div>
 
     
     
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/22/%E4%B8%B2%E5%8F%A3/" rel="prev" title="串口">
+                  <i class="fa fa-angle-left"></i> 串口
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
 
 
 </div>

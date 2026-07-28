@@ -140,7 +140,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -163,6 +163,133 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/28/I2C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaChung">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/28/I2C/" class="post-title-link" itemprop="url">I2C</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-28 15:34:55 / 修改时间：16:56:13" itemprop="dateCreated datePublished" datetime="2026-07-28T15:34:55+08:00">2026-07-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>stm32中I2C通信模块的学习笔记</p>
+<!--more--->
+<h1 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h1>
+<h2 id="串口的缺点"><a class="markdownIt-Anchor" href="#串口的缺点"></a> 串口的缺点</h2>
+<p>只能进行<strong>一对一</strong>的通信，一个串口只能连接一个串口设备，一块开发板最多连接三个串口设备。</p>
+<p><a id="I2C"></a></p>
+<h2 id="i2c总线的物理层结构"><a class="markdownIt-Anchor" href="#i2c总线的物理层结构"></a> I2C总线的物理层结构</h2>
+<p><img src="I2C%E6%80%BB%E7%BA%BF.png" alt="I2C总线" /></p>
+<ol>
+<li>
+<p>I2C总线由SCL(时钟线)和SDA(数据线)两条导线组成.</p>
+<ul>
+<li>
+<p>SCL（Serial Clock Line）:时钟由<strong>主机</strong>产生，用于同步数据传输。</p>
+</li>
+<li>
+<p>SDA（Serial Data Line）:数据线，用于传输地址、命令和数据。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>I2C总线只有一个<strong>主机</strong>,通常就是单片机;其余挂载在I2C总线上的设备成为从机,主机和从机都有一个SCL引脚与SCL总线相连,一个SDA引脚与SDA总线相连.</p>
+</li>
+<li>
+<p>从机的地址为<strong>7位</strong>,范围是0000000(0)到1111111(127),除去某些特殊地址,最多能同时挂载100多个从机.</p>
+</li>
+<li>
+<p>所有的SCL和SDA引脚都要设置为开漏输出,原因如下:</p>
+<ol>
+<li>
+<p>如果使用<strong>推挽输出</strong>,各从机分别输出高电平和低电平时,会造成VCC直接连到GND<strong>导致短路</strong>.如果每个设备的引脚都主动输出高或低，总线必将发生冲突和短路。</p>
+</li>
+<li>
+<p><strong>开漏输出</strong>实现 <strong>线与（Wired-AND）逻辑</strong>：只要总线上任何一个设备输出低电平，整条总线就是低电平；只有当所有设备都输出高电平（即全部进入高阻态） 时，总线才被允许变为高电平。</p>
+<blockquote>
+<p>线与逻辑:在硬件上实现逻辑与运算.</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li>
+<p>SCL线与SDA线各连接一个上拉电阻,原因如下:</p>
+<ul>
+<li>
+<p>开漏模式下引脚无法主动输出高电平,<strong>所有设备</strong>都不拉低电平时,通过上拉电阻可以将总线拉到高电平</p>
+</li>
+<li>
+<p>默认状态（<strong>空闲时</strong>）：所有设备都不拉低总线，上拉电阻把总线电平拉到 VCC，即<strong>高电平</strong>。这就是总线的<strong>空闲状态</strong>（IDLE）。</p>
+</li>
+<li>
+<p>当某个设备要 <strong>发送“1”</strong> 时：它把自己的引脚设置为高阻态，上拉电阻自动把总线拉高到<strong>VCC</strong>。</p>
+</li>
+<li>
+<p>当某个设备要 <strong>发送“0”</strong> 时：它把自己的 NMOS 导通，强行将总线<strong>拉低到 GND</strong>。这个“拉低”的力度很强，大于上拉电阻“拉高”的力度，使总线电平降到<strong>接近 0V</strong>。</p>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -208,7 +335,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-28 15:33:54" itemprop="dateModified" datetime="2026-07-28T15:33:54+08:00">2026-07-28</time>
+      <time title="修改时间：2026-07-28 16:57:49" itemprop="dateModified" datetime="2026-07-28T16:57:49+08:00">2026-07-28</time>
     </span>
 
   
@@ -883,89 +1010,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/05/19/%E4%B8%AD%E6%96%AD/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/my-avatar.png">
-      <meta itemprop="name" content="ZetaChung">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ZetaC">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | ZetaC">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/" class="post-title-link" itemprop="url">时钟树</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-05-15 19:27:22" itemprop="dateCreated datePublished" datetime="2026-05-15T19:27:22+08:00">2026-05-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-27 12:15:45" itemprop="dateModified" datetime="2026-07-27T12:15:45+08:00">2026-07-27</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>stm32时钟树模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
