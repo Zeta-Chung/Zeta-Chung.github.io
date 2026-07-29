@@ -30,10 +30,11 @@
 <meta property="og:image" content="http://example.com/2026/07/28/I2C/%E6%95%B0%E6%8D%AE%E5%B8%A7.png">
 <meta property="og:image" content="http://example.com/2026/07/28/I2C/I2C%E4%BD%8D%E7%BD%AE.png">
 <meta property="og:image" content="http://example.com/2026/07/28/I2C/I2C%E9%80%9F%E5%BA%A6%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://example.com/2026/07/28/I2C/I2C.png">
 <meta property="og:image" content="http://example.com/2026/07/28/I2C/IO%E5%BC%95%E8%84%9A.png">
 <meta property="og:image" content="http://example.com/2026/07/28/I2C/OLED%E7%94%B5%E8%B7%AF.png">
 <meta property="article:published_time" content="2026-07-28T07:34:55.000Z">
-<meta property="article:modified_time" content="2026-07-29T09:23:59.524Z">
+<meta property="article:modified_time" content="2026-07-29T09:57:54.080Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -140,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#i2c%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> I2C的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text"> 串口的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text"> I2C总线的物理层结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 电路结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E9%80%9A%E4%BF%A1%E5%B1%82%E5%8D%8F%E8%AE%AE%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text"> I2C总线的通信层协议架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%8F%91%E9%80%81%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text"> 信号发送方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.3.1.1.</span> <span class="nav-text"> 时钟信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.3.1.2.</span> <span class="nav-text"> 数据信号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text"> 通信流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%B7%E5%A7%8B%E4%BD%8Dstart%E4%B8%8E%E5%81%9C%E6%AD%A2%E4%BD%8Dstop"><span class="nav-number">1.3.3.</span> <span class="nav-text"> 起始位（START）与停止位（STOP）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%B8%8E%E5%BA%94%E7%AD%94acknack"><span class="nav-number">1.3.4.</span> <span class="nav-text"> 数据传输与应答（ACK&#x2F;NACK）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84i2c%E6%95%B0%E6%8D%AE%E5%B8%A7%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.5.</span> <span class="nav-text"> 完整的I2C数据帧结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#i2c%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> I2C模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E7%9A%84%E9%80%9F%E5%BA%A6%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text"> I2C的速度模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%8D%A0%E7%A9%BA%E6%AF%94"><span class="nav-number">2.2.</span> <span class="nav-text"> 时钟信号的占空比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BAi2c%E5%88%9D%E5%A7%8B%E5%8C%96io%E5%BC%95%E8%84%9A"><span class="nav-number">3.</span> <span class="nav-text"> 为I2C初始化IO引脚</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#io%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text"> IO引脚配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.2.</span> <span class="nav-text"> 编程接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">4.</span> <span class="nav-text"> 发送数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">5.</span> <span class="nav-text"> 接收数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#oled%E6%98%BE%E7%A4%BA%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text"> OLED显示器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3-2"><span class="nav-number">7.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E4%BD%BF%E8%83%BD%E6%8E%A5%E5%8F%A3"><span class="nav-number">7.1.</span> <span class="nav-text"> 初始化和使能接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="nav-number">7.2.</span> <span class="nav-text"> I2C初始化完整示例</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#i2c%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> I2C的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text"> 串口的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text"> I2C总线的物理层结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 电路结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E6%80%BB%E7%BA%BF%E7%9A%84%E9%80%9A%E4%BF%A1%E5%B1%82%E5%8D%8F%E8%AE%AE%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text"> I2C总线的通信层协议架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%8F%91%E9%80%81%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text"> 信号发送方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.3.1.1.</span> <span class="nav-text"> 时钟信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.3.1.2.</span> <span class="nav-text"> 数据信号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text"> 通信流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%B7%E5%A7%8B%E4%BD%8Dstart%E4%B8%8E%E5%81%9C%E6%AD%A2%E4%BD%8Dstop"><span class="nav-number">1.3.3.</span> <span class="nav-text"> 起始位（START）与停止位（STOP）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%B8%8E%E5%BA%94%E7%AD%94acknack"><span class="nav-number">1.3.4.</span> <span class="nav-text"> 数据传输与应答（ACK&#x2F;NACK）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84i2c%E6%95%B0%E6%8D%AE%E5%B8%A7%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.5.</span> <span class="nav-text"> 完整的I2C数据帧结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#i2c%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> I2C模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E7%9A%84%E9%80%9F%E5%BA%A6%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text"> I2C的速度模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%8D%A0%E7%A9%BA%E6%AF%94"><span class="nav-number">2.2.</span> <span class="nav-text"> 时钟信号的占空比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E7%9A%84%E8%AF%A6%E7%BB%86%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text"> I2C的详细内部结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E7%AB%AF"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 发送端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E7%AB%AF"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 接收端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sr1%E4%B8%8Esr2"><span class="nav-number">2.3.3.</span> <span class="nav-text"> SR1与SR2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sda%E6%8E%A7%E5%88%B6%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.4.</span> <span class="nav-text"> SDA控制寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scl%E6%8E%A7%E5%88%B6%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.5.</span> <span class="nav-text"> SCL控制寄存器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BAi2c%E5%88%9D%E5%A7%8B%E5%8C%96io%E5%BC%95%E8%84%9A"><span class="nav-number">3.</span> <span class="nav-text"> 为I2C初始化IO引脚</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#io%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text"> IO引脚配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.2.</span> <span class="nav-text"> 编程接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">4.</span> <span class="nav-text"> 发送数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B%E7%AE%80%E4%BB%8B"><span class="nav-number">4.1.</span> <span class="nav-text"> 发送数据的流程简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%89%E5%BE%85%E6%80%BB%E7%BA%BF%E7%A9%BA%E9%97%B2"><span class="nav-number">4.2.</span> <span class="nav-text"> 等待总线空闲</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">5.</span> <span class="nav-text"> 接收数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#oled%E6%98%BE%E7%A4%BA%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text"> OLED显示器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3-2"><span class="nav-number">7.</span> <span class="nav-text"> 编程接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E4%BD%BF%E8%83%BD%E6%8E%A5%E5%8F%A3"><span class="nav-number">7.1.</span> <span class="nav-text"> 初始化和使能接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2c%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="nav-number">7.2.</span> <span class="nav-text"> I2C初始化完整示例</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +225,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-29 17:23:59" itemprop="dateModified" datetime="2026-07-29T17:23:59+08:00">2026-07-29</time>
+      <time title="修改时间：2026-07-29 17:57:54" itemprop="dateModified" datetime="2026-07-29T17:57:54+08:00">2026-07-29</time>
     </span>
 
   
@@ -413,6 +414,26 @@ I2C外设在总线上的位置</p>
 <p>可选占空比（低电压比高电压）：2/1或16/9</p>
 </li>
 </ul>
+<h2 id="i2c的详细内部结构"><a class="markdownIt-Anchor" href="#i2c的详细内部结构"></a> I2C的详细内部结构</h2>
+<p><a id = "I2C结构"></a></p>
+<p><img src="I2C.png" alt="I2C的内部结构" /></p>
+<h3 id="发送端"><a class="markdownIt-Anchor" href="#发送端"></a> 发送端</h3>
+<p>将待发送的数据写入<strong>发送数据寄存器</strong>中，I2C模块会将其移入移位寄存器中，再通过移位寄存器按位<strong>从高到低</strong>将数据发送出去。</p>
+<h3 id="接收端"><a class="markdownIt-Anchor" href="#接收端"></a> 接收端</h3>
+<p>将待接收的数据按位<strong>从高到低</strong>移入移位寄存器中，I2C模块会将其写入<strong>接收数据寄存器</strong>中，再从接收数据寄存器中读出数据。</p>
+<h3 id="sr1与sr2"><a class="markdownIt-Anchor" href="#sr1与sr2"></a> SR1与SR2</h3>
+<ul>
+<li>
+<p>含义：Status Register,状态寄存器。SR1即状态寄存器1，SR2即状态寄存器2.</p>
+</li>
+<li>
+<p>作用：存储有关I2C运行状态的标志位。</p>
+</li>
+</ul>
+<h3 id="sda控制寄存器"><a class="markdownIt-Anchor" href="#sda控制寄存器"></a> SDA控制寄存器</h3>
+<p>可分别向其中的START\STOP\ACK位写1，使I2C发送开始位\结束位\ACK的标志。</p>
+<h3 id="scl控制寄存器"><a class="markdownIt-Anchor" href="#scl控制寄存器"></a> SCL控制寄存器</h3>
+<p>用于设置I2C通信的模式、占空比以及波特率。</p>
 <h1 id="为i2c初始化io引脚"><a class="markdownIt-Anchor" href="#为i2c初始化io引脚"></a> 为I2C初始化IO引脚</h1>
 <h2 id="io引脚配置"><a class="markdownIt-Anchor" href="#io引脚配置"></a> IO引脚配置</h2>
 <p><img src="IO%E5%BC%95%E8%84%9A.png" alt="I2C对应的IO引脚" /><br />
@@ -420,6 +441,32 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 <h2 id="编程接口"><a class="markdownIt-Anchor" href="#编程接口"></a> 编程接口</h2>
 <p>详见<a href="#%E5%88%9D%E5%A7%8B%E5%8C%96">编程接口</a>的相关内容</p>
 <h1 id="发送数据"><a class="markdownIt-Anchor" href="#发送数据"></a> 发送数据</h1>
+<p><a href="#I2C%E7%BB%93%E6%9E%84">I2C结构图</a></p>
+<h2 id="发送数据的流程简介"><a class="markdownIt-Anchor" href="#发送数据的流程简介"></a> 发送数据的流程简介</h2>
+<ol>
+<li>
+<p>向SDA控制寄存器中的START位写1，I2C模块会拉低SDA电平，表示起始位。</p>
+</li>
+<li>
+<p>发送七位地址+一位方向位，与正常发送的流程相同。</p>
+</li>
+<li>
+<p>等待从机ACK应答（通过读取SR中的标志位）。</p>
+</li>
+<li>
+<p>正常发送一个字节的数据。</p>
+</li>
+<li>
+<p>等待从机ACK应答（通过读取SR中的标志位）。</p>
+</li>
+<li>
+<p>重复4和5，直到发送完成。</p>
+</li>
+<li>
+<p>向SDA控制寄存器中的STOP位写1，I2C模块会拉高SDA电平，表示结束位。</p>
+</li>
+</ol>
+<h2 id="等待总线空闲"><a class="markdownIt-Anchor" href="#等待总线空闲"></a> 等待总线空闲</h2>
 <h1 id="接收数据"><a class="markdownIt-Anchor" href="#接收数据"></a> 接收数据</h1>
 <h1 id="oled显示器"><a class="markdownIt-Anchor" href="#oled显示器"></a> OLED显示器</h1>
 <p><img src="OLED%E7%94%B5%E8%B7%AF.png" alt="OLED电路连接图" /><br />
