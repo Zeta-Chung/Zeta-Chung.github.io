@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E7%94%B5%E8%B7%AF%E4%BE%8B%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/2026/05/25/%E5%AE%9A%E6%97%B6%E5%99%A8/%E6%9E%81%E6%80%A7%E9%80%89%E6%8B%A9.png">
 <meta property="article:published_time" content="2026-05-25T11:30:41.000Z">
-<meta property="article:modified_time" content="2026-08-14T07:30:02.533Z">
+<meta property="article:modified_time" content="2026-08-16T08:57:51.376Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -258,7 +258,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-08-14 15:30:02" itemprop="dateModified" datetime="2026-08-14T15:30:02+08:00">2026-08-14</time>
+      <time title="修改时间：2026-08-16 16:57:51" itemprop="dateModified" datetime="2026-08-16T16:57:51+08:00">2026-08-16</time>
     </span>
 
   
@@ -350,8 +350,6 @@
 <h3 id="预分频器给信号降低频率实际降频系数-psc设定的降频值-1"><a class="markdownIt-Anchor" href="#预分频器给信号降低频率实际降频系数-psc设定的降频值-1"></a> 预分频器：给信号降低频率，实际降频系数 = PSC（设定的降频值） + 1</h3>
 <h3 id="自动重装寄存器设置定时周期arr1"><a class="markdownIt-Anchor" href="#自动重装寄存器设置定时周期arr1"></a> 自动重装寄存器：设置定时周期（ARR+1）。</h3>
 <h3 id="计数器根据设定的周期计数每接受一次信号计数一次周期满后溢出重新计数"><a class="markdownIt-Anchor" href="#计数器根据设定的周期计数每接受一次信号计数一次周期满后溢出重新计数"></a> 计数器：根据设定的周期计数，每接受一次信号计数一次，周期满后溢出重新计数。</h3>
-<ul>
-<li>
 <p>计数方法：上计数、下计数、中心对齐</p>
 <ol>
 <li>
@@ -375,8 +373,9 @@
 </ol>
 </li>
 </ol>
-</li>
-</ul>
+<blockquote>
+<p>分辨率：定时器能够分辨的最小时间间隔，由定时器的计数频率和计数位数决定。例如：一个16位的定时器，如果计数频率为1MHz，那么其分辨率就是1微秒。分辨率越高，计数位数越大。</p>
+</blockquote>
 <h3 id="时钟分割设置时钟分割系数"><a class="markdownIt-Anchor" href="#时钟分割设置时钟分割系数"></a> 时钟分割：设置时钟分割系数，</h3>
 <ul>
 <li>只有高级定时器才需要配置，通常设置为0（不分割）。</li>
@@ -446,8 +445,12 @@
 <p>通过设置比较寄存器的值，当计数器的值与比较寄存器的值相等时，定时器会触发一个事件（例如改变输出引脚的状态），从而实现<strong>精确的时间控制</strong>。这种机制可以用于生成定时信号、PWM波形等。</p>
 <h2 id="pwmpulse-width-modulation脉冲宽度调制"><a class="markdownIt-Anchor" href="#pwmpulse-width-modulation脉冲宽度调制"></a> PWM（Pulse Width Modulation）（脉冲宽度调制）</h2>
 <h3 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h3>
-<p>PWM是一种周期性信号，其<strong>频率固定</strong>，但<strong>高电平持续时间（占空比）可调</strong>。通过改变占空比，可以调节信号的输出幅度，实现对电机速度、LED亮度等的控制。<br />
-<img src="pwm.png" alt="pwm原理" /></p>
+<p>PWM是一种周期性信号，其<strong>频率固定</strong>，但<strong>高电平持续时间占整个周期的比例（占空比）可调</strong>。通过改变占空比，可以调节信号的输出幅度，实现对电机速度、LED亮度等的控制。</p>
+<blockquote>
+<p>调节占空比实际调节的是高电平的持续时间（脉冲宽度），占空比由脉宽和周期决定，公式为：<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>占空比</mtext><mo>=</mo><mfrac><mtext>脉冲宽度</mtext><mtext>周期</mtext></mfrac><mo>×</mo><mn>100</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex"> \text{占空比} = \frac{\text{脉冲宽度}}{\text{周期}} \times 100\% </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">占空比</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">周期</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">脉冲宽度</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">100%</span></span></span></span></span></p>
+</p>
+</blockquote>
+<p><img src="pwm.png" alt="pwm原理" /></p>
 <h3 id="具体方法"><a class="markdownIt-Anchor" href="#具体方法"></a> 具体方法</h3>
 <p><img src="pwm%E8%BE%93%E5%87%BA.png" alt="pwm输出" /><br />
 如图所示，将ARR设定为9，则计数器从0计数到9，形成一个周期为10的PWM信号。通过调整比较寄存器的值（例如设置为3），计数达到3时，改变输出引脚的电平状态，从而实现不同的占空比。</p>
@@ -873,9 +876,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
-              <a href="/tags/STM32/" rel="tag"># STM32</a>
           </div>
 
         
