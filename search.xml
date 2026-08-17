@@ -1996,16 +1996,16 @@ NVIC模块图</p>
 </blockquote>
 <h2 id="配置pwm的全流程图示"><a class="markdownIt-Anchor" href="#配置pwm的全流程图示"></a> 配置PWM的全流程图示</h2>
 <pre><code class="highlight mermaid">flowchart TB
-    A([开始配置PWM输出]) --&gt; B[使能定时器时钟和对应GPIO时钟]
-    B --&gt; C[GPIO初始化为复用推挽输出AF_PP]
-    C --&gt; D[配置时基：设置PSC预分频和ARR周期]
-    D --&gt; E[配置输出比较：PWM模式1、输出使能、高电平有效]
-    E --&gt; F[设置CCRx比较值，确定占空比]
-    F --&gt; G[调用TIM_OCxInit初始化输出比较通道]
-    G --&gt; H[使能预加载TIM_OCxPreloadConfig]
-    H --&gt; I[TIM_CtrlPWMOutputs打开PWM总输出&lt;br/&gt;高级定时器必须，通用定时器可省略]
+
+    A[使能定时器和对应GPIO时钟] --&gt; C[GPIO初始化]
+    C --&gt; D[配置时基单元]
+    D --&gt; E[配置输出比较]
+    E --&gt; F[设置CCRx比较值以确定占空比]
+    F --&gt; G[初始化输出比较通道]
+    G --&gt; H[使能预加载]
+    H --&gt; I[打开PWM总输出&lt;br/&gt;高级定时器必须，通用定时器可省略]
     I --&gt; J[TIM_Cmd启动定时器]
-    J --&gt; K([输出PWM信号，运行时可用TIM_SetComparex调整占空比])</code></pre>
+    J --&gt; K([输出PWM信号；运行时可用TIM_SetComparex调整占空比])</code></pre>
 <h2 id="工程示例pwm实现led呼吸灯"><a class="markdownIt-Anchor" href="#工程示例pwm实现led呼吸灯"></a> 工程示例：PWM实现LED呼吸灯</h2>
 <h3 id="实现效果"><a class="markdownIt-Anchor" href="#实现效果"></a> 实现效果</h3>
 <p>两颗LED灯交替亮灭，亮度呈现呼吸灯效果，即亮度逐渐增强到最大值，然后逐渐减弱到最小值，形成一个完整的呼吸周期。且两颗LED亮度变化的相位差为180°，即一颗LED亮度增强时，另一颗LED亮度减弱。</p>
