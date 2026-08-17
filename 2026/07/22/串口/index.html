@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/USARTyinjiao.png">
 <meta property="og:image" content="http://example.com/2026/07/22/%E4%B8%B2%E5%8F%A3/USART_IO.png">
 <meta property="article:published_time" content="2026-07-22T01:44:10.000Z">
-<meta property="article:modified_time" content="2026-08-14T07:29:49.269Z">
+<meta property="article:modified_time" content="2026-08-17T07:02:55.409Z">
 <meta property="article:author" content="ZetaChung">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="学习笔记">
@@ -253,7 +253,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-08-14 15:29:49" itemprop="dateModified" datetime="2026-08-14T15:29:49+08:00">2026-08-14</time>
+      <time title="修改时间：2026-08-17 15:02:55" itemprop="dateModified" datetime="2026-08-17T15:02:55+08:00">2026-08-17</time>
     </span>
 
   
@@ -434,7 +434,7 @@ USART结构</p>
 </li>
 <li>
 <p>在硬件上，全双工需要<strong>两条</strong>独立的数据线：</p>
-</li>
+<ol>
 <li>
 <p>TX（发送线）：专门负责本机往外发送数据。</p>
 </li>
@@ -445,7 +445,7 @@ USART结构</p>
 <blockquote>
 <p>RX引脚全双工模式时，GPIO一般配置为上拉输入，使得引脚悬空时默认电压为高电压，防止外界电磁波干扰系统</p>
 </blockquote>
-<ol start="3">
+</li>
 <li>
 <p>表现：数据从 TX 流出，同时数据从 RX 流入，一进一出，互不干扰。</p>
 </li>
@@ -460,12 +460,14 @@ USART结构</p>
 </li>
 <li>
 <p>在硬件上，半双工只有<strong>一条数据线</strong>，或者<strong>两条线</strong>在不同时间段<strong>交替使用</strong>：</p>
-</li>
+<ol>
 <li>
 <p>单总线模式：只有一根数据线。发送和接收都通过这同一根线。</p>
 </li>
 <li>
 <p>切换方向：当一个设备在发送时，另一个设备必须将它的引脚切换为接收状态；发送完后，再切换回来。</p>
+</li>
+</ol>
 </li>
 <li>
 <p>表现：数据要么从左流到右，要么从右流到左，但不可能同时发生。</p>
@@ -492,7 +494,7 @@ USART结构</p>
 </li>
 <li>
 <p>使能AFIO：</p>
-</li>
+<ol>
 <li>
 <p>在 STM32 中，重映射功能通常由 AFIO（Alternate Function I/O）模块控制，因此在使用重映射前，需要先开启 AFIO 的时钟。</p>
 </li>
@@ -500,17 +502,17 @@ USART结构</p>
 <p>相关接口：</p>
 </li>
 </ol>
-  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);</span><br></pre></td></tr></table></figure>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);</span><br></pre></td></tr></table></figure>
 <ol start="3">
-<li>
-<p>作用：开启 AFIO 时钟后，GPIO 的重映射功能才会真正生效；如果没有使能 AFIO，重映射配置可能不会产生实际效果。</p>
+<li>作用：开启 AFIO 时钟后，GPIO 的重映射功能才会真正生效；如果没有使能 AFIO，重映射配置可能不会产生实际效果。</li>
+</ol>
 </li>
 <li>
 <p>相关接口说明请见<a href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3">编程接口</a>。</p>
 </li>
 <li>
 <p>注意事项：</p>
-</li>
+<ol>
 <li>
 <p>重映射前，要先确认对应的 GPIO 端口和引脚已经配置为复用功能。</p>
 </li>
@@ -519,6 +521,8 @@ USART结构</p>
 </li>
 <li>
 <p>如果使用的是全双工模式，要保证发送和接收两根引脚都已经完成正确重映射和配置。</p>
+</li>
+</ol>
 </li>
 </ol>
 <h1 id="发送数据"><a class="markdownIt-Anchor" href="#发送数据"></a> 发送数据</h1>
@@ -879,9 +883,9 @@ VCC引脚 --&gt;|在开发板有电时| 不接</code></pre>
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/STM32/" rel="tag"># STM32</a>
               <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
               <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
           </div>
 
         
