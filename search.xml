@@ -6426,7 +6426,7 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 <h3 id="pwm控制舵机"><a class="markdownIt-Anchor" href="#pwm控制舵机"></a> PWM控制舵机</h3>
 <ol>
 <li>
-<p>PWM信号的<strong>周期为20ms</strong>（频率为50Hz），脉宽在1ms-2ms之间变化，<strong>脉宽</strong>越大，产生的等效电压就越大，舵机转动的角度越大。</p>
+<p>PWM信号的<strong>周期为20ms</strong>（频率为50Hz），脉宽在0.5-2.5ms之间变化，<strong>脉宽</strong>越大，产生的等效电压就越大，舵机转动的角度越大。</p>
 </li>
 <li>
 <p>以180度角度伺服为例，那么对应的控制关系是这样的：</p>
