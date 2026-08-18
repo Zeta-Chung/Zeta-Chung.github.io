@@ -5292,6 +5292,50 @@ VCC引脚 --&gt;|在开发板有电时| 不接</code></pre>
 </li>
 </ul>
 <p>在最简单的查询方式中，发送和接收都可以通过轮询状态标志完成。发送时通常查询<code>TXE</code>，接收时通常查询<code>RXNE</code>；如果需要确认整帧已经从Tx引脚发送完毕，则应查询<code>TC</code>。</p>
+<h3 id="usart-中断配置"><a class="markdownIt-Anchor" href="#usart-中断配置"></a> USART 中断配置</h3>
+<p><code>void USART_ITConfig(USART_TypeDef *USARTx, uint16_t USART_IT, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>作用：使能或关闭指定 USART 的中断功能。通过中断方式可以在数据发送或接收完成时，自动触发中断服务程序，避免轮询状态标志的方式，提高程序效率。</p>
+</li>
+<li>
+<p>参数：</p>
+<ul>
+<li>
+<p>USARTx：串口名称，可选<code>USART1</code>、<code>USART2</code>和<code>USART3</code>。</p>
+</li>
+<li>
+<p>USART_IT：需要配置的中断类型。常用中断如下：</p>
+<ul>
+<li>
+<p><code>USART_IT_TXE</code>：发送数据寄存器空中断，当发送数据寄存器为空时触发。</p>
+</li>
+<li>
+<p><code>USART_IT_TC</code>：发送完成中断，当整帧数据发送完毕时触发。</p>
+</li>
+<li>
+<p><code>USART_IT_RXNE</code>：接收数据寄存器非空中断，当接收到新数据时触发。</p>
+</li>
+<li>
+<p><code>USART_IT_ORE</code>：过载错误中断，当发生过载错误时触发。</p>
+</li>
+<li>
+<p><code>USART_IT_NE</code>：噪声错误中断，当发生噪声错误时触发。</p>
+</li>
+<li>
+<p><code>USART_IT_FE</code>：帧错误中断，当发生帧错误时触发。</p>
+</li>
+<li>
+<p><code>USART_IT_PE</code>：奇偶校验错误中断，当发生奇偶校验错误时触发。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>NewState：中断状态。传入<code>ENABLE</code>使能指定中断，传入<code>DISABLE</code>关闭指定中断。</p>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="gpio-afio-配置"><a class="markdownIt-Anchor" href="#gpio-afio-配置"></a> GPIO / AFIO 配置</h2>
 <h3 id="使能-afio-时钟"><a class="markdownIt-Anchor" href="#使能-afio-时钟"></a> 使能 AFIO 时钟</h3>
 <p><code>void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)</code></p>
@@ -6466,7 +6510,7 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 <p>低于0.5ms的脉宽，舵机不会转动；高于2.5ms的脉宽，舵机会继续转动，但会损坏舵机。</p>
 </blockquote>
 <ol start="3">
-<li>舵机的位置等级一般有1024个，那么，如果舵机的有效角度范围为180度的话，其控制的角度精度是可以达到180/1024度约0.18度。可通过改变PWM的<strong>分辨率</strong>（通过调整预分频器和自动重装寄存器的值）来实现更高的角度精度。</li>
+<li>舵机的位置等级一般有1024个，那么，如果舵机的有效角度范围为180度的话，其控制的角度精度是可以达到180/1024=约0.18度。可通过改变PWM的<strong>分辨率</strong>（通过调整预分频器和自动重装寄存器的值）来实现更高的角度精度。</li>
 </ol>
 <h2 id="思考题一"><a class="markdownIt-Anchor" href="#思考题一"></a> 思考题一</h2>
 <ol>
