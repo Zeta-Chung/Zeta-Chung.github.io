@@ -6464,7 +6464,7 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
     <content><![CDATA[<p>本文档记录了第二轮招新题的完成过程，自主实现舵机云台的各挑战点</p>
 <span id="more"></span>
 <h1 id="挑战点一使用pwm驱动舵机"><a class="markdownIt-Anchor" href="#挑战点一使用pwm驱动舵机"></a> 挑战点一：使用PWM驱动舵机</h1>
-<h2 id="舵机控制"><a class="markdownIt-Anchor" href="#舵机控制"></a> 舵机控制</h2>
+<h2 id="sg90舵机控制"><a class="markdownIt-Anchor" href="#sg90舵机控制"></a> SG90舵机控制</h2>
 <h3 id="sg-90舵机的工作原理"><a class="markdownIt-Anchor" href="#sg-90舵机的工作原理"></a> SG 90舵机的工作原理</h3>
 <p>舵机内部有一个基准电路，产生<strong>周期为20ms</strong>，<strong>宽度为1.5ms</strong>的基准信号，将获得的直流偏置电压与电位器的电压比较，获得<strong>电压差</strong>输出。最后，电压差的正负输出到电机驱动芯片决定电机的正反转。</p>
 <h3 id="pwm控制舵机"><a class="markdownIt-Anchor" href="#pwm控制舵机"></a> PWM控制舵机</h3>
@@ -6555,74 +6555,271 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 </ol>
 <h2 id="思考题四"><a class="markdownIt-Anchor" href="#思考题四"></a> 思考题四</h2>
 <p>72MHz <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>÷</mo></mrow><annotation encoding="application/x-tex"> \div </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">÷</span></span></span></span> (PSC+1) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>÷</mo></mrow><annotation encoding="application/x-tex"> \div </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">÷</span></span></span></span> (ARR+1) = 50Hz ，其中PSC为预分频器，ARR为自动重装寄存器。可设置PSC = 71，ARR = 19999。</p>
-<h2 id="思考题五按键外部中断完整触发流程"><a class="markdownIt-Anchor" href="#思考题五按键外部中断完整触发流程"></a> 思考题五：按键外部中断完整触发流程</h2>
-<h3 id="2-外部中断的完整触发流程"><a class="markdownIt-Anchor" href="#2-外部中断的完整触发流程"></a> 2. 外部中断的完整触发流程</h3>
+<h2 id="思考题五按键外部中断配置步骤"><a class="markdownIt-Anchor" href="#思考题五按键外部中断配置步骤"></a> 思考题五：按键外部中断配置步骤</h2>
+<blockquote>
+<p>按键连接PA1，配置为上升沿触发中断，即按键松开时中断</p>
+</blockquote>
 <ol>
-<li>按键被按下时，GPIO电平从高变低（或者从低变高）。</li>
-<li>对应的GPIO引脚连接到某条EXTI中断线，例如PA0对应EXTI0、PC13对应EXTI13等。</li>
-<li>EXTI外设持续监视该引脚的电平变化，并在满足触发条件时置位对应的中断挂起标志位。</li>
-<li>如果该中断线被配置为允许中断，并且NVIC中断优先级允许，那么NVIC会向CPU发出中断请求。</li>
-<li>CPU响应中断，跳转到对应的中断服务函数，例如EXTI0_IRQHandler()。</li>
-<li>程序在ISR中读取按键状态、延时消抖、清除中断标志位，最后完成按键动作处理。</li>
+<li>
+<p>开启GPIOA和AFIO时钟</p>
+</li>
+<li>
+<p>初始化PA1引脚，配置为上拉输入模式</p>
+</li>
+<li>
+<p>初始化EXTI</p>
+<ol>
+<li>
+<p>通过<code>GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource1)</code>将PA1映射到EXTI1中断线</p>
+</li>
+<li>
+<p>初始化EXTI结构体，设置中断线为EXTI_Line1，触发方式为上升沿触发，模式为中断模式，并且使能。</p>
+</li>
 </ol>
-<h3 id="3-全套配置步骤"><a class="markdownIt-Anchor" href="#3-全套配置步骤"></a> 3. 全套配置步骤</h3>
-<h4 id="1开启gpio和afio时钟"><a class="markdownIt-Anchor" href="#1开启gpio和afio时钟"></a> （1）开启GPIO和AFIO时钟</h4>
-<p>STM32中，GPIO和外部中断相关的AFIO时钟需要先使能，否则外设无法工作。</p>
+</li>
+<li>
+<p>初始化NVIC结构体，设置中断通道为EXTI1_IRQn，优先级为0，子优先级为0，并且使能。</p>
+</li>
+<li>
+<p>编写中断服务函数<code>EXTI1_IRQHandler</code>，执行舵机转动功能。</p>
+</li>
+</ol>
+<h1 id="挑战点二使用蓝牙模块进行信息的发送和接收"><a class="markdownIt-Anchor" href="#挑战点二使用蓝牙模块进行信息的发送和接收"></a> 挑战点二：使用蓝牙模块进行信息的发送和接收</h1>
+<h2 id="hc05蓝牙模块"><a class="markdownIt-Anchor" href="#hc05蓝牙模块"></a> HC05蓝牙模块</h2>
+<h3 id="功能"><a class="markdownIt-Anchor" href="#功能"></a> 功能</h3>
+<p>通过串口通信，使用UART协议在单片机和蓝牙设备之间进行<strong>无线</strong>数据传输.</p>
+<h3 id="引脚连接"><a class="markdownIt-Anchor" href="#引脚连接"></a> 引脚连接</h3>
 <ul>
-<li>GPIO端口时钟：开启按键对应GPIOx端口的时钟。</li>
-<li>AFIO时钟：如果需要配置中断线映射（如将某个GPIO映射到特定EXTI线），要使能AFIO时钟。</li>
+<li>STATE：状态指示引脚，输出高电平表示模块已连接，输出低电平表示模块未连接。</li>
 </ul>
-<h4 id="2配置gpio为输入模式"><a class="markdownIt-Anchor" href="#2配置gpio为输入模式"></a> （2）配置GPIO为输入模式</h4>
-<p>将按键连接的GPIO配置为输入模式，并根据硬件电路选择上拉/下拉。</p>
-<p>例如：</p>
+<blockquote>
+<p>不能接电源</p>
+</blockquote>
 <ul>
-<li>若按键接地并且外部上拉，则配置GPIO为“上拉输入”。</li>
-<li>若按键接VCC并且外部下拉，则配置GPIO为“下拉输入”。</li>
+<li>
+<p>VCC：电源引脚，连接到3.3V或5V电源。</p>
+</li>
+<li>
+<p>GND：地引脚，连接到电源地。</p>
+</li>
+<li>
+<p>TXE：数据发送引脚，用于向蓝牙设备发送数据。</p>
+</li>
+<li>
+<p>RXD：数据接收引脚，用于接收蓝牙设备发送的数据。</p>
+</li>
+<li>
+<p>EN(或KEY)：在模块上电前或上电时，将EN引脚接到高电平，模块启动后就会<strong>进入AT模式</strong>。如果悬空或接地，模块则进入正常的数据透传模式。</p>
+</li>
 </ul>
-<p>这样使GPIO在空闲状态具有稳定电平，避免浮空。</p>
-<h4 id="3选择中断触发方式"><a class="markdownIt-Anchor" href="#3选择中断触发方式"></a> （3）选择中断触发方式</h4>
-<p>在EXTI配置中设置触发边沿：</p>
+<blockquote>
+<p>一般使用时接中间四个引脚即可</p>
+</blockquote>
+<h3 id="使用模式"><a class="markdownIt-Anchor" href="#使用模式"></a> 使用模式</h3>
 <ul>
-<li>下降沿触发：适合按键接地、上拉输入的场景。</li>
-<li>上升沿触发：适合按键接VCC、下拉输入的场景。</li>
-<li>双边沿触发：适合同时检测按下和释放动作。</li>
-</ul>
-<h4 id="4配置gpio与exti的映射关系"><a class="markdownIt-Anchor" href="#4配置gpio与exti的映射关系"></a> （4）配置GPIO与EXTI的映射关系</h4>
-<p>每个GPIO引脚都对应一条EXTI中断线。需要通过AFIO的SYSCFG_EXTILineConfig()函数将某个GPIO端口映射到对应的EXTI线。</p>
-<p>例如：</p>
+<li>
+<p>工作模式（透传模式）：用于数据传输，模块会将接收到的数据直接发送出去。</p>
 <ul>
-<li>PA0 对应 EXTI0</li>
-<li>PB1 对应 EXTI1</li>
-<li>PC13 对应 EXTI13</li>
+<li>
+<p>主模式：用于主动连接其他蓝牙设备，模块会扫描周围的蓝牙设备并尝试连接。</p>
+</li>
+<li>
+<p>从模式（默认）：用于被动等待其他蓝牙设备的连接请求，模块会保持可被发现状态，等待连接。</p>
+</li>
 </ul>
-<p>也就是说，哪一个引脚要参与外部中断，就把该GPIO端口和对应EXTI线绑定起来。</p>
-<h4 id="5初始化exti外设"><a class="markdownIt-Anchor" href="#5初始化exti外设"></a> （5）初始化EXTI外设</h4>
-<p>配置EXTI的相关参数，包括：</p>
+</li>
+<li>
+<p>AT指令模式：用于配置模块参数（蓝牙名称、波特率、密码等），模块会对接收到的AT指令进行响应。</p>
 <ul>
-<li>选择中断线</li>
-<li>允许该中断线</li>
-<li>选择触发方式（上升沿/下降沿/双边沿）</li>
-<li>使能中断请求</li>
-</ul>
-<p>这一步的核心作用是：当引脚产生指定边沿变化时，EXTI就会向NVIC请求中断。</p>
-<h4 id="6配置nvic"><a class="markdownIt-Anchor" href="#6配置nvic"></a> （6）配置NVIC</h4>
-<p>打开中断控制器中的对应中断通道，例如：</p>
+<li>
+<p>默认：波特率为9600，名称为HC-05，密码为1234.</p>
+</li>
+<li>
+<p>AT模式开启方法：</p>
+<ol>
+<li>
+<p>将USB转TTL模块与HC05模块连接</p>
+</li>
+<li>
+<p>按住HC05模块上的按键<strong>不放</strong>或给EN引脚接持续高电平(3V3)，再将转串口模块插入电脑USB接口</p>
+</li>
+<li>
+<p>当HC05上的指示灯由快闪转变为慢闪，说明AT模式开启成功，此时可以松开按键。</p>
+</li>
+<li>
+<p>打开串口调试软件配置串口参数：将串口参数设置为：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>波特率</td>
+<td>38400（HC-05 AT模式下默认波特率）</td>
+</tr>
+<tr>
+<td>数据位</td>
+<td>8</td>
+</tr>
+<tr>
+<td>停止位</td>
+<td>1</td>
+</tr>
+<tr>
+<td>校验位</td>
+<td>None（无）</td>
+</tr>
+<tr>
+<td>流控</td>
+<td>None（无）</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>选择正确的COM口，打开串口。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>常见的AT指令</p>
 <ul>
-<li>EXTI0_IRQn</li>
-<li>EXTI1_IRQn</li>
-<li>EXTI13_IRQn</li>
+<li>基础指令</li>
 </ul>
-<p>并给其设置合适的优先级。这样当EXTI触发时，CPU才会真正响应中断。</p>
-<h4 id="7编写中断服务函数"><a class="markdownIt-Anchor" href="#7编写中断服务函数"></a> （7）编写中断服务函数</h4>
-<p>在程序中编写对应的中断回调函数，例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI0_IRQHandler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (EXTI_GetITStatus(EXTI_Line0) != RESET)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 读取按键状态</span></span><br><span class="line">        <span class="comment">// 去抖动处理</span></span><br><span class="line">        <span class="comment">// 执行功能逻辑</span></span><br><span class="line">        EXTI_ClearITPendingBit(EXTI_Line0);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这一段代码通常包含：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT</td>
+<td>测试连接</td>
+<td>AT → OK</td>
+</tr>
+<tr>
+<td>AT+RESET</td>
+<td>软复位模块</td>
+<td>AT+RESET → OK</td>
+</tr>
+<tr>
+<td>AT+ORGL</td>
+<td>恢复出厂默认设置</td>
+<td>AT+ORGL → OK</td>
+</tr>
+<tr>
+<td>AT+VERSION?</td>
+<td>查询固件版本</td>
+<td>AT+VERSION? → +VERSION:2.0-20100601</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>判断当前中断是否来自该EXTI线；</li>
-<li>读取GPIO状态，确认按键是否真的按下；</li>
-<li>软件消抖处理；</li>
-<li>清除中断挂起位，避免重复触发。</li>
+<li>核心配置指令</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT+NAME=&lt;新名称&gt;</td>
+<td>设置设备名称</td>
+<td>AT+NAME=My_BT → OK</td>
+</tr>
+<tr>
+<td>AT+PSWD=&lt;新密码&gt;</td>
+<td>设置配对密码</td>
+<td>AT+PSWD=0000 → OK</td>
+</tr>
+<tr>
+<td>AT+UART=&lt;波特率&gt;,0,0</td>
+<td>设置串口参数</td>
+<td>AT+UART=115200,0,0 → OK</td>
+</tr>
+<tr>
+<td>AT+ROLE=&lt;角色&gt;</td>
+<td>设置主/从模式</td>
+<td>AT+ROLE=0 → OK</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>查询指令</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT+NAME?</td>
+<td>查询设备名称</td>
+<td>AT+NAME? → +NAME:My_BT</td>
+</tr>
+<tr>
+<td>AT+PSWD?</td>
+<td>查询配对密码</td>
+<td>AT+PSWD? → +PSWD:0000</td>
+</tr>
+<tr>
+<td>AT+UART?</td>
+<td>查询串口参数</td>
+<td>AT+UART? → +UART:115200,0,0</td>
+</tr>
+<tr>
+<td>AT+ROLE?</td>
+<td>查询主从模式</td>
+<td>AT+ROLE? → +ROLE:0</td>
+</tr>
+<tr>
+<td>AT+ADDR?</td>
+<td>查询MAC地址</td>
+<td>AT+ADDR? → +ADDR:0018:E5:123456</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意：所有指令都以 AT 开头，加号不能用空格替代，发送时必须加回车换行（即勾选“发送新行”）。</p>
+</blockquote>
+<blockquote>
+<p>注意：如果发送查询指令（带 ?），模块会返回当前值。如果发送设置指令（带 =），模块返回 OK 表示设置成功。</p>
+</blockquote>
+<h3 id="遇到的问题与解决方法"><a class="markdownIt-Anchor" href="#遇到的问题与解决方法"></a> 遇到的问题与解决方法</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">问题</th>
+<th style="text-align:center">原因</th>
+<th style="text-align:center">方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">蓝牙每发送一个字符，舵机会连续转动两次</td>
+<td style="text-align:center">在USART中断处理函数中调用了太多功能，导致发送过快时出现信号积压，会识别到两个信号</td>
+<td style="text-align:center">在中断处理函数中仅接收字符，在主循环中实现舵机转动</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
   </entry>
   <entry>
