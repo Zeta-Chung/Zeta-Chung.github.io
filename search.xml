@@ -6631,9 +6631,10 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 <li>
 <p>AT指令模式：用于配置模块参数（蓝牙名称、波特率、密码等），模块会对接收到的AT指令进行响应。</p>
 <ul>
-<li>
-<p>默认：波特率为9600，名称为HC-05，密码为1234.</p>
-</li>
+<li>默认：波特率为9600，名称为HC-05，密码为1234.</li>
+</ul>
+<p><a id="AT"></a></p>
+<ul>
 <li>
 <p>AT模式开启方法：</p>
 <ol>
@@ -6814,12 +6815,78 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">蓝牙每发送一个字符，舵机会连续转动两次</td>
-<td style="text-align:center">在USART中断处理函数中调用了太多功能，导致发送过快时出现信号积压，会识别到两个信号</td>
+<td style="text-align:center">蓝牙快速发送多字符时舵机会乱转</td>
+<td style="text-align:center">在USART中断处理函数中调用了太多功能，导致发送过快时出现信号积压，会识别到多个信号</td>
 <td style="text-align:center">在中断处理函数中仅接收字符，在主循环中实现舵机转动</td>
 </tr>
 </tbody>
 </table>
+<h3 id="思考题一-2"><a class="markdownIt-Anchor" href="#思考题一-2"></a> 思考题一</h3>
+<ol>
+<li>
+<p>GPIO直连发送电信号，受导线、环境等影响较大；HC05发送电磁波，中长距离抗干扰能力更强。</p>
+</li>
+<li>
+<p>如表格</p>
+<table>
+<thead>
+<tr>
+<th>外设</th>
+<th>收数据引脚</th>
+<th>发数据引脚</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART1</td>
+<td>PA10或PB7（重映射）</td>
+<td>PA9或PB6（重映射）</td>
+</tr>
+<tr>
+<td>USART2</td>
+<td>PA3</td>
+<td>PA2</td>
+</tr>
+<tr>
+<td>USART3</td>
+<td>PB11</td>
+<td>PB10</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<h3 id="思考题二-2"><a class="markdownIt-Anchor" href="#思考题二-2"></a> 思考题二</h3>
+<ol>
+<li>
+<p>见<a href="#AT">AT模式开启方法</a></p>
+</li>
+<li>
+<p>接线注意事项：</p>
+<ol>
+<li>
+<p>设备的Rx引脚接另一设备的Tx引脚</p>
+</li>
+<li>
+<p>所有模块的GND共地</p>
+</li>
+</ol>
+</li>
+<li>
+<ul>
+<li>
+<p>接收中断相比主循环轮询的优势：确定RxNE标志位置位后才执行，而不用反复查看标志位，响应更快且效率更高。</p>
+</li>
+<li>
+<p>中断服务函数缓存数据的方法：读取数据，定义一个变量来存储。解析数据的方法：利用有关函数将存储的数据转化为角度。</p>
+</li>
+</ul>
+<blockquote>
+<p>本人的程序里，解析数据和执行动作的延迟较高，如果放在中断里面会出问题，于是放在主循环了。</p>
+</blockquote>
+</li>
+<li></li>
+</ol>
 ]]></content>
   </entry>
   <entry>
