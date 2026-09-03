@@ -1451,6 +1451,9 @@
 <h1 id="中断的概念"><a class="markdownIt-Anchor" href="#中断的概念"></a> 中断的概念</h1>
 <h2 id="中断的简单概念"><a class="markdownIt-Anchor" href="#中断的简单概念"></a> 中断的简单概念</h2>
 <p>在<strong>常规程序(无限循环部分)</strong> 执行过程中，产生某个突发事件时，<strong>CPU</strong>会暂停当前的程序执行，转而执行 <strong>中断响应函数（ISR)</strong> 来处理这个事件。处理完后，CPU会返回到之前暂停的位置继续执行。</p>
+<blockquote>
+<p>中断响应函数名称需查询中断向量表，将函数完整内容写在stm32f10x_it.c中最规范。</p>
+</blockquote>
 <h2 id="中断的分类"><a class="markdownIt-Anchor" href="#中断的分类"></a> 中断的分类</h2>
 <ul>
 <li>
@@ -6459,823 +6462,459 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
       </tags>
   </entry>
   <entry>
-    <title>第二轮招新题完成文档</title>
-    <url>/2026/08/03/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E6%8B%9B%E6%96%B0%E6%8C%91%E6%88%98/</url>
-    <content><![CDATA[<p>本文档记录了第二轮招新题的完成过程，自主实现舵机云台的各挑战点</p>
-<span id="more"></span>
-<h1 id="挑战点一使用pwm驱动舵机"><a class="markdownIt-Anchor" href="#挑战点一使用pwm驱动舵机"></a> 挑战点一：使用PWM驱动舵机</h1>
-<h2 id="sg90舵机控制"><a class="markdownIt-Anchor" href="#sg90舵机控制"></a> SG90舵机控制</h2>
-<h3 id="sg-90舵机的工作原理"><a class="markdownIt-Anchor" href="#sg-90舵机的工作原理"></a> SG 90舵机的工作原理</h3>
-<p>舵机内部有一个基准电路，产生<strong>周期为20ms</strong>，<strong>宽度为1.5ms</strong>的基准信号，将获得的直流偏置电压与电位器的电压比较，获得<strong>电压差</strong>输出。最后，电压差的正负输出到电机驱动芯片决定电机的正反转。</p>
-<h3 id="pwm控制舵机"><a class="markdownIt-Anchor" href="#pwm控制舵机"></a> PWM控制舵机</h3>
+    <title>DMA</title>
+    <url>/2026/08/25/DMA/</url>
+    <content><![CDATA[<span id="more"></span>
+<h1 id="dma简介"><a class="markdownIt-Anchor" href="#dma简介"></a> DMA简介</h1>
+<h2 id="概念"><a class="markdownIt-Anchor" href="#概念"></a> 概念</h2>
 <ol>
 <li>
-<p>PWM信号的<strong>周期为20ms</strong>（频率为50Hz），脉宽在0.5-2.5ms之间变化，<strong>脉宽</strong>越大，产生的等效电压就越大，舵机转动的角度越大。</p>
+<p>DMA（Direct Memory Access)：直接存储器存取，MCU的自带外设之一。</p>
 </li>
 <li>
-<p>以180度角度伺服为例，那么对应的控制关系是这样的：</p>
+<p>DMA提供外设和存储器，或存储器和存储器之间的告诉数据传输，<strong>无需CPU干预</strong></p>
+</li>
+<li>
+<p>有12个独立可配置的通道：DMA1（7个），DMA2（5个），STM32F103C8T6有DMA1的7个通道。</p>
+</li>
+<li>
+<p>DMA每个通道都支持<strong>软件触发</strong>（一般是存储器之间）和<strong>特定的硬件触发</strong>（一般是外设到存储器）</p>
+</li>
+</ol>
+<h2 id="作用"><a class="markdownIt-Anchor" href="#作用"></a> 作用</h2>
+<h3 id="缺少dma时的问题"><a class="markdownIt-Anchor" href="#缺少dma时的问题"></a> 缺少DMA时的问题</h3>
+<ol>
+<li>
+<p>CPU 负担大：大量数据搬运占据主循环时间，影响程序响应；</p>
+</li>
+<li>
+<p>实时性差：高频采样、串口通信等可能因为 CPU 忙导致丢失数据；</p>
+</li>
+<li>
+<p>中断开销大：用中断触发太多数据搬运，CPU频繁切换工作，效率低。</p>
+</li>
+</ol>
+<h3 id="dma的作用"><a class="markdownIt-Anchor" href="#dma的作用"></a> DMA的作用</h3>
+<ol>
+<li>
+<p>主要作用：抛开CPU，让外设和内存之间直接进行传输，CPU 只需要负责启动传输以及处理结果。</p>
+</li>
+<li>
+<p>适用场景</p>
+<ul>
+<li>
+<p>连续采样/连续输出</p>
+</li>
+<li>
+<p>大批量串口、SPI、I2S 数据处理</p>
+</li>
+<li>
+<p>需要高吞吐率、低 CPU 占用的场景</p>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="存储器映像"><a class="markdownIt-Anchor" href="#存储器映像"></a> 存储器映像</h1>
 <table>
 <thead>
 <tr>
-<th>时间</th>
-<th>角度</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">起始地址</th>
+<th style="text-align:left">存储器</th>
+<th style="text-align:left">用途</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0.5ms</td>
-<td>0度</td>
+<td style="text-align:left">ROM</td>
+<td style="text-align:left">0x0800 0000</td>
+<td style="text-align:left">程序存储器Flash</td>
+<td style="text-align:left">存储C语言编译后的程序代码</td>
 </tr>
 <tr>
-<td>1.0ms</td>
-<td>45度</td>
+<td style="text-align:left">ROM</td>
+<td style="text-align:left">0x1FFF F000</td>
+<td style="text-align:left">系统存储器</td>
+<td style="text-align:left">存储BootLoader，用于串口下载</td>
 </tr>
 <tr>
-<td>1.5ms</td>
-<td>90度</td>
+<td style="text-align:left">ROM</td>
+<td style="text-align:left">0x1FFF F800</td>
+<td style="text-align:left">选项字节</td>
+<td style="text-align:left">存储一些独立于程序代码的配置参数</td>
 </tr>
 <tr>
-<td>2.0ms</td>
-<td>135度</td>
+<td style="text-align:left">RAM</td>
+<td style="text-align:left">0x2000 0000</td>
+<td style="text-align:left">运行内存SRAM</td>
+<td style="text-align:left">存储运行过程中的临时变量</td>
 </tr>
 <tr>
-<td>2.5ms</td>
-<td>180度</td>
+<td style="text-align:left">RAM</td>
+<td style="text-align:left">0x4000 0000</td>
+<td style="text-align:left">外设寄存器</td>
+<td style="text-align:left">存储各个外设的配置参数</td>
+</tr>
+<tr>
+<td style="text-align:left">RAM</td>
+<td style="text-align:left">0xE000 0000</td>
+<td style="text-align:left">内核外设寄存器</td>
+<td style="text-align:left">存储内核各个外设的配置参数</td>
 </tr>
 </tbody>
 </table>
+<ol>
+<li>
+<p>ROM:只读存储器，掉电后数据不丢失，读数据快，写数据极慢（一般不会进行此操作）。</p>
+</li>
+<li>
+<p>RAM:随机存取存储器，掉电后数据清零，读写都很快。</p>
 </li>
 </ol>
 <blockquote>
-<p>低于0.5ms的脉宽，舵机不会转动；高于2.5ms的脉宽，舵机会继续转动，但会损坏舵机。</p>
+<p>STM32手册里称呼的存储器，一般只包含Flash和SRAM，不含外设寄存器。</p>
+</blockquote>
+<h1 id="dma运行原理"><a class="markdownIt-Anchor" href="#dma运行原理"></a> DMA运行原理</h1>
+<p><img src="DMA.png" alt="DMA结构" /></p>
+<ol>
+<li>如图，通过设置方向参数，DMA数据转运可以从外设到寄存器，也可以到存储器到外设，也可以Flash到SRAM或SRAM到SRAM。</li>
+</ol>
+<blockquote>
+<p>flash很难写入，因此不会转运到flash</p>
+</blockquote>
+<ol start="2">
+<li>
+<p>外设与存储器均有三个参数：</p>
+<ol>
+<li>
+<p>起始地址：指定数据的来源和去向。</p>
+</li>
+<li>
+<p>数据宽度：指定<strong>一次</strong>转运数据的宽度，可选字节Byte(8位)，半字HalfWord(16位)，字Word(32位）</p>
+</li>
+</ol>
+<blockquote>
+<p>源端宽度比目标宽度大时，会舍弃高位只写入低位数据；源端宽度比目标宽度小时，在高位上补0。</p>
 </blockquote>
 <ol start="3">
-<li>舵机的位置等级一般有1024个，那么，如果舵机的有效角度范围为180度的话，其控制的角度精度是可以达到180/1024=约0.18度。可通过改变PWM的<strong>分辨率</strong>（通过调整预分频器和自动重装寄存器的值）来实现更高的角度精度。</li>
+<li>地址是否自增：一次转运完成后，是否要将地址移动到下一个位置。在外设转运到存储器时，外设一般不用自增，存储器一般需要自增。</li>
 </ol>
-<h2 id="思考题一"><a class="markdownIt-Anchor" href="#思考题一"></a> 思考题一</h2>
-<ol>
-<li>
-<p>在STM32F103中，PWM由TIM1-TIM4产生。</p>
-</li>
-<li>
-<p>PWM的核心参数有：</p>
-<ul>
-<li>
-<p>频率，作用是与舵机频率保持一致，保证建立通信。</p>
-</li>
-<li>
-<p>脉宽，作用是控制舵机的旋转角度。</p>
-</li>
-<li>
-<p>分辨率，作用是控制舵机转动的精度。</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="思考题二"><a class="markdownIt-Anchor" href="#思考题二"></a> 思考题二</h2>
-<ol>
-<li>
-<p>舵机通过PWM控制转角的原因：PWM输出信号的高电平宽度决定舵机的转动角度，舵机内部的控制电路会根据PWM信号的脉宽来调整电机的转动，实现精确的角度控制。</p>
-</li>
-<li>
-<p>高电平时长与舵机角度对应关系：见上表格。</p>
-</li>
-</ol>
-<h2 id="思考题三"><a class="markdownIt-Anchor" href="#思考题三"></a> 思考题三</h2>
-<ol>
-<li>
-<p>PWM输出对应的GPIO配置：复用推挽输出。</p>
-</li>
-<li>
-<p>与普通推挽输出的核心区别：普通推挽输出是CPU直接输出高低电平，复用推挽输出是TIM外设输出高低电平。</p>
-</li>
-<li>
-<p>复用推挽输出适配PWM的原因：复用推挽输出可以由定时器<strong>外设</strong>控制输出高低电平，从而实现PWM信号的生成，而普通推挽输出无法实现这种功能。</p>
-</li>
-</ol>
-<h2 id="思考题四"><a class="markdownIt-Anchor" href="#思考题四"></a> 思考题四</h2>
-<p>72MHz <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>÷</mo></mrow><annotation encoding="application/x-tex"> \div </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">÷</span></span></span></span> (PSC+1) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>÷</mo></mrow><annotation encoding="application/x-tex"> \div </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">÷</span></span></span></span> (ARR+1) = 50Hz ，其中PSC为预分频器，ARR为自动重装寄存器。可设置PSC = 71，ARR = 19999。</p>
-<h2 id="思考题五按键外部中断配置步骤"><a class="markdownIt-Anchor" href="#思考题五按键外部中断配置步骤"></a> 思考题五：按键外部中断配置步骤</h2>
 <blockquote>
-<p>按键连接PA2，配置为上升沿触发中断，即按键松开时中断</p>
+<p>外设站点和存储器站点只是一个命名习惯，实际使用时会根据写入的起始地址自动寻找相应数据。可以在外设站点写存储器地址，存储器站点写外设地址，通过设置方向参数实现与正常写相同逻辑。</p>
 </blockquote>
-<ol>
-<li>
-<p>开启GPIOA和AFIO时钟</p>
 </li>
 <li>
-<p>初始化PA2引脚，配置为上拉输入模式</p>
-</li>
-<li>
-<p>初始化EXTI</p>
-<ol>
-<li>
-<p>通过<code>GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource2)</code>将PA2映射到EXTI2中断线</p>
-</li>
-<li>
-<p>初始化EXTI结构体，设置中断线为EXTI_Line2，触发方式为上升沿触发，模式为中断模式，并且使能。</p>
-</li>
-</ol>
-</li>
-<li>
-<p>初始化NVIC结构体，设置中断通道为EXTI1_IRQn，优先级为0，子优先级为0，并且使能。</p>
-</li>
-<li>
-<p>编写中断服务函数<code>EXTI2_IRQHandler</code>，执行舵机转动功能。</p>
-</li>
-</ol>
-<h1 id="挑战点二使用蓝牙模块进行信息的发送和接收"><a class="markdownIt-Anchor" href="#挑战点二使用蓝牙模块进行信息的发送和接收"></a> 挑战点二：使用蓝牙模块进行信息的发送和接收</h1>
-<h2 id="hc05蓝牙模块"><a class="markdownIt-Anchor" href="#hc05蓝牙模块"></a> HC05蓝牙模块</h2>
-<h3 id="功能"><a class="markdownIt-Anchor" href="#功能"></a> 功能</h3>
-<p>通过串口通信，使用UART协议在单片机和蓝牙设备之间进行<strong>无线</strong>数据传输.</p>
-<h3 id="引脚连接"><a class="markdownIt-Anchor" href="#引脚连接"></a> 引脚连接</h3>
-<ul>
-<li>STATE：状态指示引脚，输出高电平表示模块已连接，输出低电平表示模块未连接。</li>
-</ul>
+<p>传输计数器：自减计数器，指定转运数据的次数，每转运一次减一，减到零时结束。结束后如果地址存在自增，也会自动回到起始地址。</p>
 <blockquote>
-<p>不能接电源</p>
+<p>“DMA 的数据宽度定义了单次传输的数据载荷大小，在整轮传输中保持不变。而传输计数器定义了一轮传输中包含多少个这样的单次传输</p>
 </blockquote>
-<ul>
-<li>
-<p>VCC：电源引脚，连接到3.3V或5V电源。</p>
 </li>
 <li>
-<p>GND：地引脚，连接到电源地。</p>
+<p>自动重装器：使能后使传输计数器归零后自动重装到设置的次数。</p>
 </li>
 <li>
-<p>TXE：数据发送引脚，用于向蓝牙设备发送数据。</p>
-</li>
-<li>
-<p>RXD：数据接收引脚，用于接收蓝牙设备发送的数据。</p>
-</li>
-<li>
-<p>EN(或KEY)：在模块上电前或上电时，将EN引脚接到高电平，模块启动后就会<strong>进入AT模式</strong>。如果悬空或接地，模块则进入正常的数据透传模式。</p>
-</li>
-</ul>
-<blockquote>
-<p>一般使用时接中间四个引脚即可</p>
-</blockquote>
-<h3 id="使用模式"><a class="markdownIt-Anchor" href="#使用模式"></a> 使用模式</h3>
-<ul>
-<li>
-<p>工作模式（透传模式）：用于数据传输，模块会将接收到的数据直接发送出去。</p>
-<ul>
-<li>
-<p>主模式：用于主动连接其他蓝牙设备，模块会扫描周围的蓝牙设备并尝试连接。</p>
-</li>
-<li>
-<p>从模式（默认）：用于被动等待其他蓝牙设备的连接请求，模块会保持可被发现状态，等待连接。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>AT指令模式：用于配置模块参数（蓝牙名称、波特率、密码等），模块会对接收到的AT指令进行响应。</p>
-<ul>
-<li>默认：波特率为38400，名称为HC-05，密码为1234.</li>
-</ul>
-<p><a id="AT"></a></p>
-<ul>
-<li>
-<p>AT模式开启方法：</p>
+<p>触发控制</p>
 <ol>
 <li>
-<p>将USB转TTL模块与HC05模块连接</p>
+<p>M2M(Memory To Memory，存储器到存储器)：置位1时DMA调用软件触发，置位0时DMA调用硬件触发。</p>
 </li>
 <li>
-<p>按住HC05模块上的按键<strong>不放</strong>或给EN引脚接持续高电平(3V3)，再将转串口模块插入电脑USB接口</p>
+<p>软件触发逻辑是尽快转运数据，会连续触发DMA以将计数器清零，因此不能和自动重装器同时使用，否则会死循环。</p>
 </li>
 <li>
-<p>当HC05上的指示灯由快闪转变为慢闪，说明AT模式开启成功，此时可以松开按键。</p>
-</li>
-<li>
-<p>打开串口调试软件配置串口参数：将串口参数设置为：</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>数据</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>波特率</td>
-<td>38400（HC-05 AT模式下默认波特率）</td>
-</tr>
-<tr>
-<td>数据位</td>
-<td>8</td>
-</tr>
-<tr>
-<td>停止位</td>
-<td>1</td>
-</tr>
-<tr>
-<td>校验位</td>
-<td>None（无）</td>
-</tr>
-<tr>
-<td>流控</td>
-<td>None（无）</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>
-<p>选择正确的COM口，打开串口。</p>
+<p>硬件触发逻辑是在收到硬件信号时触发DMA。不同硬件触发源有不同通道，需指定相应的通道才能正常使用。不同通道的DMA信号会进入仲裁器进行优先级判断（逻辑类似中断），最后产生DMA请求。<br />
+<img src="channel.png" alt="通道" /></p>
 </li>
 </ol>
 </li>
 <li>
-<p>常见的AT指令</p>
+<p>开关控制：使能DMA传输</p>
+</li>
+<li>
+<p>注意事项：</p>
+<ol>
+<li>
+<p>向传输计数器写入值必须大于0</p>
+</li>
+<li>
+<p>当传输计数器为零且没有自动重装时，要先关闭DMA再重写传输计数器的值，接着打开DMA。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="编程接口"><a class="markdownIt-Anchor" href="#编程接口"></a> 编程接口</h1>
+<h2 id="dma自身配置"><a class="markdownIt-Anchor" href="#dma自身配置"></a> DMA自身配置</h2>
+<h3 id="dma通道初始化"><a class="markdownIt-Anchor" href="#dma通道初始化"></a> DMA通道初始化</h3>
+<p><code>void DMA_Init(uint32_t DMA_Channel, DMA_InitTypeDef* DMA_InitStruct)</code></p>
 <ul>
-<li>基础指令</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>指令</th>
-<th>功能</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AT</td>
-<td>测试连接</td>
-<td>AT → OK</td>
-</tr>
-<tr>
-<td>AT+RESET</td>
-<td>软复位模块</td>
-<td>AT+RESET → OK</td>
-</tr>
-<tr>
-<td>AT+ORGL</td>
-<td>恢复出厂默认设置</td>
-<td>AT+ORGL → OK</td>
-</tr>
-<tr>
-<td>AT+VERSION?</td>
-<td>查询固件版本</td>
-<td>AT+VERSION? → +VERSION:2.0-20100601</td>
-</tr>
-</tbody>
-</table>
+<li>
+<p>功能：初始化指定 DMA 通道，配置传输方向、地址、数据宽度、传输模式等参数。</p>
+</li>
+<li>
+<p>参数：<code>DMA_Channel</code> 指定 DMA 通道，取值范围为 <code>DMA1_Channel1</code> ~ <code>DMA1_Channel7</code> 或 <code>DMA2_Channel1</code> ~ <code>DMA2_Channel5</code>。</p>
+</li>
+<li>
+<p><code>DMA_InitStruct</code> 为一个结构体，成员包括：</p>
 <ul>
-<li>核心配置指令</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>指令</th>
-<th>功能</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AT+NAME=&lt;新名称&gt;</td>
-<td>设置设备名称</td>
-<td>AT+NAME=My_BT → OK</td>
-</tr>
-<tr>
-<td>AT+PSWD=&lt;新密码&gt;</td>
-<td>设置配对密码</td>
-<td>AT+PSWD=0000 → OK</td>
-</tr>
-<tr>
-<td>AT+UART=&lt;波特率&gt;,0,0</td>
-<td>设置串口参数</td>
-<td>AT+UART=115200,0,0 → OK</td>
-</tr>
-<tr>
-<td>AT+ROLE=&lt;角色&gt;</td>
-<td>设置主/从模式</td>
-<td>AT+ROLE=0 → OK</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>查询指令</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>指令</th>
-<th>功能</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AT+NAME?</td>
-<td>查询设备名称</td>
-<td>AT+NAME? → +NAME:My_BT</td>
-</tr>
-<tr>
-<td>AT+PSWD?</td>
-<td>查询配对密码</td>
-<td>AT+PSWD? → +PSWD:0000</td>
-</tr>
-<tr>
-<td>AT+UART?</td>
-<td>查询串口参数</td>
-<td>AT+UART? → +UART:115200,0,0</td>
-</tr>
-<tr>
-<td>AT+ROLE?</td>
-<td>查询主从模式</td>
-<td>AT+ROLE? → +ROLE:0</td>
-</tr>
-<tr>
-<td>AT+ADDR?</td>
-<td>查询MAC地址</td>
-<td>AT+ADDR? → +ADDR:0018:E5:123456</td>
-</tr>
-</tbody>
-</table>
+<li>
+<p><code>DMA_PeripheralBaseAddr</code>：外设基地址，指定 DMA 传输的源或目的外设寄存器地址。</p>
+</li>
+<li>
+<p><code>DMA_MemoryBaseAddr</code>：存储器基地址，指定 DMA 传输的源或目的 SRAM 地址。</p>
+</li>
+<li>
+<p><code>DMA_DIR</code>：传输方向，取值为 <code>DMA_DIR_PeripheralSRC</code>（外设到存储器）或 <code>DMA_DIR_PeripheralDST</code>（存储器到外设）。</p>
+</li>
+<li>
+<p><code>DMA_BufferSize</code>：传输数据量，表示本轮传输的总次数。</p>
+</li>
+<li>
+<p><code>DMA_PeripheralInc</code>：外设地址是否自增，取值为 <code>DMA_PeripheralInc_Enable</code> 或 <code>DMA_PeripheralInc_Disable</code>。</p>
+</li>
+<li>
+<p><code>DMA_MemoryInc</code>：存储器地址是否自增，取值为 <code>DMA_MemoryInc_Enable</code> 或 <code>DMA_MemoryInc_Disable</code>。</p>
+</li>
+<li>
+<p><code>DMA_PeripheralDataSize</code>：外设数据宽度，可选 <code>DMA_PeripheralDataSize_Byte</code>、<code>DMA_PeripheralDataSize_HalfWord</code>、<code>DMA_PeripheralDataSize_Word</code>。</p>
+</li>
+<li>
+<p><code>DMA_MemoryDataSize</code>：存储器数据宽度，可选 <code>DMA_MemoryDataSize_Byte</code>、<code>DMA_MemoryDataSize_HalfWord</code>、<code>DMA_MemoryDataSize_Word</code>。</p>
+</li>
+<li>
+<p><code>DMA_Mode</code>：传输模式，取值为 <code>DMA_Mode_Normal</code>（正常模式）或 <code>DMA_Mode_Circular</code>（循环模式）。</p>
+</li>
+<li>
+<p><code>DMA_Priority</code>：通道优先级，取值为 <code>DMA_Priority_Low</code>、<code>DMA_Priority_Medium</code>、<code>DMA_Priority_High</code>、<code>DMA_Priority_VeryHigh</code>。</p>
+</li>
+<li>
+<p><code>DMA_M2M</code>：是否为存储器到存储器模式，取值为 <code>DMA_M2M_Enable</code> 或 <code>DMA_M2M_Disable</code>。</p>
 </li>
 </ul>
 </li>
 </ul>
-<blockquote>
-<p>注意：所有指令都以 AT 开头，加号不能用空格替代，发送时必须加回车换行（即勾选“发送新行”）。</p>
-</blockquote>
-<blockquote>
-<p>注意：如果发送查询指令（带 ?），模块会返回当前值。如果发送设置指令（带 =），模块返回 OK 表示设置成功。</p>
-</blockquote>
-<h3 id="遇到的问题与解决方法"><a class="markdownIt-Anchor" href="#遇到的问题与解决方法"></a> 遇到的问题与解决方法</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">问题</th>
-<th style="text-align:center">原因</th>
-<th style="text-align:center">方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">串口快速发送多字符时舵机会乱转</td>
-<td style="text-align:center">在USART中断处理函数中调用了太多功能，导致发送过快时出现信号积压，会识别到多个信号</td>
-<td style="text-align:center">在中断处理函数中仅接收字符，在主循环中实现舵机转动</td>
-</tr>
-<tr>
-<td style="text-align:center">第一次直连电脑成功，但连接蓝牙后不动或者舵机乱转</td>
-<td style="text-align:center">蓝牙传递信息速度较慢，很容易读不完就再次中断导致数据混乱</td>
-<td style="text-align:center">改成缓冲区读取</td>
-</tr>
-<tr>
-<td style="text-align:center">串口发送一次字符之后就不动了</td>
-<td style="text-align:center">单缓冲区读取数据时，要临时关闭串口中断，可能导致后面的数据丢失</td>
-<td style="text-align:center">改成环形缓冲区读取</td>
-</tr>
-<tr>
-<td style="text-align:center">第二次直连电脑成功，但连接蓝牙后不动</td>
-<td style="text-align:center">蓝牙调试软件的问题</td>
-<td style="text-align:center">换了一个就行了</td>
-</tr>
-</tbody>
-</table>
-<h3 id="思考题一-2"><a class="markdownIt-Anchor" href="#思考题一-2"></a> 思考题一</h3>
-<ol>
-<li>
-<p>GPIO直连发送电信号，受导线、环境等影响较大；HC05发送电磁波，中长距离抗干扰能力更强。</p>
-</li>
-<li>
-<p>如表格</p>
-<table>
-<thead>
-<tr>
-<th>外设</th>
-<th>收数据引脚</th>
-<th>发数据引脚</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>USART1</td>
-<td>PA10或PB7（重映射）</td>
-<td>PA9或PB6（重映射）</td>
-</tr>
-<tr>
-<td>USART2</td>
-<td>PA3</td>
-<td>PA2</td>
-</tr>
-<tr>
-<td>USART3</td>
-<td>PB11</td>
-<td>PB10</td>
-</tr>
-</tbody>
-</table>
-</li>
-</ol>
-<h3 id="思考题二-2"><a class="markdownIt-Anchor" href="#思考题二-2"></a> 思考题二</h3>
-<ol>
-<li>
-<p>见<a href="#AT">AT模式开启方法</a></p>
-</li>
-<li>
-<p>接线注意事项：</p>
-<ol>
-<li>
-<p>设备的Rx引脚与另一设备的Tx引脚相连</p>
-</li>
-<li>
-<p>所有模块的GND共地</p>
-</li>
-</ol>
-</li>
-<li>
+<h3 id="dma启停控制"><a class="markdownIt-Anchor" href="#dma启停控制"></a> DMA启停控制</h3>
+<p><code>void DMA_Cmd(uint32_t DMA_Channel, FunctionalState NewState)</code></p>
 <ul>
 <li>
-<p>接收中断相比主循环轮询的优势：确定RxNE标志位置位后才执行，而不用反复查看标志位，响应更快且效率更高。</p>
+<p>功能：启用或禁用指定 DMA 通道。</p>
 </li>
 <li>
-<p>中断服务函数缓存数据的方法：读取数据，定义一个变量来存储。解析数据的方法：利用有关函数将存储的数据转化为角度。</p>
+<p>参数：<code>DMA_Channel</code> 指定通道号；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+<li>
+<p>说明：在完成地址、数据宽度和传输计数器配置后，调用该函数启动 DMA 传输。</p>
+</li>
+</ul>
+<h3 id="设置传输计数器"><a class="markdownIt-Anchor" href="#设置传输计数器"></a> 设置传输计数器</h3>
+<p><code>void DMA_SetCurrDataCounter(uint32_t DMA_Channel, uint16_t DataNumber)</code></p>
+<ul>
+<li>
+<p>功能：设置指定 DMA 通道当前的传输数据量。</p>
+</li>
+<li>
+<p>参数：<code>DMA_Channel</code> 指定通道号；<code>DataNumber</code> 表示本轮传输次数，通常必须大于 0。</p>
+</li>
+<li>
+<p>说明：该函数常用于重新配置 DMA 时更新传输长度。若 DMA 处于非自动重装并且传输已结束，需要先关闭 DMA，再重写计数器。</p>
+</li>
+</ul>
+<p><code>uint16_t DMA_GetCurrDataCounter(uint32_t DMA_Channel)</code></p>
+<ul>
+<li>
+<p>功能：读取指定 DMA 通道当前剩余未传输的数据量。</p>
+</li>
+<li>
+<p>参数：<code>DMA_Channel</code> 指定通道号。</p>
+</li>
+</ul>
+<h3 id="dma中断与状态管理"><a class="markdownIt-Anchor" href="#dma中断与状态管理"></a> DMA中断与状态管理</h3>
+<p><code>void DMA_ITConfig(uint32_t DMA_Channel, uint32_t DMA_IT, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>功能：配置指定 DMA 通道的中断源。</p>
+</li>
+<li>
+<p>参数：<code>DMA_Channel</code> 指定通道号；<code>DMA_IT</code> 指定中断类型，常见值包括 <code>DMA_IT_TC</code>（传输完成中断）、<code>DMA_IT_HT</code>（半传输中断）、<code>DMA_IT_TE</code>（传输错误中断）；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+<li>
+<p>说明：该函数用于开启 DMA 的相关中断，通常与 NVIC 配置配合使用。</p>
+</li>
+</ul>
+<p><code>FlagStatus DMA_GetFlagStatus(uint32_t DMA_FLAG)</code></p>
+<ul>
+<li>
+<p>功能：检查指定 DMA 标志位是否置位。</p>
+</li>
+<li>
+<p>参数：<code>DMA_FLAG</code> 指定要查询的标志位，例如 <code>DMA1_FLAG_TC1</code>、<code>DMA1_FLAG_HT1</code>、<code>DMA1_FLAG_TE1</code> 等。</p>
+</li>
+<li>
+<p>返回值：<code>SET</code> 表示标志位已置位，<code>RESET</code> 表示未置位。</p>
+</li>
+</ul>
+<p><code>void DMA_ClearFlag(uint32_t DMA_FLAG)</code></p>
+<ul>
+<li>
+<p>功能：清除指定 DMA 标志位。</p>
+</li>
+<li>
+<p>参数：<code>DMA_FLAG</code> 指定要清除的标志位。</p>
+</li>
+<li>
+<p>说明：在中断服务函数中，通常需要先清除 DMA 标志位，再继续下一轮传输。</p>
+</li>
+</ul>
+<p><code>ITStatus DMA_GetITStatus(uint32_t DMA_IT)</code></p>
+<ul>
+<li>
+<p>功能：检查指定 DMA 中断是否发生。</p>
+</li>
+<li>
+<p>参数：<code>DMA_IT</code> 指定要查询的中断类型。</p>
+</li>
+<li>
+<p>返回值：<code>SET</code> 表示中断已发生，<code>RESET</code> 表示未发生。</p>
+</li>
+</ul>
+<p><code>void DMA_ClearITPendingBit(uint32_t DMA_IT)</code></p>
+<ul>
+<li>
+<p>功能：清除指定 DMA 中断挂起位。</p>
+</li>
+<li>
+<p>参数：<code>DMA_IT</code> 指定要清除的中断类型。</p>
+</li>
+<li>
+<p>说明：在处理 DMA 传输完成或传输错误中断后，需要清除挂起位，避免重复触发。</p>
+</li>
+</ul>
+<h3 id="dma配置流程总结"><a class="markdownIt-Anchor" href="#dma配置流程总结"></a> DMA配置流程总结</h3>
+<ol>
+<li>
+<p>使能对应 DMA 时钟(AHB)与外设时钟。</p>
+</li>
+<li>
+<p>配置 <code>DMA_InitTypeDef</code> 结构体，设置外设地址、存储器地址、方向和数据宽度。</p>
+</li>
+<li>
+<p>调用 <code>DMA_Init</code> 初始化指定通道。</p>
+</li>
+<li>
+<p>设置 <code>DMA_BufferSize</code> 和传输计数器。</p>
+</li>
+<li>
+<p>调用 <code>DMA_ITConfig</code> 开启需要的中断（如传输完成中断）。</p>
+</li>
+<li>
+<p>调用 <code>DMA_Cmd</code> 启动 DMA 传输。</p>
+</li>
+<li>
+<p>在中断服务函数中读取状态、清除标志位，并根据需要重新配置或处理数据。</p>
+</li>
+</ol>
+<h2 id="常用外设的-dma-配置接口"><a class="markdownIt-Anchor" href="#常用外设的-dma-配置接口"></a> 常用外设的 DMA 配置接口</h2>
+<p>在实际开发中，DMA 很少单独使用，通常与外设配合完成数据搬运。下面总结几种最常见的 STM32 外设 DMA 配置接口，重点放在“谁发起 DMA 请求、何时开启、如何绑定通道”这几个关键点。</p>
+<h3 id="usart-dma"><a class="markdownIt-Anchor" href="#usart-dma"></a> USART DMA</h3>
+<p><code>void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState NewState)</code></p>
+<ul>
+<li>
+<p>功能：使能或禁用 USART 的 DMA 请求。</p>
+</li>
+<li>
+<p>参数：<code>USARTx</code> 为串口实例，如 <code>USART1</code>、<code>USART2</code>；<code>USART_DMAReq</code> 表示 DMA 请求源，常见值包括 <code>USART_DMAReq_Tx</code>（发送 DMA 请求）和 <code>USART_DMAReq_Rx</code>（接收 DMA 请求）；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+<li>
+<p>说明：该函数只是打开外设的 DMA 传输请求，真正的搬运通道还需要单独配置 DMA 通道和中断。</p>
 </li>
 </ul>
 <blockquote>
-<p>本人的程序里，解析数据和执行动作的延迟较高，如果放在中断里面会出问题，于是放在主循环了。</p>
+<p>USART 的 DMA 常用于串口大批量接收/发送。</p>
 </blockquote>
-</li>
-<li>
+<h3 id="adc-dma"><a class="markdownIt-Anchor" href="#adc-dma"></a> ADC DMA</h3>
+<p><code>void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)</code></p>
 <ul>
 <li>
-<p>复用逻辑：可直接复用舵机驱动逻辑，因为对应角度的占空比是固定的。需要修改的难点是，将接收数据转30度，变成按照接收数据的值转动相应度数。</p>
+<p>功能：启用 ADC 的 DMA 传输模式。</p>
 </li>
 <li>
-<p>换算：设置的ARR是19999，因此0度时CCR设置为500，180度时CCR设置为25000.有效占空比为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>500</mn><mo>+</mo><mfrac><mtext>角度</mtext><mn>180</mn></mfrac><mo>×</mo><mn>2000</mn></mrow><annotation encoding="application/x-tex">500+\frac{角度}{180} \times 2000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">500</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.2173em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8723em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">180</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">角度</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2000</span></span></span></span></p>
+<p>参数：<code>ADCx</code> 指定 ADC 实例，如 <code>ADC1</code>、<code>ADC2</code>；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
+</li>
+<li>
+<p>说明：ADC 采样完成后，将数据自动写入 RAM，通常用于连续采样场景。</p>
 </li>
 </ul>
-</li>
-</ol>
-<h1 id="挑战点三"><a class="markdownIt-Anchor" href="#挑战点三"></a> 挑战点三</h1>
-<h2 id="mpu6050传感器"><a class="markdownIt-Anchor" href="#mpu6050传感器"></a> MPU6050传感器</h2>
-<h3 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h3>
-<p><img src="%E7%BB%93%E6%9E%84.png" alt="结构" /><br />
-MPU6050内部结构</p>
-<ol>
-<li>
-<p>MPU6050由<strong>三轴加速度计</strong>、<strong>三轴陀螺仪</strong>和DMP（可理解成一个处理数据的单片机）组成.内部含有许多寄存器.</p>
-</li>
-<li>
-<p>加速度计可测量x,y,z三轴轴向加速度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>x</mi></msub><mo separator="true">,</mo><msub><mi>a</mi><mi>y</mi></msub><mtext>和</mtext><msub><mi>a</mi><mi>z</mi></msub></mrow><annotation encoding="application/x-tex">a_x,a_y和a_z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">和</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，陀螺仪测绕x,y,z三轴旋转的角速度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mi>x</mi></msub><mo separator="true">,</mo><msub><mi>g</mi><mi>y</mi></msub><mtext>和</mtext><msub><mi>g</mi><mi>z</mi></msub></mrow><annotation encoding="application/x-tex">g_x,g_y和g_z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">和</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>MPU6050通过I2C与单片机进行信号传递，读写内部的寄存器。支持的时钟线频率为100KHz~400KHz.</p>
-</li>
-</ol>
-<h3 id="原理"><a class="markdownIt-Anchor" href="#原理"></a> 原理</h3>
-<p><img src="%E5%8A%A0%E9%80%9F.png" alt="加速度计" /><br />
-加速度计原理</p>
+<h3 id="spi-dma"><a class="markdownIt-Anchor" href="#spi-dma"></a> SPI DMA</h3>
+<p><code>void SPI_I2S_DMACmd(SPI_TypeDef* SPIx, uint16_t SPI_I2S_DMAReq, FunctionalState NewState)</code></p>
 <ul>
 <li>
-<p>如图所示。机械图像仅作原理示意，更贴切的理解版本是三颗小球分别测量x,y,z方向的加速度，不是加速度计实际内部结构。</p>
+<p>功能：使能或禁用 SPI 的 DMA 请求。</p>
 </li>
 <li>
-<p>加速度计测量的是比力，即单位质量受到的非引力外力。静止且直立时，支持力抵消重力，因此在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">+Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.0715em;">Z</span></span></span></span>轴向上的安装约定下，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>x</mi></msub><mo>≈</mo><msub><mi>a</mi><mi>y</mi></msub><mo>≈</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_x\approx a_y\approx0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6331em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7692em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>z</mi></msub><mo>≈</mo><mo>+</mo><mi>g</mi></mrow><annotation encoding="application/x-tex">a_z\approx+g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6331em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span></span>。</p>
+<p>参数：<code>SPIx</code> 表示 SPI 实例，如 <code>SPI1</code>、<code>SPI2</code>；<code>SPI_I2S_DMAReq</code> 指定请求类型，常见值包括 <code>SPI_I2S_DMAReq_Tx</code>（发送请求）和 <code>SPI_I2S_DMAReq_Rx</code>（接收请求）；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
 </li>
 <li>
-<p>量程：一共有四档。0档为正负2g，1档正负4g，2档正负8g，3档正负16g.</p>
+<p>说明：启用后，SPI 发送/接收时可以由 DMA 自动处理数据，不再需要 CPU 逐个字节搬运。</p>
 </li>
 </ul>
-<p><img src="%E9%99%80%E8%9E%BA%E4%BB%AA.png" alt="陀螺仪" /><br />
-陀螺仪原理</p>
+<blockquote>
+<p>SPI DMA 经常用于 LCD 驱动、外部 Flash 读写、ADC/DAC 数据传输等高速数据接口。</p>
+</blockquote>
+<h3 id="i2c-dma"><a class="markdownIt-Anchor" href="#i2c-dma"></a> I2C DMA</h3>
+<p><code>void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState)</code></p>
 <ul>
 <li>
-<p>如图，测量的角速度是<strong>从轴正方向看向原点</strong>时，<strong>逆时针</strong>的角速度.</p>
+<p>功能：使能或禁用 I2C 的 DMA 传输请求。</p>
 </li>
 <li>
-<p>大致原理(并非实际结构):小球上正对接两根弹簧,当陀螺仪不旋转时,小球往复震荡;当陀螺仪旋转时,小球会由于科里奥利力影响产生偏转,通过偏转幅度即可计算角速度.</p>
+<p>参数：<code>I2Cx</code> 指定 I2C 实例，如 <code>I2C1</code>、<code>I2C2</code>；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
 </li>
 <li>
-<p>量程：一共有四档。0档为正负250度每秒，1档正负500，2档正负1000，3档正负2000.</p>
+<p>说明：I2C 的 DMA 主要用于发送/接收大量数据，适合读取 EEPROM、传感器寄存器数据等场景。</p>
 </li>
 </ul>
-<h3 id="寄存器读写"><a class="markdownIt-Anchor" href="#寄存器读写"></a> 寄存器读写</h3>
-<p><a id="reg"></a></p>
-<p><img src="%E5%AF%84%E5%AD%98%E5%99%A8.png" alt="构造" /><br />
-MPU6050内部的寄存器</p>
-<h4 id="在单片机上初始化i2c接口"><a class="markdownIt-Anchor" href="#在单片机上初始化i2c接口"></a> 在单片机上初始化I2C接口</h4>
-<p><img src="image.png" alt="MPU引脚" /><br />
-MPU6050芯片的引脚分布</p>
-<h4 id="读写寄存器"><a class="markdownIt-Anchor" href="#读写寄存器"></a> 读写寄存器</h4>
-<ol>
+<p><code>void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)</code></p>
+<ul>
 <li>
-<p>读寄存器：向MPU6050发送寄存器地址，<strong>然后</strong>读取寄存器的值。</p>
+<p>功能：设置 DMA 最后一个传输标志。</p>
 </li>
 <li>
-<p>写寄存器：<strong>同时</strong>向MPU6050发送寄存器地址和写入的值。</p>
+<p>参数：<code>I2Cx</code> 为 I2C 实例；<code>NewState</code> 取值为 <code>ENABLE</code> 或 <code>DISABLE</code>。</p>
 </li>
-</ol>
+<li>
+<p>说明：该函数通常用于帮助 I2C 控制器判断当前 DMA 传输是否为最后一个字节，便于结束通信。</p>
+</li>
+</ul>
 <blockquote>
-<p>MPU6050的从机地址为0xd0</p>
+<p>I2C 传输数据量通常不如 SPI/USART 大，但在批量读取寄存器或传感器数据时，DMA 仍然能减少 CPU 的等待和重复处理。</p>
 </blockquote>
-<h4 id="初始化mpu6050"><a class="markdownIt-Anchor" href="#初始化mpu6050"></a> 初始化MPU6050</h4>
-<ol>
-<li>先复位（向地址为0x6b的寄存器最高位写1,即向整个寄存器写入0x80）</li>
-<li>等待复位（100ms左右）</li>
-<li>再退出睡眠模式（MPU6050复位后默认进入睡眠模式，需要向地址为0x6b的寄存器第二高位写0,即向整个寄存器写入0x00）</li>
-<li>设置加速度计量程（根据挡位向0x1c寄存器的第4位和第5位写0或1，其他写0）</li>
-<li>设置陀螺仪量程（根据挡位向0x1b寄存器的第4位和第5位写0或1，其他写0）</li>
-</ol>
-<h4 id="读取原始数据"><a class="markdownIt-Anchor" href="#读取原始数据"></a> 读取原始数据</h4>
+<h3 id="外设dma配置顺序"><a class="markdownIt-Anchor" href="#外设dma配置顺序"></a> 外设DMA配置顺序</h3>
+<p>以 USART 接收 DMA 为例，通常流程为：</p>
 <ol>
 <li>
-<p>读取加速度：</p>
-<ol>
-<li>
-<p>读取分别存储了加速度的高字节和低字节的寄存器，具体地址可<a href="#reg">见图</a></p>
+<p>配置对应外设（如 USART 初始化）。</p>
 </li>
 <li>
-<p>读取后，将高字节左移八位再与低字节相加，即可得到加速度</p>
+<p>使能 DMA 时钟和外设时钟。</p>
+</li>
+<li>
+<p>配置 DMA 通道：外设地址、内存地址、数据宽度、传输长度、循环模式。</p>
+</li>
+<li>
+<p>调用 <code>USART_DMACmd(..., USART_DMAReq_Rx, ENABLE)</code> 开启外设 DMA 请求。</p>
+</li>
+<li>
+<p>调用 <code>DMA_Cmd</code> 启动 DMA 传输。</p>
+</li>
+<li>
+<p>在 DMA 传输完成中断中处理缓冲区数据。</p>
 </li>
 </ol>
-<blockquote>
-<p>由于加速度可正可负，此处需用有符号整型存储加速度的值</p>
-</blockquote>
-</li>
-<li>
-<p>读取角速度：同上</p>
-</li>
-<li>
-<p>读取温度：同上</p>
-</li>
-</ol>
-<h4 id="处理原始数据"><a class="markdownIt-Anchor" href="#处理原始数据"></a> 处理原始数据</h4>
-<p>由于读取的数值16位有符号整型-32768-32767，需要将其换算为实际量程。</p>
-<h3 id="解算欧拉角"><a class="markdownIt-Anchor" href="#解算欧拉角"></a> 解算欧拉角</h3>
-<h4 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h4>
-<p>欧拉角分为偏航角（YAW)，俯仰角(PITCH),翻滚角(ROLL)</p>
-<ol>
-<li>
-<p>Pitch (俯仰角 θ)：绕<strong>Y轴负方向</strong>旋转，正方向<strong>抬头</strong>（头部向上仰）。范围：±90°。</p>
-</li>
-<li>
-<p>Roll (横滚角 φ)：绕<strong>X轴正方向</strong>旋转，正方向<strong>右斜</strong>（头部右侧向下压）。范围：±180°。</p>
-</li>
-<li>
-<p>Yaw (偏航角 ψ)：绕<strong>Z轴正方向</strong>旋转。正方向<strong>左偏航</strong>（头部向左转）。范围：±180°。</p>
-</li>
-</ol>
-<blockquote>
-<p>参考系为以MPU6050为基准的右手系，右手拇指指向轴的正方向，四指弯曲的方向就是该角度增大的方向。MPU6050芯片正面朝上，文字正向。坐标系规定为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">+X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span></span></span></span>轴向前，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">+Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span></span></span></span>轴向右，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">+Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.0715em;">Z</span></span></span></span>轴向上。加速度计输出的是比力，传感器水平静止时<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>z</mi></msub><mo>=</mo><mo>+</mo><mi>g</mi></mrow><annotation encoding="application/x-tex">a_z=+g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span></span>。地面系保持固定不变，姿态角表示传感器坐标系相对于地面系的旋转。</p>
-</blockquote>
-<ol start="4">
-<li>
-<p>通过陀螺仪计算角度方法：</p>
-<ol>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>I</mi><mi>T</mi><mi>C</mi><msub><mi>H</mi><mi>k</mi></msub><mo>=</mo><mi>P</mi><mi>I</mi><mi>T</mi><mi>C</mi><msub><mi>H</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>g</mi><mi>y</mi></msub><mo>∗</mo><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">PITCH_k = PITCH_{k-1} - g_y * \Delta t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7514em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mord mathnormal">t</span></span></span></span></p>
-</li>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>O</mi><mi>L</mi><msub><mi>L</mi><mi>k</mi></msub><mo>=</mo><mi>R</mi><mi>O</mi><mi>L</mi><msub><mi>L</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>g</mi><mi>x</mi></msub><mo>∗</mo><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">ROLL_k = ROLL_{k-1} + g_x * \Delta t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal">L</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal">L</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6597em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mord mathnormal">t</span></span></span></span></p>
-</li>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mi>A</mi><msub><mi>W</mi><mi>k</mi></msub><mo>=</mo><mi>Y</mi><mi>A</mi><msub><mi>W</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>g</mi><mi>z</mi></msub><mo>∗</mo><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">YAW_k = YAW_{k-1} + g_z * \Delta t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span><span class="mord mathnormal">A</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span><span class="mord mathnormal">A</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6597em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mord mathnormal">t</span></span></span></span></p>
-</li>
-</ol>
-<blockquote>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mord mathnormal">t</span></span></span></span> 越小，计算值就越精确</p>
-</blockquote>
-</li>
-<li>
-<p>通过加速度计计算角度方法：</p>
-<p>加速度计静止或低速运动时主要反映支持力，也就是与重力方向相反的比力，因此可以根据其方向计算俯仰角和横滚角。先将原始值换算成实际加速度，再使用反正切函数：</p>
-<ol>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>I</mi><mi>T</mi><mi>C</mi><msub><mi>H</mi><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow></msub><mo>=</mo><mi>arctan</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>a</mi><mi>x</mi></msub><msqrt><mrow><msubsup><mi>a</mi><mi>y</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mfrac><mo fence="true">)</mo></mrow><mo>×</mo><mfrac><mn>180</mn><mi>π</mi></mfrac></mrow><annotation encoding="application/x-tex">PITCH_{acc} = \arctan\left(\frac{a_x}{\sqrt{a_y^2+a_z^2}}\right) \times \frac{180}{\pi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">cc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">arctan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7115em;"><span style="top:-2.5267em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9476em;"><span class="svg-align" style="top:-3.4286em;"><span class="pstrut" style="height:3.4286em;"></span><span class="mord mtight" style="padding-left:1.19em;"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7463em;"><span style="top:-2.214em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4249em;"><span></span></span></span></span></span></span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7463em;"><span style="top:-2.214em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.9196em;"><span class="pstrut" style="height:3.4286em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.5429em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.5429em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5089em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4101em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8296em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">π</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">180</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
-</li>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>O</mi><mi>L</mi><msub><mi>L</mi><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow></msub><mo>=</mo><mi>arctan</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>a</mi><mi>y</mi></msub><msqrt><mrow><msubsup><mi>a</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mfrac><mo fence="true">)</mo></mrow><mo>×</mo><mfrac><mn>180</mn><mi>π</mi></mfrac></mrow><annotation encoding="application/x-tex">ROLL_{acc} = \arctan\left(\frac{a_y}{\sqrt{a_x^2+a_z^2}}\right) \times \frac{180}{\pi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal">L</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">cc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">arctan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8087em;"><span style="top:-2.4781em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0171em;"><span class="svg-align" style="top:-3.4286em;"><span class="pstrut" style="height:3.4286em;"></span><span class="mord mtight" style="padding-left:1.19em;"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7463em;"><span style="top:-2.214em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">x</span></span></span><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286em;"><span></span></span></span></span></span></span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7463em;"><span style="top:-2.214em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.9891em;"><span class="pstrut" style="height:3.4286em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.5429em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.5429em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4395em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.5073em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2819em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8296em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">π</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">180</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
-</li>
-</ol>
-<p>其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>x</mi></msub></mrow><annotation encoding="application/x-tex">a_x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>y</mi></msub></mrow><annotation encoding="application/x-tex">a_y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>z</mi></msub></mrow><annotation encoding="application/x-tex">a_z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>分别为三轴加速度，单位可以是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span></span>或<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi mathvariant="normal">/</mi><msup><mi>s</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">m/s^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>，但三者必须使用相同单位。</p>
-<blockquote>
-<p>上式按照本文规定的坐标方向和“直立时<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>z</mi></msub><mo>=</mo><mo>+</mo><mi>g</mi></mrow><annotation encoding="application/x-tex">a_z=+g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord">+</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span></span>”的安装姿态书写；如果实际方向或坐标轴正方向不同，需要对相应轴取反或交换轴。</p>
-</blockquote>
-<p>按照本文“俯仰角正方向为绕<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span></span></span></span>轴负方向旋转”的约定，绕<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span></span></span></span>轴负方向旋转时加速度计的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>x</mi></msub></mrow><annotation encoding="application/x-tex">a_x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为正，因此实际编程时写为：</p>
-<ol>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>I</mi><mi>T</mi><mi>C</mi><msub><mi>H</mi><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow></msub><mo>=</mo><mi mathvariant="normal">atan2</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi>a</mi><mi>x</mi></msub><mo separator="true">,</mo><msqrt><mrow><msubsup><mi>a</mi><mi>y</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt><mo fence="true">)</mo></mrow><mo>×</mo><mfrac><mn>180</mn><mi>π</mi></mfrac></mrow><annotation encoding="application/x-tex">PITCH_{acc} = \operatorname{atan2}\left(a_x,\sqrt{a_y^2+a_z^2}\right) \times \frac{180}{\pi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">cc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.84em;vertical-align:-0.6765em;"></span><span class="mop"><span class="mord mathrm">atan2</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1635em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3831em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.1235em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.88em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.88em" viewBox="0 0 400000 1944" preserveAspectRatio="xMinYMin slice"><path d="M983 90
-l0 -0
-c4,-6.7,10,-10,18,-10 H400000v40
-H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7
-s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744
-c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30
-c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722
-c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5
-c53.7,-170.3,84.5,-266.8,92.5,-289.5z
-M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.6765em;"><span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">π</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">180</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
-</li>
-<li>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>O</mi><mi>L</mi><msub><mi>L</mi><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow></msub><mo>=</mo><mi mathvariant="normal">atan2</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi>a</mi><mi>y</mi></msub><mo separator="true">,</mo><msqrt><mrow><msubsup><mi>a</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt><mo fence="true">)</mo></mrow><mo>×</mo><mfrac><mn>180</mn><mi>π</mi></mfrac></mrow><annotation encoding="application/x-tex">ROLL_{acc} = \operatorname{atan2}\left(a_y,\sqrt{a_x^2+a_z^2}\right) \times \frac{180}{\pi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal">L</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">cc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="mop"><span class="mord mathrm">atan2</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9316em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8916em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
-c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
-c340,-704.7,510.7,-1060.3,512,-1067
-l0 -0
-c4.7,-7.3,11,-11,19,-11
-H40000v40H1012.3
-s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
-c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
-s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
-c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
-M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3084em;"><span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">π</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">180</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
-</li>
-</ol>
-<blockquote>
-<p>加速度计只能根据重力方向确定相对于水平面的姿态，无法判断绕重力方向的运动，因此不能单独计算偏航角<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mi>A</mi><mi>W</mi></mrow><annotation encoding="application/x-tex">YAW</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.1389em;">W</span></span></span></span>。</p>
-</blockquote>
-</li>
-<li>
-<p>误差来源：</p>
-<ol>
-<li>
-<p><strong>加速度计噪声</strong>：加速度计会受到传感器内部振动和外部运动的影响，导致测量数据出现<strong>抖动</strong>。加速度计噪声通常表现为短时间内的<strong>快速变化</strong>，可以使用一阶滞后滤波减弱。</p>
-</li>
-<li>
-<p><strong>陀螺仪漂移</strong>：陀螺仪存在<strong>零偏</strong>，即设备静止时测得的角速度也可能不为0。角度由角速度<strong>积分</strong>得到，零偏误差会随着时间累积，使计算角度<strong>逐渐偏离</strong>真实值，这种现象称为漂移。</p>
-</li>
-</ol>
-</li>
-</ol>
-<blockquote>
-<p>加速度计适合提供长期稳定的俯仰角和翻滚角参考，陀螺仪适合反映短时间内的姿态变化。实际常使用<strong>互补</strong>滤波或<strong>卡尔曼</strong>滤波，结合两者的优点来减小误差。</p>
-</blockquote>
-<h4 id="消除误差方式一dmp处理"><a class="markdownIt-Anchor" href="#消除误差方式一dmp处理"></a> 消除误差方式一：DMP处理</h4>
-<p>三轴加速度计和陀螺仪测量到的数据通过DMP处理（利用INVENSENSE固件）成四元数。四元数可经过STM32进一步处理即成欧拉角。</p>
-<h4 id="消除误差方式二一阶滞后滤波"><a class="markdownIt-Anchor" href="#消除误差方式二一阶滞后滤波"></a> 消除误差方式二：一阶滞后滤波</h4>
-<ol>
-<li>
-<p>一阶滞后滤波也称一阶低通滤波。它通过保留当前测量值的一部分、保留上一次滤波结果的另一部分来平滑数据。</p>
-</li>
-<li>
-<p>原理：<br />
-让输出不能瞬间跟随输入变化，这样输入中的快速变化和高频噪声会被削弱，低频变化可以逐渐传递到输出。但由于输出需要逐步接近输入，会产生一定的延迟。</p>
-</li>
-<li>
-<p>公式：   <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>k</mi></msub><mo>=</mo><mi>α</mi><msub><mi>x</mi><mi>k</mi></msub><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo><msub><mi>y</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">y_k = \alpha x_k + (1-\alpha)y_{k-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span><br />
-其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>次采样值，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">y_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>次滤波结果，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">y_{k-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span>是上一次滤波结果，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>是滤波系数，取值范围为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>α</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0&lt;\alpha\leq1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6835em;vertical-align:-0.0391em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>越<strong>小</strong>，滤波越<strong>平滑</strong>，但响应越<strong>慢</strong>；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>越<strong>大</strong>，响应越<strong>快</strong>，但抑制噪声的能力越<strong>弱</strong>。</p>
-</li>
-</ol>
-<h4 id="消除误差方式三互补滤波"><a class="markdownIt-Anchor" href="#消除误差方式三互补滤波"></a> 消除误差方式三：互补滤波</h4>
-<p>施工中</p>
-<h4 id="消除误差方式四卡尔曼滤波"><a class="markdownIt-Anchor" href="#消除误差方式四卡尔曼滤波"></a> 消除误差方式四：卡尔曼滤波</h4>
-<p>施工中</p>
-<h2 id="思考题一-3"><a class="markdownIt-Anchor" href="#思考题一-3"></a> 思考题一</h2>
-<ol>
-<li>
-<p>UART只支持一对一通信，每增加一个设备就要增加一对Tx/Rx引脚。I2C通信只需要SCL和SDA两根总线，采用不同地址的设备可以同时挂载在总线上。</p>
-</li>
-<li>
-<p>MPU6050的地址是7位，与AD0地址引脚的电平作为最低位进行与运算。AD0接高电平时，MPU6050的高6位地址与0x10进行与运算得到一个地址，AD0接低电平时，MPU6050的高6位地址与0x00进行与运算得到一个地址，从而能区分不同设备。</p>
-</li>
-</ol>
-<h2 id="思考题二-3"><a class="markdownIt-Anchor" href="#思考题二-3"></a> 思考题二</h2>
-<ol>
-<li>
-<p>原始数据的物理含义是单位g下加速度的真实值与测量精度（量程/32768）的乘积。</p>
-</li>
-<li>
-<p>先考虑最简情况，在坐标面上运动：</p>
-<ol>
-<li>
-<p>Pitch：压缩到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span></span></span></span>-<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">Z</span></span></span></span>平面。加速度计测得的是支持力方向的比力，正交分解<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>x</mi></msub><mo>=</mo><mi>g</mi><mi>sin</mi><mo>⁡</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">a_x=g\sin\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>z</mi></msub><mo>=</mo><mi>g</mi><mi>cos</mi><mo>⁡</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">a_z=g\cos\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span></span></span></span>，则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>tan</mi><mo>⁡</mo><mi>θ</mi><mo>=</mo><mfrac><msub><mi>a</mi><mi>x</mi></msub><msub><mi>a</mi><mi>z</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\tan\theta=\frac{a_x}{a_z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mop">tan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1566em;vertical-align:-0.4451em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7115em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4101em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4451em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，即<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>θ</mi><mo>=</mo><mi>arctan</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>a</mi><mi>x</mi></msub><msub><mi>a</mi><mi>z</mi></msub></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\theta=\arctan\left(\frac{a_x}{a_z}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">arctan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
-</p>
-</li>
-<li>
-<p>Roll：压缩到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.2222em;">Y</span></span></span></span>-<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">Z</span></span></span></span>平面。加速度计测得的是支持力方向的比力，正交分解<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>y</mi></msub><mo>=</mo><mi>g</mi><mi>sin</mi><mo>⁡</mo><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">a_y=g\sin\phi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>z</mi></msub><mo>=</mo><mi>g</mi><mi>cos</mi><mo>⁡</mo><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">a_z=g\cos\phi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span></span></span></span>，则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>tan</mi><mo>⁡</mo><mi>ϕ</mi><mo>=</mo><mfrac><msub><mi>a</mi><mi>y</mi></msub><msub><mi>a</mi><mi>z</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\tan\phi=\frac{a_y}{a_z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mop">tan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2538em;vertical-align:-0.4451em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8087em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.5073em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2819em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4451em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，即<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mi>arctan</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>a</mi><mi>y</mi></msub><msub><mi>a</mi><mi>z</mi></msub></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi=\arctan\left(\frac{a_y}{a_z}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ϕ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">arctan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
-</p>
-</li>
-</ol>
-<p>再推广至一般情况。由于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><msubsup><mi>a</mi><mi>y</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{a_y^2+a_z^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.84em;vertical-align:-0.6765em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1635em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3831em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.1235em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.88em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.88em" viewBox="0 0 400000 1944" preserveAspectRatio="xMinYMin slice"><path d="M983 90
-l0 -0
-c4,-6.7,10,-10,18,-10 H400000v40
-H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7
-s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744
-c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30
-c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722
-c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5
-c53.7,-170.3,84.5,-266.8,92.5,-289.5z
-M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.6765em;"><span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><msubsup><mi>a</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{a_x^2+a_z^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.3084em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9316em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8916em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
-c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
-c340,-704.7,510.7,-1060.3,512,-1067
-l0 -0
-c4.7,-7.3,11,-11,19,-11
-H40000v40H1012.3
-s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
-c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
-s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
-c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
-M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3084em;"><span></span></span></span></span></span></span></span></span>表示合加速度，始终取非负值，因此它们可以作为正的参考分量：</p>
-<ol>
-<li>
-<p>Pitch：将<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span></span></span>方向的分量求矢量和，再与<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>方向分量共同计算，最终得出<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>θ</mi><mo>=</mo><mi>arctan</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>a</mi><mi>x</mi></msub><msqrt><mrow><msubsup><mi>a</mi><mi>y</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\theta=\arctan\left(\frac{a_x}{\sqrt{a_y^2+a_z^2}}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.78em;vertical-align:-1.73em;"></span><span class="mop">arctan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.875em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.875em" height="3.6em" viewBox="0 0 875 3600"><path d="M863,9c0,-2,-2,-5,-6,-9c0,0,-17,0,-17,0c-12.7,0,-19.3,0.3,-20,1
-c-5.3,5.3,-10.3,11,-15,17c-242.7,294.7,-395.3,682,-458,1162c-21.3,163.3,-33.3,349,
--36,557 l0,84c0.2,6,0,26,0,60c2,159.3,10,310.7,24,454c53.3,528,210,
-949.7,470,1265c4.7,6,9.7,11.7,15,17c0.7,0.7,7,1,19,1c0,0,18,0,18,0c4,-4,6,-7,6,-9
-c0,-2.7,-3.3,-8.7,-10,-18c-135.3,-192.7,-235.5,-414.3,-300.5,-665c-65,-250.7,-102.5,
--544.7,-112.5,-882c-2,-104,-3,-167,-3,-189
-l0,-92c0,-162.7,5.7,-314,17,-454c20.7,-272,63.7,-513,129,-723c65.3,
--210,155.3,-396.3,270,-559c6.7,-9.3,10,-15.3,10,-18z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.11em;"><span class="pstrut" style="height:3.1635em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1635em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3831em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.1235em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.88em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.88em" viewBox="0 0 400000 1944" preserveAspectRatio="xMinYMin slice"><path d="M983 90
-l0 -0
-c4,-6.7,10,-10,18,-10 H400000v40
-H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7
-s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744
-c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30
-c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722
-c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5
-c53.7,-170.3,84.5,-266.8,92.5,-289.5z
-M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.6765em;"><span></span></span></span></span></span></span></span><span style="top:-3.3935em;"><span class="pstrut" style="height:3.1635em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.8405em;"><span class="pstrut" style="height:3.1635em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.73em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.875em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.875em" height="3.6em" viewBox="0 0 875 3600"><path d="M76,0c-16.7,0,-25,3,-25,9c0,2,2,6.3,6,13c21.3,28.7,42.3,60.3,
-63,95c96.7,156.7,172.8,332.5,228.5,527.5c55.7,195,92.8,416.5,111.5,664.5
-c11.3,139.3,17,290.7,17,454c0,28,1.7,43,3.3,45l0,9
-c-3,4,-3.3,16.7,-3.3,38c0,162,-5.7,313.7,-17,455c-18.7,248,-55.8,469.3,-111.5,664
-c-55.7,194.7,-131.8,370.3,-228.5,527c-20.7,34.7,-41.7,66.3,-63,95c-2,3.3,-4,7,-6,11
-c0,7.3,5.7,11,17,11c0,0,11,0,11,0c9.3,0,14.3,-0.3,15,-1c5.3,-5.3,10.3,-11,15,-17
-c242.7,-294.7,395.3,-681.7,458,-1161c21.3,-164.7,33.3,-350.7,36,-558
-l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
--470,-1265c-4.7,-6,-9.7,-11.7,-15,-17c-0.7,-0.7,-6.7,-1,-18,-1z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span></span></p>
-</p>
-</li>
-<li>
-<p>Roll：将<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span></span></span>方向的分量求矢量和，再与<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span>方向分量共同计算，最终得出<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mi>arctan</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>a</mi><mi>y</mi></msub><msqrt><mrow><msubsup><mi>a</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi=\arctan\left(\frac{a_y}{\sqrt{a_x^2+a_z^2}}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ϕ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="mop">arctan</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.1784em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9316em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8916em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
-c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
-c340,-704.7,510.7,-1060.3,512,-1067
-l0 -0
-c4.7,-7.3,11,-11,19,-11
-H40000v40H1012.3
-s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
-c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
-s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
-c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
-M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3084em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.13em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">)</span></span></span></span></span></span></span></p>
-</p>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="思考题三-2"><a class="markdownIt-Anchor" href="#思考题三-2"></a> 思考题三</h2>
-<ol>
-<li>
-<p>加速度计会受到传感器内部振动和外部运动的影响，导致测量数据出现抖动或噪声。</p>
-</li>
-<li>
-<p>通过保留当前测量值的一部分、保留上一次滤波结果的另一部分，让输出不能瞬间跟随输入变化，这样输入中的快速变化和高频噪声会被削弱，低频变化可以逐渐传递到输出，使输出变平滑。</p>
-</li>
-<li>
-<p>α越小，滤波越平滑，延迟越高；α越大，噪声越大，响应速度越快</p>
-</li>
-</ol>
-<h2 id="思考题四-2"><a class="markdownIt-Anchor" href="#思考题四-2"></a> 思考题四</h2>
-<ol>
-<li>
-<p>首先单片机引脚发送起始位，接着发送MPU6050的7位左移地址和写数据位。</p>
-</li>
-<li>
-<p>再发送要读的寄存器地址。</p>
-</li>
-<li>
-<p><strong>不发送STOP</strong>，保持总线占用，再次发送START和MPU6050地址（读数据位），开始读数据。</p>
-</li>
-</ol>
-<blockquote>
-<p>发送STOP在许多情况下也能够运行，但不能防止其他I2C设备突然占用总线。</p>
-</blockquote>
-<ol start="4">
-<li>
-<p>每读取一个字节发送一个ACK，最后一个字节发送NACK。</p>
-</li>
-<li>
-<p>读完数据后发送STOP。</p>
-</li>
-</ol>
-<h2 id="思考题五"><a class="markdownIt-Anchor" href="#思考题五"></a> 思考题五</h2>
-<p>将浮点数拆分成整数部分和小数部分，按顺序写入字符数组。</p>
-<h1 id="挑战点四"><a class="markdownIt-Anchor" href="#挑战点四"></a> 挑战点四</h1>
 ]]></content>
+      <tags>
+        <tag>嵌入式</tag>
+        <tag>学习笔记</tag>
+        <tag>STM32</tag>
+      </tags>
   </entry>
   <entry>
     <title>关于此博客</title>
