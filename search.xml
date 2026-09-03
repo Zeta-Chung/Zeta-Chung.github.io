@@ -6464,7 +6464,8 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
   <entry>
     <title>DMA</title>
     <url>/2026/08/25/DMA/</url>
-    <content><![CDATA[<span id="more"></span>
+    <content><![CDATA[<p>STM32中，DMA模块的学习笔记，包括DMA的概念、作用、运行原理、编程接口以及常用外设的DMA配置接口等内容。</p>
+<span id="more"></span>
 <h1 id="dma简介"><a class="markdownIt-Anchor" href="#dma简介"></a> DMA简介</h1>
 <h2 id="概念"><a class="markdownIt-Anchor" href="#概念"></a> 概念</h2>
 <ol>
@@ -6606,7 +6607,7 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 <li>
 <p>传输计数器：自减计数器，指定转运数据的次数，每转运一次减一，减到零时结束。结束后如果地址存在自增，也会自动回到起始地址。</p>
 <blockquote>
-<p>“DMA 的数据宽度定义了单次传输的数据载荷大小，在整轮传输中保持不变。而传输计数器定义了一轮传输中包含多少个这样的单次传输</p>
+<p>DMA 的数据宽度定义了单次传输的数据载荷大小，在整轮传输中保持不变。而传输计数器定义了一轮传输中包含多少个这样的单次传输</p>
 </blockquote>
 </li>
 <li>
