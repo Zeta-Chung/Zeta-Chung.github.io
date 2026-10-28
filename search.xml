@@ -2259,6 +2259,84 @@ NVIC模块图</p>
 <blockquote>
 <p>中断挂起位是指定时器的某个中断是否被触发，但还没有被处理。通常情况下，当中断被触发时，中断挂起位会被置位，但中断处理程序还没有执行完毕，此时中断挂起位仍然被置位。当中断处理程序执行完毕后，中断挂起位会被清除。</p>
 </blockquote>
+<h2 id="输入捕获相关接口"><a class="markdownIt-Anchor" href="#输入捕获相关接口"></a> 输入捕获相关接口</h2>
+<p><a id="tim_icinit"></a></p>
+<p><code>void TIM_ICInit(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)</code></p>
+<ul>
+<li>
+<p>作用：配置指定定时器的输入捕获通道。</p>
+</li>
+<li>
+<p>结构体常用成员：</p>
+<ul>
+<li>
+<p><code>TIM_Channel</code>：捕获通道，如 <code>TIM_Channel_1</code>。</p>
+</li>
+<li>
+<p><code>TIM_ICPolarity</code>：捕获极性，如 <code>TIM_ICPolarity_Rising</code>、<code>TIM_ICPolarity_Falling</code>。</p>
+</li>
+<li>
+<p><code>TIM_ICSelection</code>：输入源选择，如 <code>TIM_ICSelection_DirectTI</code>（直接输入）或<code>TIM_ICSelection_IndirectTI</code>（间接输入）。</p>
+</li>
+<li>
+<p><code>TIM_ICPrescaler</code>：输入捕获分频，常用 <code>TIM_ICPSC_DIV1</code>；设置为其他分频时，会每隔相应数量的有效边沿才捕获一次。</p>
+</li>
+<li>
+<p><code>TIM_ICFilter</code>：输入滤波值，范围为 0～15；为 0 表示不滤波，具体采样频率和滤波时长由定时器时钟分频设置共同决定。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a id="tim_pwmi_config"></a></p>
+<p><code>void TIM_PWMIConfig(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)</code></p>
+<ul>
+<li>
+<p>作用：按 PWM 输入模式配置一对输入捕获通道，常用于同时测量周期和高电平脉宽。</p>
+</li>
+<li>
+<p>说明：使用 PWM 输入模式时，通常将通道 1 设为上升沿直接输入、通道 2 设为下降沿间接输入，再选择 <code>TIM_TS_TI1FP1</code> 作为触发源，并将从模式设为 <code>TIM_SlaveMode_Reset</code>。通道 1 捕获周期计数，通道 2 捕获高电平计数。若需要测量低电平时间，可调整捕获极性。</p>
+</li>
+</ul>
+<p><a id="tim_getcapturex"></a></p>
+<p><code>uint16_t TIM_GetCapturex(TIM_TypeDef* TIMx)</code></p>
+<ul>
+<li>
+<p>作用：读取指定通道的捕获寄存器 CCRx。</p>
+</li>
+<li>
+<p>说明：标准库按通道分别提供 <code>TIM_GetCapture1</code>、<code>TIM_GetCapture2</code>、<code>TIM_GetCapture3</code> 和 <code>TIM_GetCapture4</code>，参数只有 <code>TIMx</code>。捕获值是计数器计数值，不是时间；换算时间需要结合定时器计数频率。</p>
+</li>
+</ul>
+<p><a id="tim_seticxprescaler"></a></p>
+<p><code>void TIM_SetICxPrescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)</code></p>
+<ul>
+<li>
+<p>作用：修改指定输入捕获通道的捕获分频系数。</p>
+</li>
+<li>
+<p>说明：标准库按通道提供 <code>TIM_SetIC1Prescaler</code>～<code>TIM_SetIC4Prescaler</code>。该分频只影响输入捕获事件的采集频率，不会改变计数器本身的计数频率。</p>
+</li>
+</ul>
+<p><a id="tim_selectinputtrigger"></a></p>
+<p><code>void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource)</code></p>
+<ul>
+<li>
+<p>作用：选择定时器从模式控制器使用的输入触发源，例如 <code>TIM_TS_TI1FP1</code>。</p>
+</li>
+<li>
+<p>说明：常与 <code>TIM_SelectSlaveMode</code> 配合配置 PWM 输入模式或外部触发计数。</p>
+</li>
+</ul>
+<p><a id="tim_selectslavemode"></a></p>
+<p><code>void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode)</code></p>
+<ul>
+<li>
+<p>作用：选择定时器从模式，例如 <code>TIM_SlaveMode_Reset</code>。</p>
+</li>
+<li>
+<p>说明：在 PWM 输入模式中，通常选择复位模式，使计数器在每个周期起始边沿重新计数，从而直接得到一个周期内的计数值。</p>
+</li>
+</ul>
 <h2 id="预加载相关接口-2"><a class="markdownIt-Anchor" href="#预加载相关接口-2"></a> 预加载相关接口</h2>
 <p><a id="arrpreloadconfig"></a></p>
 <p><code>void ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)</code></p>
@@ -2429,9 +2507,6 @@ NVIC模块图</p>
 </li>
 </ul>
 <h1 id="功能封装"><a class="markdownIt-Anchor" href="#功能封装"></a> 功能封装</h1>
-<blockquote>
-<p>以下封装基于上文列出的标准库接口，统一使用 <code>MY_TIM_</code> 和 <code>MY_PWM_</code> 前缀，便于与库函数区分。使用时需要包含 <code>stm32f10x.h</code>。</p>
-</blockquote>
 <h2 id="定时器时基初始化"><a class="markdownIt-Anchor" href="#定时器时基初始化"></a> 定时器时基初始化</h2>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MY_TIM_Init</span><span class="params">(TIM_TypeDef *TIMx, <span class="type">uint16_t</span> Prescaler, <span class="type">uint16_t</span> Period)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (TIMx == TIM1)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (TIMx == TIM2)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (TIMx == TIM3)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (TIMx == TIM4)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler = Prescaler;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period = Period;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_ClockDivision = TIM_CKD_DIV1;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInit(TIMx, &amp;TIM_TimeBaseInitStruct);</span><br><span class="line">    TIM_ARRPreloadConfig(TIMx, ENABLE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><a id="my_tim_init"></a></p>
@@ -2511,6 +2586,15 @@ NVIC模块图</p>
 </li>
 </ul>
 </li>
+</ul>
+<h2 id="输入捕获pwm-周期与高电平脉宽测量"><a class="markdownIt-Anchor" href="#输入捕获pwm-周期与高电平脉宽测量"></a> 输入捕获：PWM 周期与高电平脉宽测量</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint16_t</span> g_ic_period = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint16_t</span> g_ic_high_time = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> g_ic_measure_ready = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">MY_IC_PWM_Init_TIM2</span><span class="params">(<span class="type">uint8_t</span> PreemptionPriority, <span class="type">uint8_t</span> SubPriority)</span></span><br><span class="line">&#123;</span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct;</span><br><span class="line">    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;</span><br><span class="line">    TIM_ICInitTypeDef TIM_ICInitStruct;</span><br><span class="line">    NVIC_InitTypeDef NVIC_InitStruct;</span><br><span class="line"></span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* TIM2_CH1 默认映射到 PA0；输入捕获使用普通输入模式。 */</span></span><br><span class="line">    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0;</span><br><span class="line">    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU;  </span><br><span class="line">    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">    GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Prescaler = <span class="number">71</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_Period = <span class="number">0xFFFF</span>;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_ClockDivision = TIM_CKD_DIV1;</span><br><span class="line">    TIM_TimeBaseInitStruct.TIM_RepetitionCounter = <span class="number">0</span>;</span><br><span class="line">    TIM_TimeBaseInit(TIM2, &amp;TIM_TimeBaseInitStruct);</span><br><span class="line"></span><br><span class="line">    TIM_ICInitStruct.TIM_Channel = TIM_Channel_1;</span><br><span class="line">    TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;</span><br><span class="line">    TIM_ICInitStruct.TIM_ICSelection = TIM_ICSelection_DirectTI;</span><br><span class="line">    TIM_ICInitStruct.TIM_ICPrescaler = TIM_ICPSC_DIV1;</span><br><span class="line">    TIM_ICInitStruct.TIM_ICFilter = <span class="number">0</span>;</span><br><span class="line">    TIM_PWMIConfig(TIM2, &amp;TIM_ICInitStruct);</span><br><span class="line"></span><br><span class="line">    TIM_SelectInputTrigger(TIM2, TIM_TS_TI1FP1);</span><br><span class="line">    TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);</span><br><span class="line">    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);</span><br><span class="line">    TIM_ITConfig(TIM2, TIM_IT_CC1, ENABLE);</span><br><span class="line"></span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelSubPriority = SubPriority;</span><br><span class="line">    NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;</span><br><span class="line">    NVIC_Init(&amp;NVIC_InitStruct);</span><br><span class="line"></span><br><span class="line">    TIM_Cmd(TIM2, ENABLE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIM2_IRQHandler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 周期和高电平计数均在下一次上升沿到来时完成捕获。 */</span></span><br><span class="line">        g_ic_period = TIM_GetCapture1(TIM2);</span><br><span class="line">        g_ic_high_time = TIM_GetCapture2(TIM2);</span><br><span class="line">        g_ic_measure_ready = <span class="number">1</span>;</span><br><span class="line">        TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当 <code>g_ic_measure_ready</code> 置位后，可以在主循环中读取测量结果。假设输入捕获计数频率为 <code>f_cnt</code>：</p>
+<ul>
+<li>周期：<code>T = g_ic_period / f_cnt</code> 秒。</li>
+<li>频率：<code>f = f_cnt / g_ic_period</code> Hz（<code>g_ic_period</code> 不为 0 时有效）。</li>
+<li>高电平时间：<code>t_high = g_ic_high_time / f_cnt</code> 秒。</li>
+<li>占空比：<code>D = g_ic_high_time / g_ic_period × 100%</code>（<code>g_ic_period</code> 不为 0 时有效）。</li>
 </ul>
 <h2 id="pwm-gpio-初始化"><a class="markdownIt-Anchor" href="#pwm-gpio-初始化"></a> PWM GPIO 初始化</h2>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MY_PWM_GPIO_Init</span><span class="params">(GPIO_TypeDef *GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (GPIOx == GPIOA)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (GPIOx == GPIOB)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (GPIOx == GPIOC)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (GPIOx == GPIOD)</span><br><span class="line">    &#123;</span><br><span class="line">        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct;</span><br><span class="line"></span><br><span class="line">    GPIO_InitStruct.GPIO_Mode  = GPIO_Mode_AF_PP;</span><br><span class="line">    GPIO_InitStruct.GPIO_Pin   = GPIO_Pin;</span><br><span class="line">    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">    GPIO_Init(GPIOx, &amp;GPIO_InitStruct);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
