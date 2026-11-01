@@ -2102,6 +2102,66 @@ NVIC模块图</p>
 </ol>
 <p><a id="my-anchor"></a></p>
 <h1 id="从模式控制器"><a class="markdownIt-Anchor" href="#从模式控制器"></a> 从模式控制器</h1>
+<h2 id="什么是从模式控制器"><a class="markdownIt-Anchor" href="#什么是从模式控制器"></a> 什么是从模式控制器</h2>
+<p><img src="%E4%BB%8E%E6%A8%A1%E5%BC%8F.png" alt="从模式控制器的位置和结构" /><br />
+如图所示，从模式控制器有TRGI输入，TRGO输出以及与时基单元的相互作用，可看作一个接受头和遥控器的结合体</p>
+<h3 id="trgi"><a class="markdownIt-Anchor" href="#trgi"></a> TRGI</h3>
+<p>定义：TRGI(Trigger Input):触发输入，接受外部命令，根据外部命令可控制时基单元进行相应活动</p>
+<h3 id="trgo"><a class="markdownIt-Anchor" href="#trgo"></a> TRGO</h3>
+<p>定义：TRGO(Trigger Output):触发输出，向外发送命令，可通过时基单元的状态发送相应信号，控制其它定时器或其它模块进行相应活动</p>
+<h2 id="8种从模式"><a class="markdownIt-Anchor" href="#8种从模式"></a> 8种从模式</h2>
+<p><img src="%E4%BB%8E%E6%A8%A1%E5%BC%8F8%E7%A7%8D.png" alt="从模式" /></p>
+<ol>
+<li>默认模式是从模式禁止</li>
+</ol>
+<h2 id="8种主模式"><a class="markdownIt-Anchor" href="#8种主模式"></a> 8种主模式</h2>
+<p><img src="%E4%B8%BB%E6%A8%A1%E5%BC%8F8%E7%A7%8D.png" alt="主模式" /></p>
+<h2 id="通过从模式控制器测量pwm信号参数"><a class="markdownIt-Anchor" href="#通过从模式控制器测量pwm信号参数"></a> 通过从模式控制器测量PWM信号参数</h2>
+<h3 id="测量对象"><a class="markdownIt-Anchor" href="#测量对象"></a> 测量对象</h3>
+<p>PWM信号的<strong>周期</strong>和<strong>占空比</strong></p>
+<h3 id="trgi的来源"><a class="markdownIt-Anchor" href="#trgi的来源"></a> TRGI的来源</h3>
+<p><img src="TRGI.png" alt="TRGI来源" /><br />
+如图，TRGI有很多输入来源</p>
+<ol>
+<li>
+<p>来自ETR的信号（外部输入的信号）</p>
+</li>
+<li>
+<p>来自TRC的信号</p>
+<ul>
+<li>ITR0-ITR3表示从其他定时器来的TRGO信号，一般用于定时器的级联（一个定时器的TRGO作为另一个定时器的TRGI）<br />
+<img src="ITR.png" alt="ITRx选择" /><br />
+ITRx与各定时器做从定时器时，主定时器的对应关系</li>
+</ul>
+</li>
+<li>
+<p>来自TI1FP1(输入捕获通道1的直接输入).在测量PWM时复用器选择TI1FP1(Timer Input 1 Filtered Polarized 1)</p>
+</li>
+</ol>
+<blockquote>
+<p>当TI1FP1作为TRGI时，它的信号会同时送往从模式控制器（用于触发复位等操作）和捕获通道1（用于将计数器CNT的值锁存到CCR1寄存器中）</p>
+</blockquote>
+<ol start="4">
+<li>来自TI2FP2(输入捕获通道2的直接输入)</li>
+</ol>
+<h3 id="pwm参数测量的原理"><a class="markdownIt-Anchor" href="#pwm参数测量的原理"></a> PWM参数测量的原理</h3>
+<ol>
+<li>
+<p>让输入捕获的通道1测量PWM的上升沿，通道2捕获PWM的下降沿；</p>
+</li>
+<li>
+<p>将TRGI的来源选择为TI1FP1，模式设置为复位模式</p>
+</li>
+<li>
+<p>信号上升沿时CNT清零，下降沿时CNT的值被保存到CCR2寄存器中，此时CCR2中的值就是<strong>高电平时长</strong></p>
+</li>
+</ol>
+<blockquote>
+<p>硬件执行顺序是先<strong>捕获</strong>后<strong>清零</strong></p>
+</blockquote>
+<ol start="4">
+<li>下一次上升沿时，CNT的值被保存到CCR1寄存器中，此时CCR1中的值就是<strong>周期</strong></li>
+</ol>
 <h1 id="编程接口总览"><a class="markdownIt-Anchor" href="#编程接口总览"></a> 编程接口总览</h1>
 <h2 id="时基相关接口"><a class="markdownIt-Anchor" href="#时基相关接口"></a> 时基相关接口</h2>
 <p><a id="tim_timebaseinit"></a></p>
