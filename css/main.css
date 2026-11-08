@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #c3ffb1;
+    background: #fcf;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3451,5 +3451,125 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   }
   .tag-directory-list {
     grid-template-columns: 1fr;
+  }
+}
+/* Homepage notifications remain separate; other routes share an application frame. */
+.main.win95-window {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 4px;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised), 3px 3px 0 rgba(0,0,0,0.3);
+}
+.window-titlebar {
+  display: flex;
+  align-items: center;
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px 8px;
+  margin-bottom: 4px;
+  background: #000080;
+  color: #fff;
+  font: bold 16px/1.4 Tahoma, 'Microsoft YaHei', sans-serif;
+}
+.window-titlebar > span:last-child {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.window-titlebar img {
+  flex: 0 0 20px;
+  margin: 0;
+  image-rendering: pixelated;
+}
+.window-document-icon {
+  position: relative;
+  flex: 0 0 14px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  background: #fff;
+  box-shadow: inset -2px -2px #808080;
+}
+.window-document-icon::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  width: 6px;
+  height: 1px;
+  background: #000080;
+  box-shadow: 0 3px #808080, 0 6px #808080;
+}
+.win95-window .main-inner {
+  flex: 1 1 calc(100% - 280px);
+  min-width: 0;
+  width: auto;
+  padding: 0;
+  background: #fff;
+  box-shadow: var(--win-inset);
+}
+.win95-window .main-inner .post-block,
+.win95-window .main-inner .comments {
+  margin: 0;
+  padding: 24px;
+  background: transparent;
+  box-shadow: none;
+}
+.win95-window .post-body {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.win95-window .posts-expand .post-header {
+  margin-bottom: 24px;
+  text-align: left;
+}
+.win95-window .posts-expand .post-title,
+.win95-window .posts-collapse .collection-title {
+  padding: 0 0 12px;
+  background: transparent;
+  box-shadow: none;
+  color: #222;
+  border-bottom: 1px solid #c0c0c0;
+}
+.win95-window .posts-expand .post-title {
+  font-size: 24px;
+}
+.win95-window .post-meta {
+  justify-content: flex-start;
+}
+.win95-window .sidebar-inner {
+  margin-top: 0;
+  box-shadow: none;
+}
+.tag-directory-list .tag-folder-icon {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  image-rendering: pixelated;
+}
+.win95-window .main-inner .pagination {
+  margin-top: 0;
+  box-shadow: none;
+  border-top: 1px solid #808080;
+}
+@media (max-width: 991px) {
+  .main.win95-window {
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+}
+@media (max-width: 767px) {
+  .win95-window .main-inner .post-block,
+  .win95-window .main-inner .comments {
+    padding: 16px;
+  }
+  .window-titlebar {
+    font-size: 14px;
   }
 }

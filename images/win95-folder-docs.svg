@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <title>文档文件夹</title>
+  <path fill="#000" d="M3 10h9l3 3h14v16H3z"/>
+  <path fill="#808000" d="M4 11h8l3 3h13v13H4z"/>
+  <path fill="#000" d="M7 9 18 1l12 12-7 12L7 19z"/>
+  <path fill="#808080" d="m8 9 10-7 11 11-6 10-14-5z"/>
+  <path fill="#fff" d="m9 9 9-6 10 10-6 9-12-5z"/>
+  <path fill="#000" d="M7 5h13l6 6v14H7z"/>
+  <path fill="#fff" d="M8 6h11v6h6v12H8z"/>
+  <path fill="#c0c0c0" d="m20 7 4 4h-4zM11 9h5v1h-5zM11 12h6v1h-6zM11 15h11v1H11z"/>
+  <path fill="#000" d="M1 15h29l-4 14H5z"/>
+  <path fill="#ffff80" d="M2 16h27l-4 12H6z"/>
+  <path fill="#fff" d="M3 16h25v1H3z"/>
+  <path fill="#c0c060" d="M5 20h1v4H5zM6 24h1v3H6zM25 23h1v4h-1zM26 19h1v4h-1z"/>
+  <path fill="#808000" d="M7 27h18v1H7z"/>
+</svg>
