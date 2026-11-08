@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #98ffff;
+    background: #1df6ff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3160,9 +3160,9 @@ body {
   height: auto;
   padding-bottom: var(--taskbar-space);
 }
-.header .site-nav,
-.site-brand-container .site-nav-toggle,
-.site-brand-container .site-nav-right {
+/* The taskbar identity now provides the shared home link. */
+.header .site-brand-container,
+.header .site-nav {
   display: none;
 }
 .win95-taskbar {
@@ -3184,6 +3184,7 @@ body {
   list-style: none;
 }
 .taskbar-item {
+  flex: 1;
   min-width: 0;
 }
 .taskbar-link {
@@ -3193,7 +3194,8 @@ body {
   gap: 8px;
   box-sizing: border-box;
   height: 100%;
-  min-width: 92px;
+  min-width: 0;
+  width: 100%;
   padding: 0 16px;
   border: 0;
   border-radius: 0;
@@ -3207,6 +3209,19 @@ body {
 }
 .taskbar-link .fa {
   flex: 0 0 16px;
+}
+.taskbar-avatar {
+  box-sizing: border-box;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 2px;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  background: #c0c0c0;
+  box-shadow: var(--win-inset);
 }
 .taskbar-link:hover {
   background: #d4d4d4;
@@ -3247,9 +3262,6 @@ body #articleSearchBtn {
   .win95-taskbar {
     padding-right: calc(4px + env(safe-area-inset-right, 0px));
     padding-left: calc(4px + env(safe-area-inset-left, 0px));
-  }
-  .taskbar-item {
-    flex: 1;
   }
   .taskbar-link {
     flex-direction: column;
