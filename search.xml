@@ -7132,9 +7132,14 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
       </tags>
   </entry>
   <entry>
-    <title>关于此博客</title>
+    <title>关于</title>
     <url>/about/index.html</url>
-    <content><![CDATA[<h3 id="本博客目前用于记录学习过程中的一些内容"><a class="markdownIt-Anchor" href="#本博客目前用于记录学习过程中的一些内容"></a> 本博客目前用于记录学习过程中的一些内容</h3>
+    <content><![CDATA[<section class="about-profile" aria-label="个人资料">
+    <h2 class="profile-window-title">个人资料</h2>
+    <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
+    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">15 篇日志</a><a href="&#x2F;tags&#x2F;">7 个标签</a></nav>
+  </section>
+<h3 id="本博客目前用于记录学习过程中的一些内容"><a class="markdownIt-Anchor" href="#本博客目前用于记录学习过程中的一些内容"></a> 本博客目前用于记录学习过程中的一些内容</h3>
 <h4 id="以后应该会有其他的"><a class="markdownIt-Anchor" href="#以后应该会有其他的"></a> （以后应该会有其他的）</h4>
 <p>关于作者，这里没有什么可提供的确切信息，我们都需要用一生来认识自己。</p>
 <h3 id="powered-by-zetac"><a class="markdownIt-Anchor" href="#powered-by-zetac"></a> powered by ZetaC</h3>

@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #1df6ff;
+    background: #c3ffb1;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3037,6 +3037,77 @@ header.header,
   border-radius: 0;
   box-shadow: var(--win-inset);
 }
+/* Compact profile window; retain NexT's overview/TOC panel switching. */
+.sidebar-inner {
+  padding: 12px;
+}
+.profile-window-title {
+  order: -1;
+  margin: 0;
+  padding: 4px 8px;
+  background: #000080;
+  color: #fff;
+  font: bold 14px/18px Tahoma, 'Microsoft YaHei', sans-serif;
+  text-align: left;
+}
+.site-overview-wrap .site-author {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  text-align: left;
+}
+.site-overview-wrap .site-author-image {
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  object-fit: cover;
+}
+.site-overview-wrap .site-author-name {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+.site-overview-wrap .site-description {
+  grid-column: 1/-1;
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+.site-overview-wrap .site-description:empty {
+  display: none;
+}
+.site-overview-wrap .site-state {
+  margin: 0;
+}
+.site-overview-wrap .site-state-item {
+  padding: 0 8px;
+}
+.site-overview-wrap .site-state-item-count {
+  display: inline;
+  margin-right: 4px;
+  font-size: 14px;
+}
+.site-overview-wrap .site-state-item-name {
+  font-size: 14px;
+}
+.sidebar .sidebar-nav {
+  margin: 0;
+  padding: 4px 8px;
+  background: #000080;
+}
+.sidebar .sidebar-nav li {
+  padding: 0;
+  color: #ddd;
+  font-size: 14px;
+  line-height: 20px;
+}
+.sidebar .sidebar-nav li:hover,
+.sidebar-toc-active .sidebar-nav .sidebar-nav-toc,
+.sidebar-overview-active .sidebar-nav .sidebar-nav-overview {
+  color: #fff;
+  border-bottom-color: #fff;
+}
 .sidebar-nav li {
   color: #222;
 }
@@ -3270,5 +3341,115 @@ body #articleSearchBtn {
     width: 100%;
     padding: 2px;
     font-size: 12px;
+  }
+}
+/* Profile lives in About; the remaining sidebar is for article navigation. */
+.column:not(:has(.sidebar-nav-active)),
+.sidebar-nav .sidebar-nav-overview {
+  display: none;
+}
+.column:not(:has(.sidebar-nav-active)) + .main-inner {
+  width: 100%;
+}
+body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
+  display: none !important; /* NexT sets an inline display value on mobile. */
+}
+/* Compact notification windows, scoped to the homepage and its pagination. */
+.main-inner.index .post-block {
+  padding: 20px 24px;
+}
+.main-inner.index .post-block:not(:first-child) {
+  margin-top: 12px;
+}
+.main-inner.index .post-header {
+  margin-bottom: 16px;
+}
+.main-inner.index .post-body {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+.main-inner.index .post-body p {
+  margin-bottom: 12px;
+}
+.main-inner.index .post-button {
+  margin-top: 12px;
+  text-align: right;
+}
+.about-profile {
+  box-sizing: border-box;
+  max-width: 360px;
+  margin: 0 0 24px;
+  padding: 12px;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+}
+.about-profile-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+.about-profile-identity img {
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 2px;
+  object-fit: cover;
+  box-shadow: var(--win-inset);
+}
+.about-profile-stats {
+  display: flex;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  font-size: 14px;
+}
+.tag-directory-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tag-directory-list a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  background: #c0c0c0;
+  border: 0;
+  box-shadow: var(--win-raised);
+  color: #222;
+}
+.tag-directory-list a:hover {
+  background: #dfdfdf;
+  color: #000080;
+}
+.tag-directory-list a:active {
+  box-shadow: var(--win-inset);
+}
+.tag-directory-list .fa-folder {
+  color: #808000;
+}
+.tag-directory-name {
+  overflow-wrap: anywhere;
+}
+.tag-directory-count {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 14px;
+}
+@media (max-width: 767px) {
+  .main-inner.index .post-block {
+    padding: 12px;
+  }
+  .tag-directory-list {
+    grid-template-columns: 1fr;
   }
 }
