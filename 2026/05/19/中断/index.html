@@ -611,6 +611,42 @@ NVIC模块图</p>
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
+<!-- 全站底部导航：沿用 NexT 菜单配置和搜索弹窗。 -->
+<nav class="win95-taskbar" aria-label="全站导航">
+  <ul class="taskbar-menu">
+      <li class="taskbar-item taskbar-item-home">
+        <a class="taskbar-link" href="/">
+          <i class="fa fa-home fa-fw" aria-hidden="true"></i>
+          <span>首页</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-about">
+        <a class="taskbar-link" href="/about/">
+          <i class="fa fa-user fa-fw" aria-hidden="true"></i>
+          <span>关于</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-tags">
+        <a class="taskbar-link" href="/tags/">
+          <i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+          <span>标签</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-archives">
+        <a class="taskbar-link" href="/archives/">
+          <i class="fa fa-archive fa-fw" aria-hidden="true"></i>
+          <span>归档</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-search">
+        <button class="taskbar-link popup-trigger" type="button" aria-label="搜索全站">
+          <i class="fa fa-search fa-fw" aria-hidden="true"></i>
+          <span>搜索</span>
+        </button>
+      </li>
+  </ul>
+</nav>
+
 <!-- 直接识别 mermaid 代码块并渲染（绕过 NexT page:loaded 事件时序问题） -->
 <script>
 (function() {

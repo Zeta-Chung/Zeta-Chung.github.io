@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #8e75ed;
+    background: #98ffff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2958,7 +2958,8 @@ header.header,
   border-radius: 0;
 }
 /* Five original 16px icons in a single strip; preserve accessible link text. */
-.menu-item .fa {
+.menu-item .fa,
+.taskbar-item .fa {
   background-image: url("../images/win95-icons.svg");
   background-repeat: no-repeat;
   background-size: 80px 16px;
@@ -2967,22 +2968,28 @@ header.header,
   image-rendering: pixelated;
   vertical-align: -2px;
 }
-.menu-item .fa::before {
+.menu-item .fa::before,
+.taskbar-item .fa::before {
   content: '';
 }
-.menu-item-home .fa {
+.menu-item-home .fa,
+.taskbar-item-home .fa {
   background-position: 0 0;
 }
-.menu-item-about .fa {
+.menu-item-about .fa,
+.taskbar-item-about .fa {
   background-position: -16px 0;
 }
-.menu-item-tags .fa {
+.menu-item-tags .fa,
+.taskbar-item-tags .fa {
   background-position: -32px 0;
 }
-.menu-item-archives .fa {
+.menu-item-archives .fa,
+.taskbar-item-archives .fa {
   background-position: -48px 0;
 }
-.menu-item-search .fa {
+.menu-item-search .fa,
+.taskbar-item-search .fa {
   background-position: -64px 0;
 }
 /* Reuse each real post title as the title bar; no decorative fake buttons. */
@@ -3138,5 +3145,118 @@ input:focus-visible {
 @media (max-width: 767px) {
   .post-body {
     padding: 12px;
+  }
+}
+/* Shared bottom navigation, independent of NexT's animated header column. */
+:root {
+  --taskbar-height: 44px;
+  --taskbar-space: calc(var(--taskbar-height) + env(safe-area-inset-bottom, 0px));
+}
+html {
+  scroll-padding-bottom: calc(var(--taskbar-space) + 16px);
+}
+body {
+/* NexT uses height: 100%; let long content include the bottom padding. */
+  height: auto;
+  padding-bottom: var(--taskbar-space);
+}
+.header .site-nav,
+.site-brand-container .site-nav-toggle,
+.site-brand-container .site-nav-right {
+  display: none;
+}
+.win95-taskbar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 35; /* Above the sidebar, below the search modal (40). */
+  box-sizing: border-box;
+  height: var(--taskbar-space);
+  padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px));
+  background: #c0c0c0;
+  box-shadow: inset 0 1px #fff, inset 0 2px #dfdfdf;
+}
+.taskbar-menu {
+  display: flex;
+  gap: 4px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.taskbar-item {
+  min-width: 0;
+}
+.taskbar-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  height: 100%;
+  min-width: 92px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 0;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+  color: #222;
+  font: 14px/1.2 Tahoma, 'Microsoft YaHei', sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.taskbar-link .fa {
+  flex: 0 0 16px;
+}
+.taskbar-link:hover {
+  background: #d4d4d4;
+  color: #000080;
+}
+.taskbar-link[aria-current='page'],
+.taskbar-link:active {
+  background: #dfdfdf;
+  box-shadow: var(--win-inset);
+  color: #000080;
+  font-weight: bold;
+}
+.back-to-top.back-to-top-on {
+  bottom: calc(var(--taskbar-space) + 16px);
+}
+.sidebar-toggle {
+/* NexT places this and back-to-top on the same side: retain their 5px gap. */
+  bottom: calc(var(--taskbar-space) + 47px);
+}
+body #articleSearchBtn {
+  bottom: calc(var(--taskbar-space) + 64px);
+}
+@media (min-width: 992px) {
+  .sidebar-inner {
+    max-height: calc(100vh - 48px - var(--taskbar-space));
+    max-height: calc(100dvh - 48px - var(--taskbar-space));
+  }
+}
+@media (max-width: 991px) {
+  .sidebar {
+    bottom: var(--taskbar-space);
+  }
+}
+@media (max-width: 767px) {
+  :root {
+    --taskbar-height: 56px;
+  }
+  .win95-taskbar {
+    padding-right: calc(4px + env(safe-area-inset-right, 0px));
+    padding-left: calc(4px + env(safe-area-inset-left, 0px));
+  }
+  .taskbar-item {
+    flex: 1;
+  }
+  .taskbar-link {
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    width: 100%;
+    padding: 2px;
+    font-size: 12px;
   }
 }
