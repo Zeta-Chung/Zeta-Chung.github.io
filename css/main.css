@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #fcf;
+    background: #ff73e2;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3572,4 +3572,26 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   .window-titlebar {
     font-size: 14px;
   }
+}
+/* Use the original font file supplied by the site owner; keep existing metrics. */
+@font-face {
+  font-family: 'Zpix UI';
+  src: local('Zpix'), url("../fonts/zpix.ttf") format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+button,
+.taskbar-link,
+.btn,
+.tag-directory-list a,
+.pagination .page-number,
+.pagination .extend,
+.back-to-top,
+.sidebar .sidebar-nav li,
+.window-titlebar,
+.profile-window-title,
+.main-inner.index .post-title,
+body #articleSearchWrap button {
+  font-family: 'Zpix UI', Tahoma, 'Microsoft YaHei', sans-serif;
 }
