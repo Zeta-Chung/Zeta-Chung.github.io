@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ff73e2;
+    background: #f3f;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3594,4 +3594,83 @@ button,
 .main-inner.index .post-title,
 body #articleSearchWrap button {
   font-family: 'Zpix UI', Tahoma, 'Microsoft YaHei', sans-serif;
+}
+/* Reuse the taskbar sprite so each destination keeps the same system icon. */
+.taskbar-item-about .fa {
+  background-image: url("../images/win95-network.svg");
+  background-position: 0 0;
+  background-size: 16px 16px;
+}
+.window-archive-icon {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  background: url("../images/win95-icons.svg") no-repeat -48px 0/80px 16px;
+  image-rendering: pixelated;
+}
+.search-popup .search-icon .fa {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url("../images/win95-icons.svg") no-repeat -64px 0/80px 16px;
+  image-rendering: pixelated;
+}
+.search-popup .search-icon .fa::before,
+.search-popup .search-result-icon i::before {
+  content: '';
+}
+.search-popup .search-result-icon i {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  background: url("../images/win95-icons.svg") no-repeat -256px 0/320px 64px;
+  image-rendering: pixelated;
+  animation: none;
+}
+.search-popup .search-result-icon:has(.fa-frown)::after {
+  content: '未找到相关文章';
+  display: block;
+  color: #555;
+  font: 12px/2 'Zpix UI', sans-serif;
+}
+.search-popup .search-result-icon:has(.fa-spinner)::after {
+  content: '正在加载…';
+  display: block;
+  color: #555;
+  font: 12px/2 'Zpix UI', sans-serif;
+}
+.search-popup .popup-btn-close .fa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+}
+.search-popup .popup-btn-close .fa::before,
+.search-popup .popup-btn-close:hover .fa::before {
+  content: '×';
+  color: #222;
+  font: 16px/1 'Zpix UI', sans-serif;
+}
+.search-popup .popup-btn-close:active .fa {
+  box-shadow: var(--win-inset);
+}
+/* The top credit scrolls with the page, even when NexT toggles footer-fixed. */
+body .footer,
+body .footer.footer-fixed {
+  position: static;
+  margin: 0;
+  padding: 12px 8px;
+  background: transparent;
+  color: #fff;
+  font: 12px/18px 'Zpix UI', Tahoma, 'Microsoft YaHei', sans-serif;
+  text-align: center;
+}
+body .footer .footer-inner {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
