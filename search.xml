@@ -24,10 +24,10 @@
   <entry>
     <title>学习stm32的准备工作</title>
     <url>/2026/04/30/%E5%AD%A6%E4%B9%A0stm32%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</url>
-    <content><![CDATA[<p>根据嵌入式工作室2025年秋季招新题Robotics方向第一期完成，包括最基础的概念理解与代码要求。</p>
+    <content><![CDATA[<p>包括基础概念理解、需要的C语言基础介绍和初步入门实践</p>
 <span id="more"></span>
-<h1 id="第一题"><a class="markdownIt-Anchor" href="#第一题"></a> 第一题</h1>
-<h2 id="1什么是嵌入式系统我们身边的嵌入式系统有哪些"><a class="markdownIt-Anchor" href="#1什么是嵌入式系统我们身边的嵌入式系统有哪些"></a> 1.什么是嵌入式系统？我们身边的嵌入式系统有哪些？</h2>
+<h1 id="1-认识嵌入式系统与-stm32"><a class="markdownIt-Anchor" href="#1-认识嵌入式系统与-stm32"></a> 1. 认识嵌入式系统与 STM32</h1>
+<h2 id="11-什么是嵌入式系统"><a class="markdownIt-Anchor" href="#11-什么是嵌入式系统"></a> 1.1 什么是嵌入式系统</h2>
 <ul>
 <li>
 <p>嵌入式系统由硬件和软件组成．是能够独立进行运作的器件。其软件内容只包括软件运行环境及其操作系统。硬件内容包括信号处理器、存储器、通信模块等在内的多方面的内容。相比于一般的计算机处理系统而言，嵌入式系统存在较大的差异性， 它不能实现大容量的存储功能，因为没有与之相匹配的大容量介质，大部分采用的存储介质有E-PROM、EEPROM 等， 软件部分以API编程接口作为开发平台的核心。</p>
@@ -36,7 +36,7 @@
 <p>我们身边的嵌入式设备：手机、空调、冰箱、电视、路由器、车载电脑等。</p>
 </li>
 </ul>
-<h2 id="2单片机与stm32"><a class="markdownIt-Anchor" href="#2单片机与stm32"></a> 2.单片机与STM32</h2>
+<h2 id="12-单片机与-stm32"><a class="markdownIt-Anchor" href="#12-单片机与-stm32"></a> 1.2 单片机与 STM32</h2>
 <ul>
 <li>
 <p>单片机全称<strong>单片微型计算机</strong>，又称为微型控制器。它是一种集成电路芯片，把<strong>CPU</strong>、<strong>存储器（ROM和RAM）（ROM是只读存储器，用来存储程序；RAM是随机存取存储器，用来存储程序运行中产生的数据）</strong>、<strong>IO（输入输出模块）</strong> 几个模块组合在一起。</p>
@@ -45,7 +45,7 @@
 <p>STM32是STMicroelectronics公司开发的基于ARM Cortx-m内核的32位微控制器。</p>
 </li>
 </ul>
-<h2 id="3-两种体系结构"><a class="markdownIt-Anchor" href="#3-两种体系结构"></a> 3. 两种体系结构</h2>
+<h2 id="13-冯诺依曼结构与哈佛结构"><a class="markdownIt-Anchor" href="#13-冯诺依曼结构与哈佛结构"></a> 1.3 冯·诺依曼结构与哈佛结构</h2>
 <table>
 <thead>
 <tr>
@@ -70,7 +70,7 @@
 <ul>
 <li>STM32属于哈佛结构</li>
 </ul>
-<h2 id="4名词解释"><a class="markdownIt-Anchor" href="#4名词解释"></a> 4.名词解释</h2>
+<h2 id="14-mcu-外设与常见术语"><a class="markdownIt-Anchor" href="#14-mcu-外设与常见术语"></a> 1.4 MCU、外设与常见术语</h2>
 <ul>
 <li>
 <p>MCU(Micro Control Unit)：微控制器，是指把中央处理器、存储器、定时/计数器、各种输入输出接口等都集成在一块集成电路芯片上的微型计算机，即<strong>单片机</strong>。</p>
@@ -138,7 +138,7 @@
 <p>主频：主时钟频率，特指驱动<strong>CPU核心</strong>工作的那个时钟信号的频率。</p>
 </li>
 </ul>
-<h3 id="相互关系总结"><a class="markdownIt-Anchor" href="#相互关系总结"></a> 相互关系总结</h3>
+<h3 id="术语关系速览"><a class="markdownIt-Anchor" href="#术语关系速览"></a> 术语关系速览</h3>
 <table>
 <thead>
 <tr>
@@ -162,11 +162,10 @@
 </tbody>
 </table>
 <hr />
-<h1 id="第二题"><a class="markdownIt-Anchor" href="#第二题"></a> 第二题</h1>
-<h2 id="1结构体"><a class="markdownIt-Anchor" href="#1结构体"></a> 1.结构体</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">goods</span>&#123;</span></span><br><span class="line">    <span class="type">double</span> price;</span><br><span class="line">    <span class="type">char</span> category[<span class="number">20</span>];</span><br><span class="line">    <span class="type">char</span> producer[<span class="number">50</span>];</span><br><span class="line">    <span class="type">char</span> ingredient[<span class="number">10</span>][<span class="number">20</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-开发结构-指针-位运算"><a class="markdownIt-Anchor" href="#2-开发结构-指针-位运算"></a> 2. 开发结构、指针、位运算</h2>
-<h3 id="开发结构"><a class="markdownIt-Anchor" href="#开发结构"></a> 开发结构</h3>
+<h1 id="2-c-语言基础"><a class="markdownIt-Anchor" href="#2-c-语言基础"></a> 2. C 语言基础</h1>
+<h2 id="21-结构体"><a class="markdownIt-Anchor" href="#21-结构体"></a> 2.1 结构体</h2>
+<h2 id="22-程序组织-指针与位运算"><a class="markdownIt-Anchor" href="#22-程序组织-指针与位运算"></a> 2.2 程序组织、指针与位运算</h2>
+<h3 id="程序组织"><a class="markdownIt-Anchor" href="#程序组织"></a> 程序组织</h3>
 <ul>
 <li>
 <p>预处理器：编译过程的一个早期阶段，它在实际编译之前对源代码进行一些处理。预处理器指令以#开头，例如#include、#define、#ifdef等。处理器会执行以下操作：</p>
@@ -246,9 +245,8 @@
 </ul>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">PrintSumInBinary</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> num1,num2,sum;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d,%d&quot;</span>,&amp;num1,&amp;num2);</span><br><span class="line">    sum = num1+num2;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> mask = <span class="number">1u</span>&lt;&lt;<span class="number">7</span>;</span><br><span class="line">    <span class="keyword">for</span>(;mask;mask&gt;&gt;=<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,sum&amp;mask?<span class="number">1</span>:<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr />
-<h1 id="第三题"><a class="markdownIt-Anchor" href="#第三题"></a> 第三题</h1>
-<h2 id="知识总结"><a class="markdownIt-Anchor" href="#知识总结"></a> 知识总结</h2>
-<h3 id="stm32的开发方式"><a class="markdownIt-Anchor" href="#stm32的开发方式"></a> STM32的开发方式</h3>
+<h1 id="3-stm32硬件与工程实践"><a class="markdownIt-Anchor" href="#3-stm32硬件与工程实践"></a> 3. STM32硬件与工程实践</h1>
+<h2 id="31-选择-stm32-开发方式"><a class="markdownIt-Anchor" href="#31-选择-stm32-开发方式"></a> 3.1 选择 STM32 开发方式</h2>
 <ul>
 <li>
 <p>基于寄存器的方式：效率最高，但由于STM32结构复杂、寄存器多而不好操作。</p>
@@ -260,7 +258,8 @@
 <p>基于HAL库的方式：用图形化界面配置STM32，方便操作，但隐藏了底层逻辑，不适合深入理解。</p>
 </li>
 </ul>
-<h3 id="io口的输出输入"><a class="markdownIt-Anchor" href="#io口的输出输入"></a> IO口的输出输入</h3>
+<h2 id="32-gpio-输入与输出"><a class="markdownIt-Anchor" href="#32-gpio-输入与输出"></a> 3.2 GPIO 输入与输出</h2>
+<h3 id="gpio-基本结构与引脚表"><a class="markdownIt-Anchor" href="#gpio-基本结构与引脚表"></a> GPIO 基本结构与引脚表</h3>
 <p><img src="image.png" alt="IO口的基本结构" />  IO口的基本结构</p>
 <ul>
 <li>STM32F103C8T6 (LQFP48) 完整引脚对应表</li>
@@ -565,7 +564,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="输出模式"><a class="markdownIt-Anchor" href="#输出模式"></a> 输出模式</h4>
+<h3 id="输出模式"><a class="markdownIt-Anchor" href="#输出模式"></a> 输出模式</h3>
 <p><img src="image3.png" alt="输出电路图" />   输出电路图</p>
 <table>
 <thead>
@@ -618,8 +617,8 @@
 </li>
 </ul>
 </li>
-<li>
-<p>输出速度</p>
+</ul>
+<h3 id="输出速度"><a class="markdownIt-Anchor" href="#输出速度"></a> 输出速度</h3>
 <ul>
 <li>
 <p>最大输出速度：向IO引脚交替写0和1且输出不失真的最快速度。</p>
@@ -640,9 +639,7 @@
 <p><strong>速度高时功耗也高，并且速度过高会对其他电子元件产生电磁干扰，因此实际使用中应当选取满足要求的最小值。</strong></p>
 </li>
 </ul>
-</li>
-</ul>
-<h4 id="输入模式"><a class="markdownIt-Anchor" href="#输入模式"></a> 输入模式</h4>
+<h3 id="输入模式"><a class="markdownIt-Anchor" href="#输入模式"></a> 输入模式</h3>
 <ul>
 <li>
 <p>外部输入低电压，CPU从寄存器中读取一个0；输入高电压，读取一个1。<br />
@@ -664,7 +661,7 @@
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">GPIO_ReadInputDataBit(GPIOx,GPIO_Pin_x);<span class="comment">//读取GPIOx端口的GPIO_Pin_x引脚的输入电平，返回值为Bit_RESET或Bit_SET</span></span><br><span class="line">GPIO_ReadInputData(GPIOx);<span class="comment">//读取GPIOx端口的全部输入电平，返回值为一个16位的无符号整数，每一位对应一个引脚的输入电平</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="其余外接部件"><a class="markdownIt-Anchor" href="#其余外接部件"></a> 其余外接部件</h3>
+<h2 id="33-常见外接器件"><a class="markdownIt-Anchor" href="#33-常见外接器件"></a> 3.3 常见外接器件</h2>
 <ul>
 <li>
 <p>LED：发光二极管，正向通电点亮，反向通电不亮</p>
@@ -698,7 +695,7 @@
 传感器电路</p>
 </li>
 </ul>
-<h3 id="调试方式"><a class="markdownIt-Anchor" href="#调试方式"></a> 调试方式</h3>
+<h2 id="34-调试方法"><a class="markdownIt-Anchor" href="#34-调试方法"></a> 3.4 调试方法</h2>
 <ol>
 <li>
 <p>串口调试：通过串口通信，将调试信息发送到电脑端，电脑使用串口助手显示调试信息。</p>
@@ -736,7 +733,7 @@
 <p>Keil调试模式：借助Keil软件的调试模式，可使用单步运行、设置断点、查看寄存器及变量等功能。</p>
 </li>
 </ol>
-<h2 id="建立模板工程"><a class="markdownIt-Anchor" href="#建立模板工程"></a> 建立模板工程</h2>
+<h2 id="35-创建与复用-keil-模板工程"><a class="markdownIt-Anchor" href="#35-创建与复用-keil-模板工程"></a> 3.5 创建与复用 Keil 模板工程</h2>
 <ol>
 <li>
 <p>新建存放工程的文件夹。</p>
@@ -790,7 +787,7 @@
 </ol>
 </li>
 </ol>
-<h2 id="封装外设驱动"><a class="markdownIt-Anchor" href="#封装外设驱动"></a> 封装外设驱动</h2>
+<h2 id="36-封装外设驱动"><a class="markdownIt-Anchor" href="#36-封装外设驱动"></a> 3.6 封装外设驱动</h2>
 <ol>
 <li>
 <p>打开工程文件夹，新建Hardware文件夹，用于存储硬件驱动。</p>

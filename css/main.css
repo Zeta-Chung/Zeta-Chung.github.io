@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #f3f;
+    background: #3c590f;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3594,6 +3594,12 @@ button,
 .main-inner.index .post-title,
 body #articleSearchWrap button {
   font-family: 'Zpix UI', Tahoma, 'Microsoft YaHei', sans-serif;
+}
+/* Low-contrast square pixels on the shared teal desktop only. */
+body {
+  background-image: url("../images/win95-desktop-dots.svg");
+  background-repeat: repeat;
+  background-size: 8px 8px;
 }
 /* Reuse the taskbar sprite so each destination keeps the same system icon. */
 .taskbar-item-about .fa {
