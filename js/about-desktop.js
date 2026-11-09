@@ -8,6 +8,8 @@
   const caption = document.querySelector('.window-caption-title');
   const captionIcon = document.querySelector('.xp-caption-icon');
   const frame = document.querySelector('.main.win95-window');
+  const departure = document.getElementById('xpExit');
+  let leaving = false;
 
   function select(shortcut) {
     shortcuts.forEach(item => item.classList.toggle('is-selected', item === shortcut));
@@ -48,9 +50,23 @@
   desktop.addEventListener('click', event => {
     const shortcut = event.target.closest('.xp-desktop-icon');
     if (!shortcut) return;
+    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     select(shortcut);
-    if (!shortcut.dataset.xpPage || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    if (!shortcut.dataset.xpPage) {
+      if (leaving) return;
+      leaving = true;
+      departure.hidden = false;
+      document.body.classList.add('xp-exit-open');
+      departure.focus({ preventScroll: true });
+      try {
+        sessionStorage.setItem('zetac-notifications-replay', '1');
+      } catch (_) {
+        // Home navigation still works when browser storage is unavailable.
+      }
+      window.setTimeout(() => { location.assign(shortcut.href); }, 1000);
+      return;
+    }
     // Hash navigation also makes browser back/forward restore a content page.
     if (location.hash === shortcut.hash) openPage(shortcut.dataset.xpPage);
     else location.hash = shortcut.hash;
@@ -60,5 +76,12 @@
     if (!event.target.closest('.xp-desktop-icon')) select(null);
   });
   window.addEventListener('hashchange', showLocation);
+  // A browser Back visit should restore the desktop, not a completed exit screen.
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) return;
+    leaving = false;
+    departure.hidden = true;
+    document.body.classList.remove('xp-exit-open');
+  });
   showLocation();
 })();

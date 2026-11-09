@@ -15,9 +15,8 @@
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":-1,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":-1,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="个人资料      个人资料     ZetaC     14 篇日志6 个标签    签名待补充   个人介绍 关于我 关于作者，这里没有什么可提供的确切信息，我们都需要用一生来认识自己。 关于这个博客 本博客目前用于记录学习过程中的一些内容。 （以后应该会有其他的）   链接 在 GitHub 上找到我。 GitHub 个人主页github.com&#x2F;Zeta-Chung ↗ 由 Hexo">
 <meta property="og:type" content="website">
@@ -53,7 +52,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
 <script src="/js/third-party/search/local-search.js" defer></script>
@@ -93,7 +92,7 @@
   </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion xp-about xp-welcome-open">
+<body class="xp-about xp-welcome-open" itemscope itemtype="http://schema.org/WebPage">
 <div class="xp-welcome" id="xpWelcome" role="dialog" aria-modal="true" aria-labelledby="xpWelcomeGreeting" tabindex="-1">
     <div class="xp-welcome-top" aria-hidden="true"></div>
     <div class="xp-welcome-panel">
@@ -102,6 +101,16 @@
       <div class="xp-welcome-identity"><div class="xp-welcome-avatar"><img src="&#x2F;images&#x2F;my-avatar.png" alt="ZetaC 的头像"></div><p class="xp-welcome-name">ZetaC</p></div>
     </div>
     <div class="xp-welcome-bottom" aria-hidden="true"></div>
+  </div>
+<div class="xp-exit" id="xpExit" role="dialog" aria-modal="true" aria-labelledby="xpExitMessage" tabindex="-1" hidden>
+    <div class="xp-exit-top" aria-hidden="true"></div>
+    <div class="xp-exit-panel">
+      <img class="xp-exit-avatar" src="&#x2F;images&#x2F;my-avatar.png" alt="">
+      <span class="xp-exit-powered">powered by</span>
+      <p class="xp-exit-name">ZetaC</p>
+      <p class="xp-exit-message" id="xpExitMessage">正在前往 主页...</p>
+    </div>
+    <div class="xp-exit-bottom" aria-hidden="true"></div>
   </div>
 <nav class="xp-desktop-nav" aria-label="关于桌面"><a class="xp-desktop-icon is-selected" href="#xp-profile" data-xp-page="profile" aria-controls="xp-profile" aria-current="page"><img class="xp-icon-art" src="/images/xp-original/accounts.png" width="48" height="48" alt=""><span class="xp-icon-label">个人资料</span></a><a class="xp-desktop-icon" href="#xp-introduction" data-xp-page="introduction" aria-controls="xp-introduction"><img class="xp-icon-art" src="/images/xp-original/computer.png" width="48" height="48" alt=""><span class="xp-icon-label">个人介绍</span></a><a class="xp-desktop-icon" href="#xp-links" data-xp-page="links" aria-controls="xp-links"><img class="xp-icon-art" src="/images/xp-original/internet.png" width="48" height="48" alt=""><span class="xp-icon-label">链接</span></a><a class="xp-desktop-icon" href="#xp-contact" data-xp-page="contact" aria-controls="xp-contact"><img class="xp-icon-art" src="/images/xp-original/mail.png" width="48" height="48" alt=""><span class="xp-icon-label">联系</span></a><a class="xp-desktop-icon" href="/"><img class="xp-icon-art" src="/images/xp-original/home.png" width="48" height="48" alt=""><span class="xp-icon-label">返回主页</span></a></nav>
   <div class="headband"></div>

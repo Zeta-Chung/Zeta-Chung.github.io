@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ba6e8f;
+    background: #784d59;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2694,7 +2694,6 @@ header.header {
     color: var(--text-color);
     margin-top: 24px;
     max-height: calc(100vh - 48px);
-    visibility: hidden;
   }
   .site-state-item {
     padding: 0 10px;
@@ -3367,25 +3366,84 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   animation: notification-pop 1ms step-end var(--notification-delay, 0ms) both !important;
 }
 .main-inner.index .post-block {
-  padding: 20px 24px;
+  padding: 4px;
+}
+.main-inner.index .post-block[hidden] {
+  display: none;
 }
 .main-inner.index .post-block:not(:first-child) {
   margin-top: 12px;
 }
 .main-inner.index .post-header {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+}
+.main-inner.index .post-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 5px 6px 5px 8px;
+  background: #0000c0;
+  box-shadow: none;
+  font-size: 20px;
+  line-height: 1.4;
+  text-align: left;
+}
+.main-inner.index .post-title-link {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.main-inner.index .post-title-link::before {
+  display: none;
+}
+.notification-close {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+  color: #333;
+  font: 20px/22px 'Zpix UI', monospace;
+  text-align: center;
+  cursor: default;
+  opacity: 0.4;
+  filter: grayscale(0.5) blur(0.2px);
+}
+.main-inner.index .post-meta-container {
+  margin: 12px 16px 0;
 }
 .main-inner.index .post-body {
+  position: relative;
   background: transparent;
   box-shadow: none;
-  padding: 0;
+  min-height: 72px;
+  padding: 12px 24px 20px 88px;
+}
+.main-inner.index .post-body::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  width: 48px;
+  height: 48px;
+  background: url("../images/win95-notification-computer.png") center/contain no-repeat;
+  image-rendering: pixelated;
 }
 .main-inner.index .post-body p {
   margin-bottom: 12px;
 }
 .main-inner.index .post-button {
-  margin-top: 12px;
-  text-align: right;
+  margin-top: 20px;
+  margin-left: -64px;
+  text-align: center;
+}
+.main-inner.index .post-button .btn {
+  min-width: 110px;
+  padding: 5px 18px;
 }
 .about-profile {
   box-sizing: border-box;
@@ -3458,7 +3516,21 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
 }
 @media (max-width: 767px) {
   .main-inner.index .post-block {
-    padding: 12px;
+    padding: 4px;
+  }
+  .main-inner.index .post-title {
+    font-size: 17px;
+  }
+  .main-inner.index .post-body {
+    padding: 10px 12px 16px 62px;
+  }
+  .main-inner.index .post-body::before {
+    left: 12px;
+    width: 36px;
+    height: 36px;
+  }
+  .main-inner.index .post-button {
+    margin-left: -50px;
   }
   .tag-directory-list {
     grid-template-columns: 1fr;
@@ -3911,6 +3983,86 @@ body .footer .footer-inner {
   justify-content: center;
   border-top: 2px solid transparent;
   border-image: linear-gradient(to right, #7a9be3, #f0b26b, #4e72c8) 1;
+  background: linear-gradient(to right, #30339b, #06359b);
+}
+/* The return-to-home interstitial follows the supplied XP shutdown layout. */
+.xp-about.xp-exit-open {
+  overflow: hidden;
+}
+.xp-about.xp-exit-open > :not(.xp-exit) {
+  visibility: hidden;
+}
+.xp-exit {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  grid-template-rows: 11fr 74fr 15fr;
+  height: 100vh;
+  height: 100dvh;
+  color: #fff;
+  outline: none;
+}
+.xp-exit[hidden] {
+  display: none;
+}
+.xp-exit-top {
+  background: #06359b;
+  border-bottom: 1px solid #8eabeb;
+}
+.xp-exit-panel {
+  background: radial-gradient(ellipse at 0 0, #829ce6 0, transparent 23%), #5d7fda;
+}
+.xp-exit-avatar {
+  position: absolute;
+  top: 40.3%;
+  left: 60.6%;
+  transform: translateX(-50%);
+  width: min(6.1vw, 7.6vh);
+  width: min(6.1vw, 7.6dvh);
+  height: min(6.1vw, 7.6vh);
+  height: min(6.1vw, 7.6dvh);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  object-fit: cover;
+}
+.xp-exit-name {
+  position: absolute;
+  top: 48%;
+  left: 59.2%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #fff;
+  font: bold 1em/1.1 Tahoma, Arial, sans-serif;
+  font-size: min(2.8vw, 3.8vh);
+  font-size: min(2.8vw, 3.8dvh);
+  text-shadow: 1px 1px #4066bd;
+}
+.xp-exit-powered {
+  position: absolute;
+  top: 46.6%;
+  left: 55.8%;
+  color: #fff;
+  font: 1em/1 Tahoma, Arial, sans-serif;
+  font-size: min(1vw, 1.3vh);
+  font-size: min(1vw, 1.3dvh);
+  white-space: nowrap;
+}
+.xp-exit-message {
+  position: absolute;
+  top: 55%;
+  left: 55.8%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #dce5ff;
+  font: 1em/1.3 'SimSun', 'Songti SC', serif;
+  font-size: min(1.9vw, 2.65vh);
+  font-size: min(1.9vw, 2.65dvh);
+  white-space: nowrap;
+}
+.xp-exit-bottom {
+  border-top: 1px solid #7895de;
   background: linear-gradient(to right, #30339b, #06359b);
 }
 /* About content keeps its layout and shared controls, with blue glossy accents. */
