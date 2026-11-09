@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #a2987e;
+    background: #2aff71;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3915,33 +3915,304 @@ body .footer .footer-inner {
 }
 /* About content keeps its layout and shared controls, with blue glossy accents. */
 body.xp-about {
+  --taskbar-space: 0px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: 24px;
   background: radial-gradient(ellipse at 15% 0, rgba(255,255,255,0.55), transparent 50%), linear-gradient(150deg, #80c4e8, #3e80bc 65%, #2761a5);
 }
+.xp-about .win95-taskbar,
+.xp-about .github-corner,
+.xp-about #articleSearchBtn,
+.xp-about .sidebar,
+.xp-about .post-header,
+.xp-about .back-to-top {
+  display: none;
+}
+.xp-about .sidebar-dimmer,
+.xp-about .sidebar-toggle {
+  display: none !important;
+}
+.xp-desktop-nav {
+  position: fixed;
+  top: 36px;
+  left: 16px;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: 88px;
+  gap: 15px;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+}
+.xp-desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  box-sizing: border-box;
+  padding: 5px 2px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font: 13px/1.5 Tahoma, 'Microsoft YaHei', sans-serif;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.xp-icon-art {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  overflow: visible;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  image-rendering: pixelated;
+}
+.xp-icon-label {
+  padding: 1px 3px;
+  border: 1px solid transparent;
+  text-shadow: 1px 1px 2px #183b71;
+}
+.xp-desktop-icon:hover {
+  color: #fff;
+  background: rgba(207,236,255,0.1);
+}
+.xp-desktop-icon:focus-visible {
+  outline: none;
+}
+.xp-desktop-icon.is-selected .xp-icon-art {
+  filter: sepia(1) saturate(3) hue-rotate(170deg) brightness(0.75);
+}
+.xp-desktop-icon.is-selected .xp-icon-label,
+.xp-desktop-icon:focus-visible .xp-icon-label {
+  background: #2462b7;
+  border: 1px dotted #e4efff;
+  color: #fff;
+  text-shadow: none;
+}
 .xp-about .main.win95-window {
+  width: min(860px, calc(100% - 240px));
+  max-width: none;
+  margin: 54px auto 32px;
   background: #e3eff8;
   border: 1px solid #1a50a8;
   border-radius: 7px 7px 2px 2px;
   box-shadow: 0 2px 12px rgba(13,49,99,0.35), inset 0 1px #d6efff;
 }
+.xp-about .main.win95-window[hidden] {
+  display: none;
+}
+.xp-about .main.win95-window .main-inner {
+  flex: 1 1 100%;
+  width: 100%;
+  background: linear-gradient(#f5faff, #fff 130px);
+  box-shadow: none;
+}
+.xp-about .main-inner .post-block {
+  padding: 32px 36px;
+}
+.xp-about .post-body {
+  font: 16px/1.9 Tahoma, 'Microsoft YaHei', sans-serif;
+}
+.xp-about .post-body h1 {
+  margin: 0 0 26px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #cbdceb;
+  color: #195aaf;
+  font-size: 26px;
+  font-weight: normal;
+}
+.xp-page {
+  min-height: 340px;
+  scroll-margin-top: 100px;
+}
+.xp-page[hidden] {
+  display: none;
+}
+.xp-about .xp-page h1:focus {
+  outline: none;
+}
+.xp-about .xp-page h2 {
+  color: #225fa9;
+  font-size: 19px;
+  border: 0;
+}
+.xp-page-lead {
+  color: #536d89;
+}
+.xp-about .xp-action-link {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 14px 24px;
+  border: 1px solid #6b9fd4;
+  border-radius: 4px;
+  background: linear-gradient(#fff, #d9edff 48%, #c1def8 49%, #e6f4ff);
+  box-shadow: inset 0 0 0 2px #fff, 0 2px 3px rgba(38,79,121,0.13);
+  color: #1758a5;
+  font-size: 19px;
+  text-decoration: none;
+}
+.xp-action-link span {
+  color: #55728e;
+  font-size: 13px;
+}
+.xp-about .xp-action-link:hover {
+  border-color: #255db3;
+  background: #e8f5ff;
+}
+.xp-about .xp-powered {
+  margin-top: 42px;
+  color: #75879c;
+  font-size: 12px;
+}
+.xp-about .window-caption-control {
+  width: 23px;
+  height: 23px;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #6fa4ef, #1b57c0 55%, #103b94);
+  box-shadow: inset 0 0 0 1px #174ba6;
+}
+.xp-about .window-caption-control::before,
+.xp-about .window-caption-control::after {
+  border-color: #fff;
+  color: #fff;
+}
+.xp-about .window-caption-control:disabled {
+  opacity: 0.4;
+  filter: grayscale(0.5);
+  box-shadow: none;
+  cursor: default;
+}
+.xp-about .window-caption-minimize::before {
+  background: #fff;
+  left: 6px;
+  bottom: 5px;
+}
+.xp-about .window-caption-maximize::before {
+  width: 11px;
+  height: 10px;
+}
+.xp-about .window-caption-close {
+  background: linear-gradient(135deg, #ffba96, #e26643 45%, #c2361b);
+  box-shadow: inset 0 0 0 1px #bd4b2e;
+}
+.xp-about .window-caption-close::before {
+  font: bold 24px/20px Tahoma, sans-serif;
+}
+.xp-caption-icon {
+  flex: 0 0 20px;
+}
 .xp-about .window-titlebar {
   border-radius: 4px 4px 0 0;
-  background: linear-gradient(#69b2f4, #1a71dc 20%, #0754c7 65%, #2380e4);
+  background: linear-gradient(#3e80db, #0b45ad 20%, #002d86 65%, #0d4eb9);
   font-family: Tahoma, 'Microsoft YaHei', sans-serif;
   text-shadow: 1px 1px #124484;
 }
+.xp-about .window-caption-title {
+  filter: blur(0.3px);
+}
 .xp-about .about-profile {
-  background: linear-gradient(#f0f8ff, #d9eaf7);
-  border: 1px solid #a0bfdc;
-  box-shadow: inset 0 1px #fff, 0 1px 4px rgba(40,83,124,0.15);
+  max-width: none;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 .xp-about .profile-window-title {
-  background: linear-gradient(#5ca2e5, #2267b1);
-  font-family: Tahoma, 'Microsoft YaHei', sans-serif;
+  display: none;
+}
+.xp-about .about-profile-identity {
+  gap: 24px;
+}
+.xp-about .about-profile-identity img {
+  width: 112px;
+  height: 112px;
+  padding: 4px;
+  border: 1px solid #88b5df;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(28,69,118,0.15);
+}
+.xp-about .about-profile-identity strong {
+  color: #1555a8;
+  font-size: 34px;
+}
+.xp-about .about-profile-stats {
+  justify-content: flex-start;
+  margin-top: 24px;
+}
+.xp-profile-signature {
+  margin-top: 24px;
+  color: #6b829a;
+}
+body.xp-about.window-is-maximized .main.win95-window {
+  width: calc(100% - 128px);
+  margin-left: 120px;
+  margin-right: 8px;
 }
 .xp-about .post-title[tabindex='-1']:focus {
   outline: none;
 }
 @media (max-width: 767px) {
+  .xp-about .window-caption-title {
+    filter: blur(0.2px);
+  }
+  .xp-desktop-nav {
+    top: 34px;
+    left: 8px;
+    right: 8px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2px;
+    padding: 4px 0;
+    border-radius: 4px;
+    background: rgba(41,100,163,0.94);
+    box-shadow: inset 0 1px rgba(255,255,255,0.25), 0 2px 6px rgba(24,64,104,0.15);
+  }
+  .xp-desktop-icon {
+    gap: 4px;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+  .xp-icon-art {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+  }
+  .xp-icon-label {
+    padding: 1px 0;
+  }
+  .xp-about .main.win95-window,
+  body.xp-about.window-is-maximized .main.win95-window {
+    width: calc(100% - 16px);
+    margin: 110px 8px 16px;
+  }
+  .xp-about .main-inner .post-block {
+    padding: 24px 20px;
+  }
+  .xp-about .post-body {
+    font-size: 15px;
+  }
+  .xp-page {
+    min-height: 320px;
+    scroll-margin-top: 150px;
+  }
+  .xp-about .about-profile-identity {
+    gap: 18px;
+  }
+  .xp-about .about-profile-identity img {
+    width: 84px;
+    height: 84px;
+  }
+  .xp-about .about-profile-identity strong {
+    font-size: 28px;
+  }
   .xp-welcome-panel {
     display: flex;
     flex-direction: column;

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="blue" x2=".8" y2="1"><stop stop-color="#c0edff"/><stop offset=".45" stop-color="#58a9ed"/><stop offset="1" stop-color="#2860b5"/></linearGradient>
+    <linearGradient id="silver" x2=".8" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#d5e3ef"/><stop offset="1" stop-color="#8399b5"/></linearGradient>
+    <linearGradient id="green" x2=".8" y2="1"><stop stop-color="#b9ee72"/><stop offset="1" stop-color="#328b33"/></linearGradient>
+    <linearGradient id="gold" x2=".6" y2="1"><stop stop-color="#ffe898"/><stop offset="1" stop-color="#d9902c"/></linearGradient>
+    <linearGradient id="roof" x2=".5" y2="1"><stop stop-color="#ffc977"/><stop offset="1" stop-color="#db5826"/></linearGradient>
+    <radialGradient id="ocean" cx=".3" cy=".25"><stop stop-color="#c2f4ff"/><stop offset=".5" stop-color="#279cdf"/><stop offset="1" stop-color="#15499e"/></radialGradient>
+  </defs>
+  <symbol id="accounts" viewBox="0 0 48 48">
+    <ellipse cx="25" cy="43" rx="21" ry="3" fill="#18375a" opacity=".22"/>
+    <path d="M26 43V32c0-8 17-9 18 0l2 10Z" fill="url(#green)" stroke="#41703b"/>
+    <ellipse cx="35" cy="18" rx="8" ry="10" fill="url(#gold)" stroke="#a67831"/>
+    <path d="M28 16c-1-9 14-13 15-1-4-6-9-4-15 1Z" fill="#b4853a"/>
+    <path d="M3 43l1-11c1-9 21-9 23 0l2 11Z" fill="url(#blue)" stroke="#255582"/>
+    <path d="m10 28 5 7 5-7" fill="#fff"/>
+    <ellipse cx="15" cy="17" rx="9" ry="11" fill="url(#gold)" stroke="#ad7730"/>
+    <path d="M6 16C2 3 26-1 25 15l-5-6c-3 4-8 5-14 7Z" fill="#644938"/>
+  </symbol>
+  <symbol id="computer" viewBox="0 0 48 48">
+    <ellipse cx="25" cy="44" rx="22" ry="3" fill="#18375a" opacity=".22"/>
+    <path d="m34 6 10 4v28l-10 3-7-5V9Z" fill="url(#silver)" stroke="#7188a3"/>
+    <path d="m35 12 6 2v3l-6-1Z" fill="#7396b4"/><path d="m35 21 6 1v2l-6-1Z" fill="#fff"/>
+    <circle cx="38" cy="33" r="1.5" fill="#6bd440"/>
+    <path d="M4 6 32 3l1 27-27 4Z" fill="url(#silver)" stroke="#637d9d"/>
+    <path d="m7 9 22-3 1 20-22 4Z" fill="url(#blue)" stroke="#355f9d"/>
+    <path d="m8 10 20-3-1 5-18 9Z" fill="#d2efff" opacity=".45"/>
+    <path d="m15 33 8-1v6l9 3-1 2-25 1-1-3 10-3Z" fill="url(#silver)" stroke="#7188a3"/>
+  </symbol>
+  <symbol id="internet" viewBox="0 0 48 48">
+    <ellipse cx="25" cy="44" rx="20" ry="3" fill="#18375a" opacity=".22"/>
+    <circle cx="24" cy="23" r="21" fill="url(#ocean)" stroke="#28659b"/>
+    <path d="m9 9 8-5 9 1 4 7-5 4-6-1-2 7-5-3-1-5-5-1Zm13 17 8-3 8 3 3 7-5 6-7 3-4-6Zm15-16 5 5 1 6-7-2-3-4Z" fill="url(#green)" stroke="#408942" stroke-width=".7"/>
+    <path d="M7 19c8-5 24-5 34 0M7 30c11-4 23-4 34 0M22 3c-8 12-8 28 0 40M27 3c8 12 8 28 0 40" fill="none" stroke="#c4ebff" stroke-width=".7" opacity=".45"/>
+    <ellipse cx="16" cy="11" rx="10" ry="5" fill="#fff" opacity=".25" transform="rotate(-30 16 11)"/>
+  </symbol>
+  <symbol id="mail" viewBox="0 0 48 48">
+    <ellipse cx="25" cy="43" rx="21" ry="3" fill="#18375a" opacity=".22"/>
+    <path d="M4 17 25 3l19 14v24H4Z" fill="url(#gold)" stroke="#a58b4d"/>
+    <path d="M10 6h28v27H10Z" fill="url(#silver)" stroke="#7e98ae"/>
+    <path d="M15 12h18M15 17h18M15 22h14" stroke="#8aabc1" stroke-width="2"/>
+    <path d="m4 18 20 13 20-13v23H4Z" fill="url(#silver)" stroke="#6586a8"/>
+    <path d="m4 41 17-15q3-2 6 0l17 15" fill="#e1effa" stroke="#87a9c3"/>
+    <path d="m5 19 16 11m22-11L27 30" fill="none" stroke="#fff"/>
+  </symbol>
+  <symbol id="home" viewBox="0 0 48 48">
+    <ellipse cx="25" cy="44" rx="22" ry="3" fill="#18375a" opacity=".22"/>
+    <path d="M9 21 24 8l15 13v22H9Z" fill="url(#silver)" stroke="#6486a4"/>
+    <path d="M8 25 24 11l16 14 5-6L25 2 3 20Z" fill="url(#roof)" stroke="#a74b24"/>
+    <path d="m8 20 17-14 15 13" fill="none" stroke="#ffe0ae" stroke-width="2"/>
+    <path d="M17 28h12v15H17Z" fill="url(#gold)" stroke="#a47637"/>
+    <path d="M32 25h5v8h-5ZM11 25h4v8h-4Z" fill="url(#blue)" stroke="#729fc3"/>
+    <circle cx="26" cy="35" r="1" fill="#7d6738"/>
+    <path d="M33 6h5v10l-5-4Z" fill="url(#gold)" stroke="#a47637"/>
+  </symbol>
+</svg>

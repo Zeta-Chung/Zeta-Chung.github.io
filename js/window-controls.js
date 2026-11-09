@@ -7,6 +7,7 @@
   let restoreScrollY = 0;
 
   frame.querySelector('.window-caption-close').addEventListener('click', event => {
+    if (document.body.classList.contains('xp-about')) return;
     if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     try {
       sessionStorage.setItem('zetac-notifications-replay', '1');

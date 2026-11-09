@@ -6863,23 +6863,110 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
     <title>关于</title>
     <url>/about/index.html</url>
     <content><![CDATA[<!-- xp-about -->
+<div class="xp-pages">
+<section class="xp-page" id="xp-profile" aria-labelledby="xp-profile-title">
+<h1 id="xp-profile-title">个人资料</h1>
 <section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
     <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">14 篇日志</a><a href="&#x2F;tags&#x2F;">6 个标签</a></nav>
   </section>
-<h3 id="本博客目前用于记录学习过程中的一些内容"><a class="markdownIt-Anchor" href="#本博客目前用于记录学习过程中的一些内容"></a> 本博客目前用于记录学习过程中的一些内容</h3>
-<h4 id="以后应该会有其他的"><a class="markdownIt-Anchor" href="#以后应该会有其他的"></a> （以后应该会有其他的）</h4>
+<p class="xp-profile-signature">签名待补充</p>
+</section>
+<section class="xp-page" id="xp-introduction" aria-labelledby="xp-introduction-title" hidden>
+<h1 id="xp-introduction-title">个人介绍</h1>
+<h2>关于我</h2>
 <p>关于作者，这里没有什么可提供的确切信息，我们都需要用一生来认识自己。</p>
-<h3 id="powered-by-zetac"><a class="markdownIt-Anchor" href="#powered-by-zetac"></a> powered by ZetaC</h3>
-<h3 id="2026"><a class="markdownIt-Anchor" href="#2026"></a> 2026</h3>
-<p>由 <a href="https://hexo.io/">Hexo</a> / <a href="https://theme-next.js.org/">NexT</a> 强力驱动。</p>
+<h2>关于这个博客</h2>
+<p>本博客目前用于记录学习过程中的一些内容。</p>
+<p>（以后应该会有其他的）</p>
+</section>
+<section class="xp-page" id="xp-links" aria-labelledby="xp-links-title" hidden>
+<h1 id="xp-links-title">链接</h1>
+<p class="xp-page-lead">在 GitHub 上找到我。</p>
+<a class="xp-action-link" href="https://github.com/Zeta-Chung" target="_blank" rel="noopener noreferrer">GitHub 个人主页<span>github.com/Zeta-Chung ↗</span></a>
+<p class="xp-powered">由 <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a> / <a href="https://theme-next.js.org/" target="_blank" rel="noopener noreferrer">NexT</a> 强力驱动。</p>
+</section>
+<section class="xp-page" id="xp-contact" aria-labelledby="xp-contact-title" hidden>
+<h1 id="xp-contact-title">联系</h1>
+<p class="xp-page-lead">联系方式待补充。</p>
+</section>
+</div>
 ]]></content>
   </entry>
   <entry>
     <title>分类</title>
     <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/js/about-desktop.js</url>
+    <content><![CDATA['use strict';
+
+(() => {
+  const desktop = document.querySelector('.xp-desktop-nav');
+  if (!desktop) return;
+  const shortcuts = [...desktop.querySelectorAll('.xp-desktop-icon')];
+  const pages = [...document.querySelectorAll('.xp-page')];
+  const caption = document.querySelector('.window-caption-title');
+  const captionIcon = document.querySelector('.xp-caption-icon');
+  const frame = document.querySelector('.main.win95-window');
+
+  function select(shortcut) {
+    shortcuts.forEach(item => item.classList.toggle('is-selected', item === shortcut));
+  }
+
+  function openPage(id) {
+    const shortcut = shortcuts.find(item => item.dataset.xpPage === id);
+    if (!shortcut) return;
+    frame.hidden = false;
+    pages.forEach(page => { page.hidden = page.id !== `xp-${id}`; });
+    shortcuts.forEach(item => {
+      if (item === shortcut) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
+    });
+    select(shortcut);
+    caption.textContent = shortcut.querySelector('.xp-icon-label').textContent;
+    captionIcon.src = shortcut.querySelector('.xp-icon-art').src;
+  }
+
+  function closeWindow() {
+    const current = shortcuts.find(item => item.hasAttribute('aria-current'));
+    frame.hidden = true;
+    select(null);
+    shortcuts.forEach(item => item.removeAttribute('aria-current'));
+    if (current) current.focus({ preventScroll: true });
+  }
+
+  frame.querySelector('.window-caption-close').addEventListener('click', () => {
+    closeWindow();
+    location.hash = '#xp-desktop';
+  });
+
+  function showLocation() {
+    if (location.hash === '#xp-desktop') closeWindow();
+    else openPage(location.hash.replace('#xp-', '') || 'profile');
+  }
+
+  desktop.addEventListener('click', event => {
+    const shortcut = event.target.closest('.xp-desktop-icon');
+    if (!shortcut) return;
+    select(shortcut);
+    if (!shortcut.dataset.xpPage || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    // Hash navigation also makes browser back/forward restore a content page.
+    if (location.hash === shortcut.hash) openPage(shortcut.dataset.xpPage);
+    else location.hash = shortcut.hash;
+  });
+
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.xp-desktop-icon')) select(null);
+  });
+  window.addEventListener('hashchange', showLocation);
+  showLocation();
+})();
+]]></content>
   </entry>
   <entry>
     <title></title>
@@ -6893,7 +6980,9 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
   function enterAbout() {
     welcome.hidden = true;
     document.body.classList.remove('xp-welcome-open');
-    const title = document.querySelector('.main-inner .post-title');
+    const title = document.querySelector('.main[hidden]')
+      ? document.querySelector('.xp-desktop-icon')
+      : document.querySelector('.xp-page:not([hidden]) h1') || document.querySelector('.main-inner .post-title');
     if (title) {
       title.setAttribute('tabindex', '-1');
       title.focus({ preventScroll: true });
@@ -6917,6 +7006,7 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
   let restoreScrollY = 0;
 
   frame.querySelector('.window-caption-close').addEventListener('click', event => {
+    if (document.body.classList.contains('xp-about')) return;
     if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     try {
       sessionStorage.setItem('zetac-notifications-replay', '1');
