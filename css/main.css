@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #784d59;
+    background: #f78e17;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3421,24 +3421,31 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   background: transparent;
   box-shadow: none;
   min-height: 72px;
-  padding: 12px 24px 20px 88px;
+  padding: 12px 24px 20px;
 }
-.main-inner.index .post-body::before {
+.notification-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.notification-summary-text {
+  flex: 1;
+  min-width: 0;
+}
+.notification-summary::before {
   content: '';
-  position: absolute;
-  top: 14px;
-  left: 20px;
+  flex: 0 0 48px;
   width: 48px;
   height: 48px;
   background: url("../images/win95-notification-computer.png") center/contain no-repeat;
   image-rendering: pixelated;
 }
 .main-inner.index .post-body p {
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 .main-inner.index .post-button {
   margin-top: 20px;
-  margin-left: -64px;
+  margin-left: 0;
   text-align: center;
 }
 .main-inner.index .post-button .btn {
@@ -3522,15 +3529,18 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
     font-size: 17px;
   }
   .main-inner.index .post-body {
-    padding: 10px 12px 16px 62px;
+    padding: 10px 12px 16px;
   }
-  .main-inner.index .post-body::before {
-    left: 12px;
+  .notification-summary {
+    gap: 14px;
+  }
+  .notification-summary::before {
+    flex-basis: 36px;
     width: 36px;
     height: 36px;
   }
   .main-inner.index .post-button {
-    margin-left: -50px;
+    margin-left: 0;
   }
   .tag-directory-list {
     grid-template-columns: 1fr;

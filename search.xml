@@ -81,15 +81,23 @@
 <li>
 <p>并行串行</p>
 <ul>
-<li>并行：多个数据位同时传输，占用引脚多但速度快。</li>
-<li>串行：数据位逐个传输，占用引脚少但速度慢。</li>
+<li>
+<p>并行：多个数据位同时传输，占用引脚多但速度快。</p>
+</li>
+<li>
+<p>串行：数据位逐个传输，占用引脚少但速度慢。</p>
+</li>
 </ul>
 </li>
 <li>
 <p>同步异步</p>
 <ul>
-<li>同步：信号发出方和接收方使用相同的时钟信号，需要一根额外的时钟信号线。</li>
-<li>异步：无共用时钟，收发双方约定波特率和数据格式进行通信。</li>
+<li>
+<p>同步：信号发出方和接收方使用相同的时钟信号，需要一根额外的时钟信号线。</p>
+</li>
+<li>
+<p>异步：无共用时钟，收发双方约定波特率和数据格式进行通信。</p>
+</li>
 </ul>
 </li>
 <li>
@@ -123,7 +131,7 @@
 <p>CAN(Controller Area Network)：控制器局域网，一种可靠的<strong>分布式串行</strong>通信协议，常用于汽车与工业控制。</p>
 </li>
 <li>
-<p>SPI(Serial Peripheral Interface)：<strong>串行</strong>外设接口，全双工<strong>同步</strong>串行通信协议，适用于告诉短距离通信。</p>
+<p>SPI(Serial Peripheral Interface)：<strong>串行</strong>外设接口，全双工<strong>同步</strong>串行通信协议，适用于高速短距离通信。</p>
 </li>
 <li>
 <p>IIC(Inter-Integrated Circuit)：一种<strong>同步</strong>、多主从结构的<strong>串行</strong>通信协议，使用两根线(SCL、SDA)进行通信。</p>
