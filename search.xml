@@ -6862,7 +6862,8 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
   <entry>
     <title>关于</title>
     <url>/about/index.html</url>
-    <content><![CDATA[<section class="about-profile" aria-label="个人资料">
+    <content><![CDATA[<!-- xp-about -->
+<section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
     <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">14 篇日志</a><a href="&#x2F;tags&#x2F;">6 个标签</a></nav>
@@ -6879,6 +6880,72 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
     <title>分类</title>
     <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/js/about-welcome.js</url>
+    <content><![CDATA['use strict';
+
+(() => {
+  const welcome = document.getElementById('xpWelcome');
+  if (!welcome) return;
+
+  function enterAbout() {
+    welcome.hidden = true;
+    document.body.classList.remove('xp-welcome-open');
+    const title = document.querySelector('.main-inner .post-title');
+    if (title) {
+      title.setAttribute('tabindex', '-1');
+      title.focus({ preventScroll: true });
+    }
+  }
+
+  welcome.focus({ preventScroll: true });
+  window.setTimeout(enterAbout, 2500);
+})();
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/js/window-controls.js</url>
+    <content><![CDATA['use strict';
+
+(() => {
+  const frame = document.querySelector('.main.win95-window');
+  const toggle = document.querySelector('.window-caption-maximize');
+  if (!frame || !toggle) return;
+  let restoreScrollY = 0;
+
+  frame.querySelector('.window-caption-close').addEventListener('click', event => {
+    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    try {
+      sessionStorage.setItem('zetac-notifications-replay', '1');
+    } catch (_) {
+      // The ordinary home link remains usable without browser storage.
+    }
+  });
+
+  toggle.addEventListener('click', () => {
+    const maximizing = !document.body.classList.contains('window-is-maximized');
+    if (maximizing) {
+      restoreScrollY = window.scrollY;
+      const bar = frame.querySelector('.window-titlebar');
+      const style = getComputedStyle(frame);
+      const captionSpace = bar.getBoundingClientRect().height +
+        parseFloat(getComputedStyle(bar).marginBottom) +
+        parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      frame.style.setProperty('--window-top-space', `${frame.getBoundingClientRect().top + window.scrollY}px`);
+      frame.style.setProperty('--window-caption-space', `${captionSpace}px`);
+    }
+    document.body.classList.toggle('window-is-maximized', maximizing);
+    toggle.setAttribute('aria-pressed', String(maximizing));
+    toggle.setAttribute('aria-label', maximizing ? '还原窗口' : '最大化窗口');
+    toggle.title = maximizing ? '还原窗口' : '最大化窗口';
+    // Keep document scrolling so article TOC, search and browser history still work.
+    if (!maximizing) window.scrollTo(0, restoreScrollY);
+  });
+})();
+]]></content>
   </entry>
   <entry>
     <title>tage</title>

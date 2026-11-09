@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #3c590f;
+    background: #a2987e;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3355,6 +3355,17 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   display: none !important; /* NexT sets an inline display value on mobile. */
 }
 /* Compact notification windows, scoped to the homepage and its pagination. */
+.main-inner.index .post-block,
+.main-inner.index .post-header,
+.main-inner.index .post-body,
+.main-inner.index .pagination {
+  visibility: visible;
+  animation: none !important;
+}
+/* Delayed single-step reveals, not fades or movement. The class is set in head. */
+.notifications-pop-in .main-inner.index .post-block {
+  animation: notification-pop 1ms step-end var(--notification-delay, 0ms) both !important;
+}
 .main-inner.index .post-block {
   padding: 20px 24px;
 }
@@ -3453,6 +3464,18 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
     grid-template-columns: 1fr;
   }
 }
+@keyframes notification-pop {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
 /* Homepage notifications remain separate; other routes share an application frame. */
 .main.win95-window {
   display: flex;
@@ -3464,6 +3487,8 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   box-shadow: var(--win-raised), 3px 3px 0 rgba(0,0,0,0.3);
 }
 .window-titlebar {
+  position: relative;
+  z-index: 7; /* Above the GitHub corner's transparent SVG hit area (5/6). */
   display: flex;
   align-items: center;
   flex: 0 0 100%;
@@ -3476,9 +3501,84 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   color: #fff;
   font: bold 16px/1.4 Tahoma, 'Microsoft YaHei', sans-serif;
 }
-.window-titlebar > span:last-child {
+.window-caption-title {
+  flex: 1;
   overflow-wrap: anywhere;
   min-width: 0;
+}
+.window-caption-controls {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+}
+.window-caption-control {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+  text-decoration: none;
+  cursor: pointer;
+}
+.window-caption-control:disabled {
+  cursor: default;
+}
+.window-caption-control:disabled::before {
+  background: #808080;
+}
+.window-caption-control:not(:disabled):active {
+  box-shadow: var(--win-inset);
+}
+.window-is-maximized .window-caption-maximize::before {
+  top: 5px;
+  left: 3px;
+  width: 7px;
+  height: 6px;
+  background: #c0c0c0;
+  z-index: 1;
+}
+.window-is-maximized .window-caption-maximize::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 7px;
+  height: 6px;
+  border: 1px solid #000;
+  border-top-width: 2px;
+}
+.window-caption-minimize::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  bottom: 4px;
+  width: 8px;
+  height: 2px;
+  background: #000;
+}
+.window-caption-maximize::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 7px;
+  border: 1px solid #000;
+  border-top-width: 2px;
+}
+.window-caption-close::before {
+  content: '×';
+  position: absolute;
+  inset: 0;
+  color: #000;
+  font: 16px/18px 'Zpix UI', monospace;
+  text-align: center;
 }
 .window-titlebar img {
   flex: 0 0 20px;
@@ -3558,6 +3658,18 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   box-shadow: none;
   border-top: 1px solid #808080;
 }
+/* Fill the available desktop without replacing native page scrolling. */
+body.window-is-maximized .main.win95-window {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  align-content: flex-start;
+}
+.window-is-maximized .win95-window .main-inner {
+  min-height: calc(100vh - var(--taskbar-space) - var(--window-top-space) - var(--window-caption-space));
+  min-height: calc(100dvh - var(--taskbar-space) - var(--window-top-space) - var(--window-caption-space));
+}
 @media (max-width: 991px) {
   .main.win95-window {
     margin-right: 8px;
@@ -3602,6 +3714,29 @@ body {
   background-size: 8px 8px;
 }
 /* Reuse the taskbar sprite so each destination keeps the same system icon. */
+body #articleSearchBtn .article-search-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url("../images/win95-icons.svg") no-repeat -64px 0/80px 16px;
+  image-rendering: pixelated;
+}
+.github-corner .octo-arm,
+.github-corner .octo-body {
+  display: none;
+}
+.github-corner::after {
+  content: '';
+  position: absolute;
+  z-index: 6;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: url("../images/win95-github.svg") no-repeat center/32px 32px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
 .taskbar-item-about .fa {
   background-image: url("../images/win95-network.svg");
   background-position: 0 0;
@@ -3679,4 +3814,156 @@ body .footer .footer-inner {
   margin: 0;
   padding: 0;
   text-align: center;
+}
+/* XP welcome is a responsive interface, not a stretched screenshot. */
+.xp-about.xp-welcome-open {
+  overflow: hidden;
+}
+.xp-about.xp-welcome-open > :not(.xp-welcome) {
+  visibility: hidden;
+}
+.xp-welcome {
+  --xp-avatar-size: min(20vw, 14.2vh);
+  --xp-avatar-size: min(20vw, 14.2dvh);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  grid-template-rows: 13fr 71fr 16fr;
+  height: 100vh;
+  height: 100dvh;
+  outline: none;
+  cursor: default;
+  color: #fff;
+}
+.xp-welcome[hidden] {
+  display: none;
+}
+.xp-welcome-top {
+  background: #06359b;
+  border-bottom: 2px solid #98b8ee;
+}
+.xp-welcome-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-height: 0;
+  background: radial-gradient(ellipse at 0 0, #94b7f0 0, transparent 30%), #5a7edb;
+}
+.xp-welcome-divider {
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.6) 60%, transparent);
+}
+.xp-welcome-greeting,
+.xp-welcome-name {
+  color: #fff;
+  font-family: 'KaiTi', 'STKaiti', 'SimSun', serif;
+  font-style: italic;
+  font-weight: normal;
+  text-shadow: 2px 2px 0 #3557b3;
+}
+.xp-welcome-greeting {
+  font-family: 'SimSun', 'Songti SC', serif;
+  justify-self: end;
+  margin: 0;
+  padding-right: clamp(28px, 6vw, 100px);
+  font-size: clamp(32px, 5.5vw, 64px);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.xp-welcome-identity {
+  justify-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--xp-avatar-size) * 0.12);
+  padding-left: clamp(28px, 6vw, 100px);
+}
+.xp-welcome-avatar {
+  box-sizing: border-box;
+  width: var(--xp-avatar-size);
+  height: var(--xp-avatar-size);
+  padding: 3px;
+  border: 2px solid #e9f3ff;
+  background: #b1cafa;
+  box-shadow: 0 0 5px rgba(255,255,255,0.4), 2px 2px 2px #3b5db8;
+}
+.xp-welcome-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+}
+.xp-welcome-name {
+  margin: 0;
+  font-size: calc(var(--xp-avatar-size) * 0.27);
+  line-height: 1.3;
+}
+.xp-welcome-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(to right, #7a9be3, #f0b26b, #4e72c8) 1;
+  background: linear-gradient(to right, #30339b, #06359b);
+}
+/* About content keeps its layout and shared controls, with blue glossy accents. */
+body.xp-about {
+  background: radial-gradient(ellipse at 15% 0, rgba(255,255,255,0.55), transparent 50%), linear-gradient(150deg, #80c4e8, #3e80bc 65%, #2761a5);
+}
+.xp-about .main.win95-window {
+  background: #e3eff8;
+  border: 1px solid #1a50a8;
+  border-radius: 7px 7px 2px 2px;
+  box-shadow: 0 2px 12px rgba(13,49,99,0.35), inset 0 1px #d6efff;
+}
+.xp-about .window-titlebar {
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(#69b2f4, #1a71dc 20%, #0754c7 65%, #2380e4);
+  font-family: Tahoma, 'Microsoft YaHei', sans-serif;
+  text-shadow: 1px 1px #124484;
+}
+.xp-about .about-profile {
+  background: linear-gradient(#f0f8ff, #d9eaf7);
+  border: 1px solid #a0bfdc;
+  box-shadow: inset 0 1px #fff, 0 1px 4px rgba(40,83,124,0.15);
+}
+.xp-about .profile-window-title {
+  background: linear-gradient(#5ca2e5, #2267b1);
+  font-family: Tahoma, 'Microsoft YaHei', sans-serif;
+}
+.xp-about .post-title[tabindex='-1']:focus {
+  outline: none;
+}
+@media (max-width: 767px) {
+  .xp-welcome-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+  }
+  .xp-welcome-divider {
+    display: none;
+  }
+  .xp-welcome-identity {
+    display: contents;
+  }
+  .xp-welcome-avatar {
+    order: 1;
+  }
+  .xp-welcome-name {
+    order: 2;
+  }
+  .xp-welcome-greeting {
+    order: 3;
+    padding: 0;
+    margin-top: 12px;
+    font-size: 32px;
+  }
 }

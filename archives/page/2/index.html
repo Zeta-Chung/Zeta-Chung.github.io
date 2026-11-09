@@ -65,7 +65,22 @@
 
 
 <!-- source/_data/head.njk -->
+<script>
+(() => {
+  if (location.pathname !== '/') return;
+  try {
+    const seen = sessionStorage.getItem('zetac-notifications-seen');
+    const replay = sessionStorage.getItem('zetac-notifications-replay');
+    sessionStorage.setItem('zetac-notifications-seen', '1');
+    sessionStorage.removeItem('zetac-notifications-replay');
+    if (!seen || replay === '1') document.documentElement.classList.add('notifications-pop-in');
+  } catch (_) {
+    // With storage unavailable, retain the ordinary immediately visible homepage.
+  }
+})();
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -79,7 +94,7 @@
 <div class="desktop-copyright">&copy; 2026 ZetaC</div>
     </div>
   </footer>
-<main class="main win95-window"><div class="window-titlebar"><span class="window-archive-icon" aria-hidden="true"></span><span>归档</span></div>
+<main class="main win95-window"><div class="window-titlebar"><span class="window-archive-icon" aria-hidden="true"></span><span class="window-caption-title">归档</span><div class="window-caption-controls"><button class="window-caption-control window-caption-minimize" type="button" disabled aria-label="最小化（暂未启用）" title="最小化（暂未启用）"></button><button class="window-caption-control window-caption-maximize" type="button" aria-label="最大化窗口" title="最大化窗口" aria-pressed="false"></button><a class="window-caption-control window-caption-close" href="/" aria-label="关闭窗口，返回首页" title="关闭窗口，返回首页"></a></div></div>
     <div class="column">
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
@@ -411,7 +426,7 @@ mark.ah-current { background: #ff9800; color: #fff; }
 </div>
 
 <button id="articleSearchBtn" title="搜索本文" style="display:none;">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <span class="article-search-icon" aria-hidden="true"></span>
 </button>
 
 <script>
@@ -549,5 +564,6 @@ mark.ah-current { background: #ff9800; color: #fff; }
       </div>
     </div>
   </div>
+<script src="/js/window-controls.js" defer></script>
 </body>
 </html>

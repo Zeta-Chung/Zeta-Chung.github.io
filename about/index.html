@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/about/&#x2F;images&#x2F;my-avatar.png">
 <meta property="article:published_time" content="2026-05-14T10:48:47.000Z">
-<meta property="article:modified_time" content="2026-11-08T10:32:28.231Z">
+<meta property="article:modified_time" content="2026-11-09T02:32:18.641Z">
 <meta property="article:author" content="ZetaC">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/about/&#x2F;images&#x2F;my-avatar.png">
@@ -72,13 +72,37 @@
 
 
 <!-- source/_data/head.njk -->
+<script>
+(() => {
+  if (location.pathname !== '/') return;
+  try {
+    const seen = sessionStorage.getItem('zetac-notifications-seen');
+    const replay = sessionStorage.getItem('zetac-notifications-replay');
+    sessionStorage.setItem('zetac-notifications-seen', '1');
+    sessionStorage.removeItem('zetac-notifications-replay');
+    if (!seen || replay === '1') document.documentElement.classList.add('notifications-pop-in');
+  } catch (_) {
+    // With storage unavailable, retain the ordinary immediately visible homepage.
+  }
+})();
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion xp-about xp-welcome-open">
+<div class="xp-welcome" id="xpWelcome" role="dialog" aria-modal="true" aria-labelledby="xpWelcomeGreeting" tabindex="-1">
+    <div class="xp-welcome-top" aria-hidden="true"></div>
+    <div class="xp-welcome-panel">
+      <h1 class="xp-welcome-greeting" id="xpWelcomeGreeting">欢迎来访</h1>
+      <div class="xp-welcome-divider" aria-hidden="true"></div>
+      <div class="xp-welcome-identity"><div class="xp-welcome-avatar"><img src="&#x2F;images&#x2F;my-avatar.png" alt="ZetaC 的头像"></div><p class="xp-welcome-name">ZetaC</p></div>
+    </div>
+    <div class="xp-welcome-bottom" aria-hidden="true"></div>
+  </div>
   <div class="headband"></div>
 
   <footer class="footer">
@@ -86,7 +110,7 @@
 <div class="desktop-copyright">&copy; 2026 ZetaC</div>
     </div>
   </footer>
-<main class="main win95-window"><div class="window-titlebar"><span class="window-document-icon" aria-hidden="true"></span><span>关于</span></div>
+<main class="main win95-window"><div class="window-titlebar"><span class="window-document-icon" aria-hidden="true"></span><span class="window-caption-title">关于</span><div class="window-caption-controls"><button class="window-caption-control window-caption-minimize" type="button" disabled aria-label="最小化（暂未启用）" title="最小化（暂未启用）"></button><button class="window-caption-control window-caption-maximize" type="button" aria-label="最大化窗口" title="最大化窗口" aria-pressed="false"></button><a class="window-caption-control window-caption-close" href="/" aria-label="关闭窗口，返回首页" title="关闭窗口，返回首页"></a></div></div>
     <div class="column">
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
@@ -181,7 +205,8 @@
       
       
       <div class="post-body">
-          <section class="about-profile" aria-label="个人资料">
+          <!-- xp-about -->
+<section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
     <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">14 篇日志</a><a href="&#x2F;tags&#x2F;">6 个标签</a></nav>
@@ -350,7 +375,7 @@ mark.ah-current { background: #ff9800; color: #fff; }
 </div>
 
 <button id="articleSearchBtn" title="搜索本文" style="display:none;">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <span class="article-search-icon" aria-hidden="true"></span>
 </button>
 
 <script>
@@ -488,5 +513,7 @@ mark.ah-current { background: #ff9800; color: #fff; }
       </div>
     </div>
   </div>
+<script src="/js/window-controls.js" defer></script>
+<script src="/js/about-welcome.js" defer></script>
 </body>
 </html>
