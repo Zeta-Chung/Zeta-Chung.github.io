@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #f78e17;
+    background: #75ffaa;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3361,9 +3361,16 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   visibility: visible;
   animation: none !important;
 }
-/* Delayed single-step reveals, not fades or movement. The class is set in head. */
+/* Timers in head reveal each card, then restore the ordinary visible state. */
 .notifications-pop-in .main-inner.index .post-block {
-  animation: notification-pop 1ms step-end var(--notification-delay, 0ms) both !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.notifications-pop-in .main-inner.index .post-block.notification-shown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 .main-inner.index .post-block {
   padding: 4px;
@@ -3544,18 +3551,6 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
   }
   .tag-directory-list {
     grid-template-columns: 1fr;
-  }
-}
-@keyframes notification-pop {
-  from {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  to {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
   }
 }
 /* Homepage notifications remain separate; other routes share an application frame. */

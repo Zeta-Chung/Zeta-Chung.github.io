@@ -72,7 +72,22 @@
     const replay = sessionStorage.getItem('zetac-notifications-replay');
     sessionStorage.setItem('zetac-notifications-seen', '1');
     sessionStorage.removeItem('zetac-notifications-replay');
-    if (!seen || replay === '1') document.documentElement.classList.add('notifications-pop-in');
+    if (!seen || replay === '1') {
+      document.documentElement.classList.add('notifications-pop-in');
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = [...document.querySelectorAll('.main-inner.index .post-block')];
+        let lastDelay = 0;
+        cards.forEach(card => {
+          const delay = parseFloat(card.style.getPropertyValue('--notification-delay')) || 0;
+          lastDelay = Math.max(lastDelay, delay);
+          window.setTimeout(() => card.classList.add('notification-shown'), delay);
+        });
+        window.setTimeout(() => {
+          document.documentElement.classList.remove('notifications-pop-in');
+          cards.forEach(card => card.classList.remove('notification-shown'));
+        }, lastDelay + 100);
+      }, { once: true });
+    }
   } catch (_) {
     // With storage unavailable, retain the ordinary immediately visible homepage.
   }
