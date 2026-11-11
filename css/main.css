@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #90e306;
+    background: #385025;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -4393,5 +4393,79 @@ body.xp-about.window-is-maximized .main.win95-window {
     padding: 0;
     margin-top: 12px;
     font-size: 32px;
+  }
+}
+@media (min-width: 768px) {
+  body.window-scroll-mode {
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    box-sizing: border-box;
+  }
+  .window-scroll-mode .main.win95-window {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 4px;
+    height: min(76dvh, calc(100dvh - var(--window-top-space, 48px) - var(--taskbar-space) - 20px));
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .window-scroll-mode .main.win95-window:has(.column .sidebar-nav-active) {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .window-scroll-mode .main.win95-window[hidden] {
+    display: none;
+  }
+  .window-scroll-mode .window-titlebar {
+    grid-column: 1/-1;
+    margin-bottom: 0;
+    flex-basis: auto;
+  }
+  .window-scroll-mode .win95-window .main-inner {
+    grid-row: 2;
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+    scroll-padding-top: 12px;
+  }
+  .window-scroll-mode .win95-window .column {
+    grid-row: 2;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .window-scroll-mode .win95-window .sidebar,
+  .window-scroll-mode .win95-window .sidebar-inner {
+    position: static;
+    max-height: none;
+  }
+  body.window-scroll-mode.window-is-maximized .main.win95-window {
+    height: calc(100dvh - var(--window-top-space, 48px) - var(--taskbar-space) - 12px);
+  }
+}
+@media (max-width: 767px) {
+  .xp-exit-avatar {
+    top: 36%;
+    left: 50%;
+    width: 72px;
+    height: 72px;
+  }
+  .xp-exit-powered {
+    top: calc(36% + 80px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+  }
+  .xp-exit-name {
+    top: calc(36% + 94px);
+    left: 50%;
+    font-size: 28px;
+  }
+  .xp-exit-message {
+    top: calc(36% + 142px);
+    left: 50%;
+    font-size: 16px;
   }
 }

@@ -463,7 +463,7 @@ document.addEventListener('click', function(e) {
         if (target) {
           e.preventDefault();
           e.stopImmediatePropagation();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (!window.scrollWindowTarget?.(target, 'start')) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
     }
@@ -555,7 +555,7 @@ mark.ah-current { background: #ff9800; color: #fff; }
     currentIdx = 0;
     if (matches.length) {
       matches[0].className = 'ah-current';
-      matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!window.scrollWindowTarget?.(matches[0], 'center')) matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     count.textContent = '1/' + matches.length;
   }
@@ -565,7 +565,7 @@ mark.ah-current { background: #ff9800; color: #fff; }
     if (matches[currentIdx]) matches[currentIdx].className = 'ah-match';
     currentIdx = (idx + matches.length) % matches.length;
     matches[currentIdx].className = 'ah-current';
-    matches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!window.scrollWindowTarget?.(matches[currentIdx], 'center')) matches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
     count.textContent = (currentIdx + 1) + '/' + matches.length;
   }
 
@@ -633,6 +633,6 @@ mark.ah-current { background: #ff9800; color: #fff; }
       </div>
     </div>
   </div>
-<script src="/js/window-controls.js" defer></script>
+<script src="/js/window-controls.js" defer></script><script src="/js/window-scroll.js" defer></script>
 </body>
 </html>
