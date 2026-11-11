@@ -6868,6 +6868,248 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
       </tags>
   </entry>
   <entry>
+    <title></title>
+    <url>/2026/11/11/0-1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%B8%B8/</url>
+    <content><![CDATA[<h1 id="c程序的编译过程"><a class="markdownIt-Anchor" href="#c程序的编译过程"></a> C程序的编译过程</h1>
+<h2 id="预处理"><a class="markdownIt-Anchor" href="#预处理"></a> 预处理</h2>
+<ol>
+<li>
+<p>是什么：将源程序（.c文本）转换成修改后的源程序（.i文本）</p>
+</li>
+<li>
+<p>为什么出现：使得宏定义可复用，不必重复声明</p>
+</li>
+<li>
+<p>做什么：将引用的头文件内容插入程序，将宏定义展开，去除所有注释。</p>
+</li>
+</ol>
+<h2 id="编译"><a class="markdownIt-Anchor" href="#编译"></a> 编译</h2>
+<ol>
+<li>
+<p>是什么：<strong>编译器</strong>将预处理后的源程序（.i文本）转化成汇编程序（.s文本）</p>
+</li>
+<li>
+<p>为什么出现：在汇编和高级语言之间建立桥梁，提高开发效率</p>
+</li>
+<li>
+<p>做什么：使用汇编程序翻译文本</p>
+</li>
+</ol>
+<h2 id="汇编"><a class="markdownIt-Anchor" href="#汇编"></a> 汇编</h2>
+<ol>
+<li>
+<p>是什么：<em><strong>汇编器</strong></em>将.s文本翻译成<strong>可重定位目标程序</strong>（.o二进制文件）</p>
+</li>
+<li>
+<p>为什么出现：用更简单的助记符号替代机器码</p>
+</li>
+<li>
+<p>做什么：将.s翻译成机器语言指令，将这些指令打包成.o文件</p>
+</li>
+</ol>
+<h2 id="链接"><a class="markdownIt-Anchor" href="#链接"></a> 链接</h2>
+<ol>
+<li>
+<p>是什么：<strong>链接器</strong>将.o文件按照特定顺序合并成可执行文件</p>
+</li>
+<li>
+<p>为什么出现：模块化开发要求不可能把所有代码写在一个.c文件里。</p>
+</li>
+<li>
+<p>做什么：拼接程序以及修正地址。</p>
+</li>
+</ol>
+<h1 id="系统的硬件组成"><a class="markdownIt-Anchor" href="#系统的硬件组成"></a> 系统的硬件组成</h1>
+<h2 id="总线"><a class="markdownIt-Anchor" href="#总线"></a> 总线</h2>
+<ol>
+<li>
+<p>是什么：连接整个系统的电子通道，同城被设计成传送<strong>定长的字节块（word，字）</strong></p>
+</li>
+<li>
+<p>为什么需要：各组件之间需要通信</p>
+</li>
+<li>
+<p>做什么：携带信息字节并在各个组件之间传递。</p>
+</li>
+</ol>
+<h2 id="io设备"><a class="markdownIt-Anchor" href="#io设备"></a> I/O设备</h2>
+<ol>
+<li>
+<p>是什么：系统与外部世界的联系通道</p>
+</li>
+<li>
+<p>为什么需要：系统需要与外界交互</p>
+</li>
+<li>
+<p>做什么：通过一个控制器或适配器与I/O总线相连，输入或输出信息</p>
+</li>
+</ol>
+<h2 id="主存"><a class="markdownIt-Anchor" href="#主存"></a> 主存</h2>
+<ol>
+<li>
+<p>是什么：一组**动态随机存取存储器（DRAM）**芯片组成的临时存储设备。</p>
+</li>
+<li>
+<p>做什么：存储程序和程序处理的数据</p>
+</li>
+</ol>
+<h2 id="处理器cpu"><a class="markdownIt-Anchor" href="#处理器cpu"></a> 处理器（CPU）</h2>
+<ol>
+<li>
+<p>是什么：解释或执行存储在主存中指令的部件。由<strong>寄存器</strong>和算术/逻辑单元（ALU)组成。</p>
+</li>
+<li>
+<p>做什么：在指令的要求下：</p>
+<ol>
+<li>
+<p>加载：从主存复制数据到寄存器</p>
+</li>
+<li>
+<p>存储：从寄存器复制数据到主存的某个位置</p>
+</li>
+<li>
+<p>操作：将两个寄存器的内容复制到ALU进行算术运算，并将结果存放到一个寄存器中</p>
+</li>
+<li>
+<p>跳转：从指令本身中抽取一个字，复制到**程序计数器（PC）**中。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>概念区分：</p>
+<ol>
+<li>
+<p>指令集架构：每条机器代码指令的效果</p>
+</li>
+<li>
+<p>微体系结构：处理器实际上的实现方法</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="高速缓存"><a class="markdownIt-Anchor" href="#高速缓存"></a> 高速缓存</h2>
+<ol>
+<li>
+<p>是什么：比主存更小更快的存储设备，用**静态随机访问存储器（SRAM）**实现；L1高速缓存位于处理器芯片上，L2高速缓存通过总线与处理器连接。</p>
+</li>
+<li>
+<p>为什么需要：处理器从寄存器中读数据速度远大于从主存中读数据，因此需要更高效的搬运数据方法，提高效率。</p>
+</li>
+<li>
+<p>做什么：将<strong>主存</strong>中<strong>可能用到</strong>的数据临时存储到<strong>缓存</strong>中，方便内存操作。</p>
+</li>
+</ol>
+<h1 id="存储器层次结构示例"><a class="markdownIt-Anchor" href="#存储器层次结构示例"></a> 存储器层次结构示例</h1>
+<pre><code class="highlight mermaid">graph TD  
+A[L0：寄存器] --&gt; B[L1：高速缓存（SRAM）]
+B --&gt; C[L2:高速缓存（SRAM）]
+C --&gt; D[L3：高速缓存（SRAM）]
+D --&gt; E[L4：主存（DRAM）]
+E --&gt; F[L5：本地二级存储（本地磁盘）]
+F --&gt; G[L6：远程二级存储（分布式文件系统，云服务器）]</code></pre>
+<blockquote>
+<p>越往上，存储设备更小、更快、更贵；越往下，存储设备更大、更慢、更便宜。</p>
+</blockquote>
+<h1 id="操作系统"><a class="markdownIt-Anchor" href="#操作系统"></a> 操作系统</h1>
+<h2 id="是什么"><a class="markdownIt-Anchor" href="#是什么"></a> 是什么</h2>
+<p><strong>应用程序和硬件之间</strong>插入的一层<strong>软件</strong>，所有应用程序对硬件的操作必须通过操作系统</p>
+<h2 id="为什么需要"><a class="markdownIt-Anchor" href="#为什么需要"></a> 为什么需要</h2>
+<ol>
+<li>
+<p>防止硬件被失控的应用程序滥用</p>
+</li>
+<li>
+<p>向应用程序提供简单一致的机制来控制复杂而不同的低级硬件设备。</p>
+</li>
+</ol>
+<h2 id="操作系统的基础概念"><a class="markdownIt-Anchor" href="#操作系统的基础概念"></a> 操作系统的基础概念</h2>
+<h3 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h3>
+<ol>
+<li>
+<p>是什么：对一个正在运行的程序的抽象。一个单核处理器只能同时处理一个进程。</p>
+</li>
+<li>
+<p><strong>并发运行</strong>：交错执行进程指令，使其像同时运行多个程序。</p>
+</li>
+<li>
+<p><strong>上下文</strong>：进程运行所需的所有<strong>状态信息</strong>。在进程切换时，上下文也会被保存和切换。</p>
+</li>
+<li>
+<p><strong>线程</strong>：进程的基础单位，运行在进程的上下文中。</p>
+</li>
+</ol>
+<h3 id="内核"><a class="markdownIt-Anchor" href="#内核"></a> 内核</h3>
+<ol>
+<li>
+<p>是什么：操作系统代码常驻主存的部分，系统管理全部进程所用代码和数据结构的集合。</p>
+</li>
+<li>
+<p>做什么：应用程序需要操作系统的某些操作时，执行特殊的<strong>系统调用指令</strong>将控制权传递给内核，然后内核执行被请求的操作并返回应用程序。</p>
+</li>
+</ol>
+<h1 id="几个贯穿的重要概念"><a class="markdownIt-Anchor" href="#几个贯穿的重要概念"></a> 几个贯穿的重要概念</h1>
+<h2 id="amdahl定律"><a class="markdownIt-Anchor" href="#amdahl定律"></a> Amdahl定律</h2>
+<ol>
+<li>
+<p>是什么：加速比公式</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>P</mi><mo stretchy="false">)</mo><mo>+</mo><mfrac><mi>P</mi><mi>N</mi></mfrac></mrow></mfrac></mrow><annotation encoding="application/x-tex">S(N) = \frac{1}{(1 - P) + \frac{P}{N}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4288em;vertical-align:-1.1073em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.2377em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8723em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.109em;">N</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1073em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span></span></span></span>：使用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个处理器后的整体加速比；</p>
+</li>
+<li>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span></span></span>：原执行时间中可并行部分的比例；</p>
+</li>
+<li>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">1-P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span></span></span>：串行部分的比例；</p>
+</li>
+<li>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span>：处理器数量。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>为什么：串行部分不能因增加处理器而加速，因此加速比受其限制；当 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>→</mo><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">N \to \infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord">∞</span></span></span></span> 时，最大加速比为</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>S</mi><mi>max</mi><mo>⁡</mo></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>−</mo><mi>P</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">S_{\max} = \frac{1}{1-P}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">m</span><span class="mtight">a</span><span class="mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0908em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>主要观点：要显著加速整个系统，必须提升全系统中相当大部分的速度。</p>
+</li>
+</ol>
+<h2 id="并发和并行"><a class="markdownIt-Anchor" href="#并发和并行"></a> 并发和并行</h2>
+<ol>
+<li>
+<p>并发：一个同时具有多个活动的系统</p>
+</li>
+<li>
+<p>并行：用并发来使一个系统运行更快</p>
+<ul>
+<li>
+<p><strong>指令级并行</strong>：处理器同时执行多条相互独立的指令，以提高处理速度。</p>
+</li>
+<li>
+<p><strong>单指令、多数据并行</strong>：一条指令同时对多个数据执行相同操作，以提高数据处理速度。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="抽象"><a class="markdownIt-Anchor" href="#抽象"></a> 抽象</h2>
+<ol>
+<li>
+<p>是什么：对复杂系统的简化描述，保留使用者关心的特征，隐藏实现细节。</p>
+</li>
+<li>
+<p>为什么：降低理解和使用复杂系统的难度。</p>
+</li>
+<li>
+<p>做什么：通过定义清晰的接口隔离不同层次；使用者依赖接口完成操作，无需了解底层实现。</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>关于</title>
     <url>/about/index.html</url>
     <content><![CDATA[<!-- xp-about -->
@@ -6877,7 +7119,7 @@ I2C对应的IO引脚，也可查阅芯片手册</p>
 <section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
-    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">14 篇日志</a><a href="&#x2F;tags&#x2F;">6 个标签</a></nav>
+    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">15 篇日志</a><a href="&#x2F;tags&#x2F;">6 个标签</a></nav>
   </section>
 <p class="xp-profile-signature">签名待补充</p>
 </section>
