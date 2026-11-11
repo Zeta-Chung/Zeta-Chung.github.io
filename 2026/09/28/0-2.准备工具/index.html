@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#059669"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#059669">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":-1,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="学习CSAPP课程需要掌握的配套工具和指令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0-2.准备工具">
+<meta property="og:url" content="http://example.com/2026/09/28/0-2.%E5%87%86%E5%A4%87%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:site_name" content="ZetaC">
+<meta property="og:description" content="学习CSAPP课程需要掌握的配套工具和指令">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-28T09:11:26.000Z">
+<meta property="article:modified_time" content="2026-11-11T07:09:25.493Z">
+<meta property="article:author" content="ZetaC">
+<meta property="article:tag" content="CSAPP">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/09/28/0-2.%E5%87%86%E5%A4%87%E5%B7%A5%E5%85%B7/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/09/28/0-2.%E5%87%86%E5%A4%87%E5%B7%A5%E5%85%B7/","path":"2026/09/28/0-2.准备工具/","title":"0-2.准备工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>0-2.准备工具 | ZetaC</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<!-- source/_data/head.njk -->
+<script>
+(() => {
+  if (location.pathname !== '/') return;
+  try {
+    const seen = sessionStorage.getItem('zetac-notifications-seen');
+    const replay = sessionStorage.getItem('zetac-notifications-replay');
+    sessionStorage.setItem('zetac-notifications-seen', '1');
+    sessionStorage.removeItem('zetac-notifications-replay');
+    if (!seen || replay === '1') {
+      document.documentElement.classList.add('notifications-pop-in');
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = [...document.querySelectorAll('.main-inner.index .post-block')];
+        let lastDelay = 0;
+        cards.forEach(card => {
+          const delay = parseFloat(card.style.getPropertyValue('--notification-delay')) || 0;
+          lastDelay = Math.max(lastDelay, delay);
+          window.setTimeout(() => card.classList.add('notification-shown'), delay);
+        });
+        window.setTimeout(() => {
+          document.documentElement.classList.remove('notifications-pop-in');
+          cards.forEach(card => card.classList.remove('notification-shown'));
+        }, lastDelay + 100);
+      }, { once: true });
+    }
+  } catch (_) {
+    // With storage unavailable, retain the ordinary immediately visible homepage.
+  }
+})();
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="desktop-copyright">&copy; 2026 ZetaC</div>
+    </div>
+  </footer>
+<main class="main win95-window"><div class="window-titlebar"><span class="window-document-icon" aria-hidden="true"></span><span class="window-caption-title">0-2.准备工具</span><div class="window-caption-controls"><button class="window-caption-control window-caption-minimize" type="button" disabled aria-label="最小化（暂未启用）" title="最小化（暂未启用）"></button><button class="window-caption-control window-caption-maximize" type="button" aria-label="最大化窗口" title="最大化窗口" aria-pressed="false"></button><a class="window-caption-control window-caption-close" href="/" aria-label="关闭窗口，返回首页" title="关闭窗口，返回首页"></a></div></div>
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZetaC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text"> 常用Linux命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text"> 通用格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwd"><span class="nav-number">1.2.</span> <span class="nav-text"> pwd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ls"><span class="nav-number">1.3.</span> <span class="nav-text"> ls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd"><span class="nav-number">1.4.</span> <span class="nav-text"> cd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir"><span class="nav-number">1.5.</span> <span class="nav-text"> mkdir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch"><span class="nav-number">1.6.</span> <span class="nav-text"> touch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp"><span class="nav-number">1.7.</span> <span class="nav-text"> cp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv"><span class="nav-number">1.8.</span> <span class="nav-text"> mv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm"><span class="nav-number">1.9.</span> <span class="nav-text"> rm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cat"><span class="nav-number">1.10.</span> <span class="nav-text"> cat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less"><span class="nav-number">1.11.</span> <span class="nav-text"> less</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#head"><span class="nav-number">1.12.</span> <span class="nav-text"> head</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tail"><span class="nav-number">1.13.</span> <span class="nav-text"> tail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep"><span class="nav-number">1.14.</span> <span class="nav-text"> grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">1.15.</span> <span class="nav-text"> find</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text"> 常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6fd"><span class="nav-number">2.1.</span> <span class="nav-text"> 文件描述符（fd）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81"><span class="nav-number">2.1.2.</span> <span class="nav-text"> 为什么需要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B8%B8%E8%A7%81%E7%9A%84%E4%B8%89%E4%B8%AA-fd"><span class="nav-number">2.1.3.</span> <span class="nav-text"> 最常见的三个 fd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5stdin"><span class="nav-number">2.1.3.1.</span> <span class="nav-text"> 0：标准输入（stdin）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E6%A0%87%E5%87%86%E8%BE%93%E5%87%BAstdout"><span class="nav-number">2.1.3.2.</span> <span class="nav-text"> 1：标准输出（stdout）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E6%A0%87%E5%87%86%E9%94%99%E8%AF%AFstderr"><span class="nav-number">2.1.3.3.</span> <span class="nav-text"> 2：标准错误（stderr）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.1.3.4.</span> <span class="nav-text"> 默认位置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#command-file"><span class="nav-number">2.1.4.</span> <span class="nav-text"> command &gt; file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#command-file-2"><span class="nav-number">2.1.5.</span> <span class="nav-text"> command &gt;&gt; file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#command-file-3"><span class="nav-number">2.1.6.</span> <span class="nav-text"> command &lt; file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#command1-command2"><span class="nav-number">2.1.7.</span> <span class="nav-text"> command1 | command2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc"><span class="nav-number">3.</span> <span class="nav-text"> gcc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text"> 目前需要使用的命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gdb"><span class="nav-number">4.</span> <span class="nav-text"> gdb</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/09/28/0-2.%E5%87%86%E5%A4%87%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="0-2.准备工具 | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          0-2.准备工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+<span class="post-meta-item post-sequence">第15篇</span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-09-28 17:11:26" itemprop="dateCreated datePublished" datetime="2026-09-28T17:11:26+08:00">2026-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-11-11 15:09:25" itemprop="dateModified" datetime="2026-11-11T15:09:25+08:00">2026-11-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>学习CSAPP课程需要掌握的配套工具和指令</p>
+<span id="more"></span>
+<h1 id="常用linux命令"><a class="markdownIt-Anchor" href="#常用linux命令"></a> 常用Linux命令</h1>
+<h2 id="通用格式"><a class="markdownIt-Anchor" href="#通用格式"></a> 通用格式</h2>
+<p>命令 [选项] [参数]</p>
+<blockquote>
+<p>例： ls -l /home ，-l是选项，/home是参数<br />
+可使用man 查看每个命令的具体选项</p>
+</blockquote>
+<h2 id="pwd"><a class="markdownIt-Anchor" href="#pwd"></a> pwd</h2>
+<ol>
+<li>
+<p>作用：打印当前工作目录(Print Working Directory)</p>
+</li>
+<li>
+<p>选项：-P：显示物理路径</p>
+</li>
+<li>
+<p>使用方法：pwd 或 pwd -P</p>
+</li>
+</ol>
+<h2 id="ls"><a class="markdownIt-Anchor" href="#ls"></a> ls</h2>
+<ol>
+<li>
+<p>作用：列出文件和目录(list)</p>
+</li>
+<li>
+<p>常用选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-l</td>
+<td>长格式显示，包含权限、所有者、大小、时间</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>显示隐藏文件，包括 . 和 …</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>人类可读大小，如 1K、2M</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>按修改时间排序</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>反向排序</td>
+</tr>
+<tr>
+<td>-R</td>
+<td>递归列出子目录</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls -t</span><br><span class="line">ls -lah</span><br><span class="line">ls /etc</span><br><span class="line">ls -la /usr</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="cd"><a class="markdownIt-Anchor" href="#cd"></a> cd</h2>
+<ol>
+<li>
+<p>作用：切换当前工作目录(change directory)</p>
+</li>
+<li>
+<p>示例</p>
+<ul>
+<li>
+<p><code>cd /file</code>：从根目录开始切换绝对路径到file</p>
+</li>
+<li>
+<p><code>cd file</code>：从当前目录开始切换相对路径到file</p>
+</li>
+<li>
+<p><code>cd .</code> : 切换目录层级（有n个.表示往上切换n-1级）</p>
+</li>
+<li>
+<p><code>cd ~</code> : 切换到根目录</p>
+</li>
+<li>
+<p><code>cd -</code> ：切换到上一次所在目录</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="mkdir"><a class="markdownIt-Anchor" href="#mkdir"></a> mkdir</h2>
+<ol>
+<li>
+<p>作用：创建目录(make directory)</p>
+</li>
+<li>
+<p>常用选项</p>
+<ul>
+<li>
+<p>-p：递归创建多级目录，父目录不存在也自动创建</p>
+</li>
+<li>
+<p>-m：创建时指定权限.只对创建的新目录生效，不会修改已存在目录的权限</p>
+</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir dir</span><br><span class="line">mkdir dir1 dir2 dir3</span><br><span class="line">mkdir -p dir1/dir2/dir3</span><br><span class="line">mkdir -m dir 700</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="touch"><a class="markdownIt-Anchor" href="#touch"></a> touch</h2>
+<ol>
+<li>
+<p>作用：创建文件或更新时间戳</p>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch readme.md</span><br><span class="line">touch 1.txt 2.txt 3.txt</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="cp"><a class="markdownIt-Anchor" href="#cp"></a> cp</h2>
+<ol>
+<li>
+<p>作用：复制(copy)文件或目录</p>
+</li>
+<li>
+<p>格式：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp 源文件 目标文件</span><br><span class="line">cp 源文件 目标目录</span><br><span class="line">cp -r 源目录 目标目录</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>常用选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-r 或 -R</td>
+<td>递归复制目录</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>覆盖前提示</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示复制过程</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>归档模式，保留权限、时间等，常用于备份</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>只复制更新的文件</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp a.txt b.txt</span><br><span class="line">cp a.txt /tmp/</span><br><span class="line">cp -r project project_backup</span><br><span class="line">cp -iv project /backup/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="mv"><a class="markdownIt-Anchor" href="#mv"></a> mv</h2>
+<ol>
+<li>
+<p>作用：移动(move)文件或目录，也可以重命名。mv对两种行为不作区分，源头和目标在同一目录就是重命名，在不同目录就是移动。</p>
+</li>
+<li>
+<p>选项</p>
+<ul>
+<li>
+<p>-i：覆盖前提示</p>
+</li>
+<li>
+<p>-n：不覆盖已存在文件</p>
+</li>
+<li>
+<p>-v：显示过程</p>
+</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv oldname.txt newname.txt</span><br><span class="line">mv newname.txt /oldfile/</span><br><span class="line">mv oldfile /newfile</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="rm"><a class="markdownIt-Anchor" href="#rm"></a> rm</h2>
+<ol>
+<li>
+<p>作用：删除(remove)目录或文件</p>
+</li>
+<li>
+<p>常用选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-r 或 -R</td>
+<td>递归删除目录及其内容</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>强制删除且不提示，忽略不存在文件</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>删除前逐个提示</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示删除过程</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rm a.txt</span><br><span class="line">rm -r project</span><br><span class="line">rm -i important.txt</span><br></pre></td></tr></table></figure>
+<p>非常危险，不要轻易执行：<code>rm -rf /</code>以及<code>rm -rf *</code>。删除前须先用ls确认。</p>
+</li>
+</ol>
+<h2 id="cat"><a class="markdownIt-Anchor" href="#cat"></a> cat</h2>
+<ol>
+<li>
+<p>作用：连接文件并输出到终端(concatenate)。如果是单文件则显示到终端。</p>
+</li>
+<li>
+<p>合并文件格式：</p>
+</li>
+</ol>
+<p>cat <a target="_blank" rel="noopener" href="http://a.md">a.md</a> <a target="_blank" rel="noopener" href="http://b.md">b.md</a> &gt; <a target="_blank" rel="noopener" href="http://c.md">c.md</a></p>
+<ol start="3">
+<li>选项
+<ul>
+<li>
+<p>-n：显示行号</p>
+</li>
+<li>
+<p>-b：非空行显示行号</p>
+</li>
+<li>
+<p>-A：显示不可见字符</p>
+</li>
+</ul>
+</li>
+<li>示例： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat file.txt</span><br><span class="line">cat /etc/hostname</span><br><span class="line">cat a.md b.md &gt; c.md</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>cat 适合查看小文件，大文件会瞬间刷屏</p>
+</blockquote>
+<h2 id="less"><a class="markdownIt-Anchor" href="#less"></a> less</h2>
+<ol>
+<li>
+<p>作用：分页浏览文件，适合查看大文件。</p>
+</li>
+<li>
+<p>常用操作</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>space</code></td>
+<td>下一页</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>上一页</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>下一行</td>
+</tr>
+<tr>
+<td><code>/关键词</code></td>
+<td>向下搜索</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>下一个匹配</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>上一个匹配</td>
+</tr>
+<tr>
+<td><code>g</code></td>
+<td>跳到开头</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td>跳到末尾</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>退出</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">less file.txt</span><br><span class="line">less /var/log/syslog</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="head"><a class="markdownIt-Anchor" href="#head"></a> head</h2>
+<ol>
+<li>
+<p>作用：查看文件开头，默认显示文件前10行</p>
+</li>
+<li>
+<p>常用选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n 数字</code></td>
+<td>显示前 N 行</td>
+</tr>
+<tr>
+<td><code>-c 数字</code></td>
+<td>显示前 N 个字节</td>
+</tr>
+<tr>
+<td><code>-q</code></td>
+<td>不显示文件名标题</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>总是显示文件名标题</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">head</span> file.txt              <span class="comment"># 前 10 行</span></span><br><span class="line"><span class="built_in">head</span> -n 5 file.txt         <span class="comment"># 前 5 行</span></span><br><span class="line"><span class="built_in">head</span> -n 20 /var/log/syslog <span class="comment"># 日志前 20 行</span></span><br><span class="line"><span class="built_in">head</span> -c 100 file.txt       <span class="comment"># 前 100 字节</span></span><br></pre></td></tr></table></figure>
+<p>查看多个文件：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">head</span> file1.txt file2.txt</span><br></pre></td></tr></table></figure>
+<p>会分别显示每个文件的前 10 行，并带有文件名标题。</p>
+</li>
+</ol>
+<h2 id="tail"><a class="markdownIt-Anchor" href="#tail"></a> tail</h2>
+<ol>
+<li>
+<p>作用：显示文件末尾，默认显示文件最后 10 行。</p>
+</li>
+<li>
+<p>常用选项：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n 数字</code></td>
+<td>显示最后 N 行</td>
+</tr>
+<tr>
+<td><code>-c 数字</code></td>
+<td>显示最后 N 个字节</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>持续跟踪文件新增内容</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>类似 <code>-f</code>，但文件被切割或重建后仍能跟踪</td>
+</tr>
+<tr>
+<td><code>-q</code></td>
+<td>不显示文件名标题</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>总是显示文件名标题</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tail</span> file.txt              <span class="comment"># 最后 10 行</span></span><br><span class="line"><span class="built_in">tail</span> -n 5 file.txt         <span class="comment"># 最后 5 行</span></span><br><span class="line"><span class="built_in">tail</span> -n 100 /var/log/syslog</span><br><span class="line"><span class="built_in">tail</span> -f /var/log/syslog    <span class="comment"># 实时查看日志</span></span><br><span class="line"><span class="built_in">tail</span> -F /var/log/syslog    <span class="comment"># 日志轮转后仍能跟踪</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="grep"><a class="markdownIt-Anchor" href="#grep"></a> grep</h2>
+<ol>
+<li>
+<p>作用：在文件或输入中搜索匹配的行，并输出匹配行。</p>
+</li>
+<li>
+<p>基本语法：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep [选项] 匹配内容 [文件...]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>常用选项：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-i</code></td>
+<td>忽略大小写</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>反向匹配，显示不包含模式的行</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td><code>-r</code> 或 <code>-R</code></td>
+<td>递归搜索目录</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>只显示包含匹配的文件名</td>
+</tr>
+<tr>
+<td><code>-L</code></td>
+<td>只显示不包含匹配的文件名</td>
+</tr>
+<tr>
+<td><code>-w</code></td>
+<td>匹配整个单词</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>统计匹配行数</td>
+</tr>
+<tr>
+<td><code>-E</code></td>
+<td>使用扩展正则表达式，相当于 <code>egrep</code></td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>按固定字符串匹配，不解释正则</td>
+</tr>
+<tr>
+<td><code>-A N</code></td>
+<td>显示匹配行及其后 N 行</td>
+</tr>
+<tr>
+<td><code>-B N</code></td>
+<td>显示匹配行及其前 N 行</td>
+</tr>
+<tr>
+<td><code>-C N</code></td>
+<td>显示匹配行及其前后各 N 行</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">grep -i <span class="string">&quot;error&quot;</span> app.log          <span class="comment"># 忽略大小写</span></span><br><span class="line">grep -n <span class="string">&quot;main&quot;</span> code.c            <span class="comment"># 显示行号</span></span><br><span class="line">grep -v <span class="string">&quot;^#&quot;</span> config.conf         <span class="comment"># 排除注释行</span></span><br><span class="line">grep -r <span class="string">&quot;TODO&quot;</span> ./src             <span class="comment"># 递归搜索目录</span></span><br><span class="line">grep -c <span class="string">&quot;404&quot;</span> access.log         <span class="comment"># 统计 404 出现行数</span></span><br><span class="line">grep -A 3 -B 1 <span class="string">&quot;Exception&quot;</span> app.log</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>正则示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&quot;^root&quot;</span> /etc/passwd         <span class="comment"># 以 root 开头</span></span><br><span class="line">grep <span class="string">&quot;bash$&quot;</span> /etc/passwd         <span class="comment"># 以 bash 结尾</span></span><br><span class="line">grep -E <span class="string">&quot;error|warn&quot;</span> app.log     <span class="comment"># 匹配 error 或 warn</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>从管道读取：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep nginx</span><br><span class="line"><span class="built_in">cat</span> file.txt | grep <span class="string">&quot;hello&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>注意：<code>grep</code> 搜索的是文本内容，不是文件名。找文件名要用 <code>find</code>。</p>
+</blockquote>
+<h2 id="find"><a class="markdownIt-Anchor" href="#find"></a> find</h2>
+<ol>
+<li>
+<p>作用：用于按名称、类型、大小、时间、权限等条件查找文件或目录。</p>
+</li>
+<li>
+<p>基本语法：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find 路径 [条件] [动作]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>常用条件：</p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-name 模式</code></td>
+<td>按文件名查找，区分大小写</td>
+</tr>
+<tr>
+<td><code>-iname 模式</code></td>
+<td>按文件名查找，忽略大小写</td>
+</tr>
+<tr>
+<td><code>-type f/d/l</code></td>
+<td>文件类型：f 普通文件，d 目录，l 链接</td>
+</tr>
+<tr>
+<td><code>-size +10M</code></td>
+<td>大于 10M 的文件</td>
+</tr>
+<tr>
+<td><code>-mtime -7</code></td>
+<td>7 天内修改过的文件</td>
+</tr>
+<tr>
+<td><code>-mtime +30</code></td>
+<td>30 天前修改过的文件</td>
+</tr>
+<tr>
+<td><code>-user 用户名</code></td>
+<td>按所有者查找</td>
+</tr>
+<tr>
+<td><code>-perm 权限</code></td>
+<td>按权限查找</td>
+</tr>
+<tr>
+<td><code>-maxdepth N</code></td>
+<td>限制搜索深度</td>
+</tr>
+<tr>
+<td><code>-mindepth N</code></td>
+<td>最小搜索深度</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.log&quot;</span></span><br><span class="line">find /var/log -<span class="built_in">type</span> f -name <span class="string">&quot;*.log&quot;</span></span><br><span class="line">find . -<span class="built_in">type</span> f -size +100M</span><br><span class="line">find . -<span class="built_in">type</span> f -mtime -1          <span class="comment"># 最近 1 天修改过</span></span><br><span class="line">find . -<span class="built_in">type</span> f -mtime +30         <span class="comment"># 30 天前修改过</span></span><br><span class="line">find . -maxdepth 2 -name <span class="string">&quot;*.conf&quot;</span></span><br><span class="line">find /tmp -<span class="built_in">type</span> f -user root</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>对找到的文件执行动作：</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-print</code></td>
+<td>默认动作，打印路径</td>
+</tr>
+<tr>
+<td><code>-delete</code></td>
+<td>删除找到的文件</td>
+</tr>
+<tr>
+<td><code>-exec 命令 {} \;</code></td>
+<td>对每个文件执行命令</td>
+</tr>
+<tr>
+<td><code>-exec 命令 {} +</code></td>
+<td>批量执行，效率更高</td>
+</tr>
+<tr>
+<td><code>-ok 命令 {} \;</code></td>
+<td>执行前询问</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.tmp&quot;</span> -delete</span><br><span class="line">find . -name <span class="string">&quot;*.txt&quot;</span> -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line">find . -name <span class="string">&quot;*.jpg&quot;</span> -<span class="built_in">exec</span> <span class="built_in">cp</span> &#123;&#125; /backup/ \;</span><br><span class="line">find . -<span class="built_in">type</span> f -name <span class="string">&quot;*.log&quot;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -lh &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<code>-exec ... \;</code> 中 <code>{}</code> 代表找到的文件，<code>\;</code> 是结束符。用 <code>+</code> 可以一次传多个文件，速度更快：</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="常用操作"><a class="markdownIt-Anchor" href="#常用操作"></a> 常用操作</h1>
+<h2 id="文件描述符fd"><a class="markdownIt-Anchor" href="#文件描述符fd"></a> 文件描述符（fd）</h2>
+<h3 id="是什么"><a class="markdownIt-Anchor" href="#是什么"></a> 是什么</h3>
+<ol>
+<li>
+<p>fd（file descriptor，文件描述符）其实就是“打开文件/终端/管道的编号”。</p>
+</li>
+<li>
+<p>内核给每个<strong>进程</strong>维护一张表，这张表里每个条目都对应一个“打开的对象”。</p>
+</li>
+<li>
+<p>程序读写时，不需要直接记住对象本身，只要知道它的编号就行。</p>
+</li>
+</ol>
+<blockquote>
+<p>fd 不是文件内容，而是“这个对象在进程里的入口编号”。</p>
+</blockquote>
+<h3 id="为什么需要"><a class="markdownIt-Anchor" href="#为什么需要"></a> 为什么需要</h3>
+<ul>
+<li>
+<p>每个进程都有自己的 fd 表</p>
+</li>
+<li>
+<p>这个表是进程自己的，不同进程的 fd 0、1、2 可能指向不同对象</p>
+</li>
+<li>
+<p>只要拿到 fd 编号，程序就能对对应的输入输出对象进行读写</p>
+</li>
+</ul>
+<h3 id="最常见的三个-fd"><a class="markdownIt-Anchor" href="#最常见的三个-fd"></a> 最常见的三个 fd</h3>
+<h4 id="0标准输入stdin"><a class="markdownIt-Anchor" href="#0标准输入stdin"></a> 0：标准输入（stdin）</h4>
+<p>程序从这里读取输入。默认就是键盘。</p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span></span><br></pre></td></tr></table></figure>
+<p>直接输入内容，然后按 <code>Ctrl+D</code> 结束，<code>cat</code> 读到的就是 fd 0。</p>
+<h4 id="1标准输出stdout"><a class="markdownIt-Anchor" href="#1标准输出stdout"></a> 1：标准输出（stdout）</h4>
+<p>程序把正常结果写到这里。默认就是屏幕终端。</p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello&quot;</span></span><br></pre></td></tr></table></figure>
+<p><code>hello</code> 会写到 stdout，所以显示在屏幕上。</p>
+<h4 id="2标准错误stderr"><a class="markdownIt-Anchor" href="#2标准错误stderr"></a> 2：标准错误（stderr）</h4>
+<p>程序把错误信息、警告、诊断信息写到这里。默认也会显示在屏幕上。</p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /not-exist</span><br></pre></td></tr></table></figure>
+<p>会输出类似：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span>: cannot access <span class="string">&#x27;/not-exist&#x27;</span>: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>这个错误信息写到 stderr。</p>
+<blockquote>
+<p>重要：stdout 和 stderr 都默认显示在终端，但它们是两个完全不同的输出流。</p>
+</blockquote>
+<h4 id="默认位置"><a class="markdownIt-Anchor" href="#默认位置"></a> 默认位置</h4>
+<ol>
+<li>
+<p>fd0:键盘输入</p>
+</li>
+<li>
+<p>fd1：显示在终端</p>
+</li>
+<li>
+<p>fd2：显示在终端</p>
+</li>
+</ol>
+<hr />
+<h3 id="command-file"><a class="markdownIt-Anchor" href="#command-file"></a> <code>command &gt; file</code></h3>
+<ol>
+<li>
+<p>是什么：让标准输出重定向，覆盖写入</p>
+</li>
+<li>
+<p>怎么做：使command 的标准输出fd1指向file，然后执行command,向fd1（即file）写入</p>
+<ol>
+<li>
+<p>如果 file 不存在，会创建。</p>
+</li>
+<li>
+<p>如果 file 已存在，会先清空，再写入。</p>
+</li>
+<li>
+<p>只重定向 stdout，不处理 stderr。</p>
+</li>
+<li>
+<p>等价于 command 1&gt; file。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>示例：<code>echo &quot;hello&quot; &gt; out.txt</code>，把 <code>hello</code> 写进 <code>out.txt</code>，而不是直接显示到屏幕。</p>
+</li>
+</ol>
+<h3 id="command-file-2"><a class="markdownIt-Anchor" href="#command-file-2"></a> <code>command &gt;&gt; file</code></h3>
+<ol>
+<li>
+<p>是什么：标准输出重定向，追加写入。</p>
+</li>
+<li>
+<p>怎么做：把 command 的标准输出<strong>追加</strong>到 file 末尾。</p>
+<ol>
+<li>
+<p>如果 file 不存在，会创建。</p>
+</li>
+<li>
+<p>如果 file 已存在，不会清空，而是在末尾追加。</p>
+</li>
+<li>
+<p>等价于 command 1&gt;&gt; file。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello&quot;</span> &gt; a.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;world&quot;</span> &gt;&gt; a.txt</span><br></pre></td></tr></table></figure>
+<p>a.txt内容为：</p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="command-file-3"><a class="markdownIt-Anchor" href="#command-file-3"></a> <code>command &lt; file</code></h3>
+<ol>
+<li>
+<p>是什么：标准输入重定向</p>
+</li>
+<li>
+<p>怎么做：将command的fd0指向file的内容，再执行command，这样就把file的内容作为command的标准输入，也就是让command从file读取。</p>
+</li>
+<li>
+<p>示例：<code>cat &lt; file.txt</code>表示让 <code>cat</code> 不从键盘读，而是从 <code>file.txt</code> 读。等价于：<code>cat 0&lt; file.txt</code></p>
+</li>
+</ol>
+<h3 id="command1-command2"><a class="markdownIt-Anchor" href="#command1-command2"></a> command1 | command2</h3>
+<ol>
+<li>
+<p>是什么：管道</p>
+</li>
+<li>
+<p>怎么做：把command1的<strong>标准输出</strong>作为command2的<strong>标准输入</strong>。也可理解为：将command1 的输出，传给 command2 处理。</p>
+<ol>
+<li>
+<p>管道只传递 stdout，不传递 stderr。</p>
+</li>
+<li>
+<p>如果左边命令报错，错误信息默认还是输出到屏幕。</p>
+</li>
+<li>
+<p>右边命令通常不需要再写文件名，它直接从标准输入读。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l | grep <span class="string">&quot;.txt&quot;</span>` <span class="comment">#先列出目录，再用 grep 过滤出目录中包含 .txt 的行。</span></span><br><span class="line"><span class="built_in">cat</span> access.log | grep <span class="string">&quot;404&quot;</span> | <span class="built_in">wc</span> -l <span class="comment">#读取日志，筛选 404 行，统计数量。</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="gcc"><a class="markdownIt-Anchor" href="#gcc"></a> gcc</h1>
+<h2 id="目前需要使用的命令"><a class="markdownIt-Anchor" href="#目前需要使用的命令"></a> 目前需要使用的命令</h2>
+<p><code>gcc -Og -o p file.c</code></p>
+<ol>
+<li><code>-Og</code>: 告诉编译器使用会生成符合原始C代码整体结构的机器代码的优化等级。</li>
+</ol>
+<blockquote>
+<p>理解:编译时做一些优化, 同时尽量让生成的代码便于与原始C代码对应, 方便阅读和调试, 因此作为学习工具。如果用较高级别的优化，例如参数-O1或 -O2，程序优化效率更高，但产生的代码结构会发生很大改变。</p>
+</blockquote>
+<ol start="2">
+<li><code>-o p</code>: 把最终产生的可执行文件命名为p</li>
+</ol>
+<h1 id="gdb"><a class="markdownIt-Anchor" href="#gdb"></a> gdb</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags"><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+<a href="/tags/CSAPP/" rel="tag"># CSAPP</a></div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/08/25/DMA/" rel="prev" title="DMA">
+                  <i class="fa fa-angle-left"></i> DMA
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/10/01/0-1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%B8%B8/" rel="next" title="0-1.计算机系统漫游">
+                  0-1.计算机系统漫游 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Zeta-Chung" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<!-- 全站底部导航：沿用 NexT 菜单配置和搜索弹窗。 -->
+<nav class="win95-taskbar" aria-label="全站导航">
+  <ul class="taskbar-menu">
+      <li class="taskbar-item taskbar-item-home">
+        <a class="taskbar-link" href="/" aria-label="ZetaC · 首页">
+          <img class="taskbar-avatar" src="/images/my-avatar.png" alt="" width="24" height="24">
+          <span>ZetaC</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-about">
+        <a class="taskbar-link" href="/about/">
+          <i class="fa fa-user fa-fw" aria-hidden="true"></i>
+          <span>关于</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-tags">
+        <a class="taskbar-link" href="/tags/">
+          <i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+          <span>标签</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-archives">
+        <a class="taskbar-link" href="/archives/">
+          <i class="fa fa-archive fa-fw" aria-hidden="true"></i>
+          <span>归档</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-search">
+        <button class="taskbar-link popup-trigger" type="button" aria-label="搜索全站">
+          <i class="fa fa-search fa-fw" aria-hidden="true"></i>
+          <span>搜索</span>
+        </button>
+      </li>
+  </ul>
+</nav>
+
+<!-- 直接识别 mermaid 代码块并渲染（绕过 NexT page:loaded 事件时序问题） -->
+<script>
+(function() {
+  function initMermaid() {
+    var codeBlocks = document.querySelectorAll('pre > code.mermaid');
+    if (codeBlocks.length === 0) return;
+    codeBlocks.forEach(function(el) {
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = el.textContent;
+      el.parentNode.parentNode.replaceChild(div, el.parentNode);
+    });
+    if (typeof mermaid !== 'undefined') {
+      mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+      return;
+    }
+    var cfg = document.querySelector('.next-config[data-name="mermaid"]');
+    if (!cfg) return;
+    try {
+      var config = JSON.parse(cfg.textContent);
+      if (config.enable && config.js && config.js.url) {
+        var s = document.createElement('script');
+        s.src = config.js.url;
+        s.integrity = config.js.integrity || '';
+        s.crossOrigin = 'anonymous';
+        s.onload = function() {
+          mermaid.initialize({
+            theme: (config.theme || {}).light || 'default',
+            flowchart: { curve: 'linear' },
+            sequence: { actorMargin: 50 }
+          });
+          mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+        };
+        document.head.appendChild(s);
+      }
+    } catch(e) { console.error('Mermaid init error:', e); }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initMermaid, 100);
+  } else {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
+  }
+})();
+</script>
+<!-- 目录点击不产生历史记录（capture phase + 异常保护） -->
+<script>
+document.addEventListener('click', function(e) {
+  try {
+    var link = e.target.closest('.post-toc .nav-link');
+    if (link) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        var id = decodeURIComponent(href.slice(1));
+        var target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+  } catch(err) { console.error('TOC:', err); }
+}, true);
+</script>
+
+<!-- 文章内关键字搜索 -->
+<style>
+#articleSearchWrap { display: none; position: sticky; top: 0; z-index: 100; background: var(--card-bg-color, #f7fdf9); padding: 10px 16px; border-bottom: 2px solid var(--theme-color, #059669); align-items: center; gap: 8px; }
+#articleSearchWrap.show { display: flex; }
+#articleSearchWrap input { flex: 1; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 14px; outline: none; }
+#articleSearchWrap input:focus { border-color: var(--theme-color, #059669); }
+#articleSearchWrap .count { font-size: 12px; color: #888; white-space: nowrap; min-width: 50px; text-align: center; }
+#articleSearchWrap button { background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; padding: 4px 8px; font-size: 13px; line-height: 1; }
+#articleSearchWrap button:hover { background: #eee; }
+#articleSearchBtn { position: fixed; right: 20px; bottom: 80px; z-index: 99; width: 36px; height: 36px; border-radius: 50%; background: var(--theme-color, #059669); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity .2s; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+#articleSearchBtn:hover { opacity: 1; }
+mark.ah-match { background: #ffeb3b; color: inherit; padding: 0 1px; border-radius: 1px; }
+mark.ah-current { background: #ff9800; color: #fff; }
+</style>
+
+<div id="articleSearchWrap">
+  <input type="text" id="articleSearchInput" placeholder="搜索本文内容…" autofocus>
+  <span class="count" id="articleSearchCount"></span>
+  <button id="articleSearchPrev" title="上一个">▲</button>
+  <button id="articleSearchNext" title="下一个">▼</button>
+  <button id="articleSearchClose" title="关闭">✕</button>
+</div>
+
+<button id="articleSearchBtn" title="搜索本文" style="display:none;">
+  <span class="article-search-icon" aria-hidden="true"></span>
+</button>
+
+<script>
+(function() {
+  var postBody = document.querySelector('.post-body');
+  if (!postBody) return;
+
+  var wrap = document.getElementById('articleSearchWrap');
+  var input = document.getElementById('articleSearchInput');
+  var count = document.getElementById('articleSearchCount');
+  var btn = document.getElementById('articleSearchBtn');
+  var matches = [], currentIdx = 0;
+
+  function clearHighlights() {
+    matches.forEach(function(m) {
+      var parent = m.parentNode;
+      if (parent) {
+        parent.replaceChild(document.createTextNode(m.textContent), m);
+        parent.normalize();
+      }
+    });
+    matches = [];
+    currentIdx = 0;
+    count.textContent = '';
+  }
+
+  function search(keyword) {
+    clearHighlights();
+    if (!keyword) return;
+    var nodes = [];
+    var walker = document.createTreeWalker(postBody, 4, null, false);
+    var n;
+    while (n = walker.nextNode()) {
+      var idx = n.textContent.toLowerCase().indexOf(keyword.toLowerCase());
+      if (idx !== -1) nodes.push(n);
+    }
+    if (nodes.length === 0) { count.textContent = '无结果'; return; }
+    nodes.forEach(function(node) {
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var kw = keyword.toLowerCase();
+      var frag = document.createDocumentFragment();
+      var lastIdx = 0;
+      var idx;
+      while ((idx = lower.indexOf(kw, lastIdx)) !== -1) {
+        if (idx > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, idx)));
+        var mark = document.createElement('mark');
+        mark.className = 'ah-match';
+        mark.textContent = text.slice(idx, idx + kw.length);
+        frag.appendChild(mark);
+        matches.push(mark);
+        lastIdx = idx + kw.length;
+      }
+      if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    currentIdx = 0;
+    if (matches.length) {
+      matches[0].className = 'ah-current';
+      matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    count.textContent = '1/' + matches.length;
+  }
+
+  function goTo(idx) {
+    if (!matches.length) return;
+    if (matches[currentIdx]) matches[currentIdx].className = 'ah-match';
+    currentIdx = (idx + matches.length) % matches.length;
+    matches[currentIdx].className = 'ah-current';
+    matches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    count.textContent = (currentIdx + 1) + '/' + matches.length;
+  }
+
+  // Show search button only on article pages (has .post-body)
+  btn.style.display = '';
+  btn.addEventListener('click', function() {
+    wrap.classList.add('show');
+    input.focus();
+    input.select();
+  });
+
+  document.getElementById('articleSearchClose').addEventListener('click', function() {
+    clearHighlights();
+    wrap.classList.remove('show');
+    input.value = '';
+  });
+
+  document.getElementById('articleSearchNext').addEventListener('click', function() { goTo(currentIdx + 1); });
+  document.getElementById('articleSearchPrev').addEventListener('click', function() { goTo(currentIdx - 1); });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) { goTo(currentIdx - 1); }
+      else { search(input.value.trim()); }
+    }
+    if (e.key === 'Escape') {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+      input.blur();
+    }
+  });
+
+  // Close on click outside
+  document.addEventListener('click', function(e) {
+    if (wrap.classList.contains('show') && !wrap.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+    }
+  });
+})();
+</script>
+
+<div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="/js/window-controls.js" defer></script>
+</body>
+</html>
