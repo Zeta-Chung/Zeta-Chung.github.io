@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #3394ac;
+    background: #4701ff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -4467,5 +4467,122 @@ body.xp-about.window-is-maximized .main.win95-window {
     top: calc(36% + 142px);
     left: 50%;
     font-size: 16px;
+  }
+}
+.classification-directory [hidden] {
+  display: none;
+}
+.classification-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid #808080;
+  margin-bottom: 18px;
+}
+.classification-tabs button {
+  padding: 7px 24px;
+  border: 0;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+  color: #222;
+  cursor: pointer;
+  font-size: 16px;
+}
+.classification-tabs [aria-selected='true'] {
+  background: #000080;
+  color: #fff;
+}
+.collection-hint,
+.collection-description,
+.collection-count {
+  color: #666;
+}
+.collection-folders {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.collection-folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 8px;
+  background: #c0c0c0;
+  box-shadow: var(--win-raised);
+  border: 0;
+  cursor: pointer;
+  color: #222;
+  font-size: 15px;
+}
+.collection-folder img {
+  margin: 0;
+  image-rendering: pixelated;
+}
+.collection-folder small {
+  font: 12px Tahoma, sans-serif;
+}
+.collection-folder[aria-pressed='true'] {
+  background: #d6d6d6;
+  box-shadow: var(--win-inset);
+}
+.collection-detail h2 {
+  color: #000080;
+  font-size: 24px;
+  margin: 0 0 8px;
+}
+.collection-description,
+.collection-count {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+.collection-detail .collection-chapter {
+  padding: 5px 10px;
+  margin: 16px 0 0;
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+}
+.collection-posts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.collection-posts a {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 9px 12px;
+  border-bottom: 1px solid #eee;
+  color: #000080;
+}
+.collection-posts a:hover {
+  background: #eee;
+}
+.collection-number {
+  color: #777;
+  font: 14px monospace;
+}
+.collection-document {
+  color: #666;
+}
+.collection-start {
+  margin: 24px 0 8px;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .collection-folders {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .collection-folder {
+    flex-direction: row;
+    text-align: left;
+    gap: 12px;
+    padding: 10px;
+  }
+  .collection-folder small {
+    margin-left: auto;
+    white-space: nowrap;
   }
 }
