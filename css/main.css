@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #6ec1ff;
+    background: #ffffe2;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -4205,7 +4205,7 @@ body.xp-about {
   color: #536d89;
 }
 .xp-about .xp-action-link {
-  font-family: Tahoma, 'Microsoft YaHei', sans-serif;
+  font-family: 'SimSun', 'Songti SC', serif;
   display: inline-flex;
   flex-direction: column;
   padding: 14px 24px;
@@ -4336,7 +4336,7 @@ body.xp-about {
   border-radius: 3px;
   background: linear-gradient(#fff, #e7eef5);
   color: #255784;
-  font: 15px/1.5 Tahoma, 'Microsoft YaHei', sans-serif;
+  font: 15px/1.5 'SimSun', 'Songti SC', serif;
   cursor: pointer;
 }
 .xp-intro-sections [aria-selected='true'] {
@@ -4378,7 +4378,7 @@ body.xp-about {
   border-radius: 3px 3px 0 0;
   background: #ece9d8;
   color: #444;
-  font: 14px/1.5 Tahoma, 'Microsoft YaHei', sans-serif;
+  font: 14px/1.5 'SimSun', 'Songti SC', serif;
   cursor: pointer;
 }
 .xp-intro-tabs [aria-selected='true'] {
@@ -4428,7 +4428,7 @@ body.xp-about {
   display: block;
   margin-bottom: 10px;
   color: #536d89;
-  font: 13px/1.6 'Zpix UI', Tahoma, sans-serif;
+  font: 13px/1.6 'SimSun', 'Songti SC', serif;
 }
 .xp-blog-aside-text,
 .xp-blog-aside-text > span {

@@ -817,7 +817,7 @@
   <entry>
     <title>时钟树</title>
     <url>/2026/05/15/%E6%97%B6%E9%92%9F%E6%A0%91/</url>
-    <content><![CDATA[<p>stm32时钟树模块的学习笔记（基于铁头山羊STM32教程，含自主探索内容）</p>
+    <content><![CDATA[<p>stm32时钟树模块的学习笔记，包括时钟树的概念和配置方法</p>
 <span id="more"></span>
 <h1 id="时钟和时钟树的概念"><a class="markdownIt-Anchor" href="#时钟和时钟树的概念"></a> 时钟和时钟树的概念</h1>
 <h3 id="时钟持续振荡-高低电平交替变化的方波信号"><a class="markdownIt-Anchor" href="#时钟持续振荡-高低电平交替变化的方波信号"></a> 时钟：持续振荡、高低电平交替变化的方波信号。</h3>
