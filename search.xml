@@ -8698,6 +8698,186 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
       </tags>
   </entry>
   <entry>
+    <title>2-1.程序编码和数据格式</title>
+    <url>/2026/11/11/2-1.%E7%A8%8B%E5%BA%8F%E7%BC%96%E7%A0%81%E5%92%8C%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F/</url>
+    <content><![CDATA[<p>CSAPP第三章学习笔记，内容包括机器代码的特征和生成、架构中的数据格式，笔记涉及的架构均为x86-64。</p>
+<span id="more"></span>
+<h1 id="机器级代码"><a class="markdownIt-Anchor" href="#机器级代码"></a> 机器级代码</h1>
+<h2 id="是什么"><a class="markdownIt-Anchor" href="#是什么"></a> 是什么</h2>
+<ol>
+<li>
+<p>所处抽象层次:直接涉及机器指令、寄存器和内存地址</p>
+</li>
+<li>
+<p>包括<strong>汇编指令</strong>和<strong>机器码</strong></p>
+</li>
+</ol>
+<blockquote>
+<p>机器级代码不等于机器码</p>
+</blockquote>
+<h2 id="机器级编程的两种重要抽象"><a class="markdownIt-Anchor" href="#机器级编程的两种重要抽象"></a> 机器级编程的两种重要抽象</h2>
+<h3 id="指令集架构isa"><a class="markdownIt-Anchor" href="#指令集架构isa"></a> 指令集架构(ISA)</h3>
+<ol>
+<li>
+<p>是什么: 软件和硬件的接口，规定软件操作对应的硬件行为。</p>
+</li>
+<li>
+<p>做什么: 定义机器级程序的格式和行为，包括<strong>处理器状态</strong>，<strong>指令的格式</strong>和<strong>每条指令对状态的影响</strong></p>
+</li>
+<li>
+<p>为什么需要: 实现软硬件的分离处理，让软件开发者不必纠结于CPU的内部结构</p>
+</li>
+</ol>
+<h3 id="虚拟内存"><a class="markdownIt-Anchor" href="#虚拟内存"></a> 虚拟内存</h3>
+<p>参见<a href="1-1.%E4%BF%A1%E6%81%AF%E5%AD%98%E5%82%A8.md#L2-L10">虚拟内存</a></p>
+<h2 id="机器级代码中可见的处理器状态"><a class="markdownIt-Anchor" href="#机器级代码中可见的处理器状态"></a> 机器级代码中可见的处理器状态</h2>
+<ol>
+<li>
+<p>程序计数器(PC): 存储<strong>将要执行的</strong>下一条指令在在内存中的位置, 在x86-64中用<code>%rip</code>表示</p>
+</li>
+<li>
+<p>整数寄存器文件: 包含<strong>16</strong>个寄存器的名称，分别存储<strong>64位</strong>的值, 用于不同的功能。</p>
+</li>
+<li>
+<p>条件码寄存器:保存<strong>最近执行</strong>的算数或逻辑指令的<strong>状态信息</strong>，用于实现控制数据流的条件变化(比如if和while)</p>
+</li>
+<li>
+<p>向量寄存器: 存放一个或多个整数或浮点数值</p>
+</li>
+</ol>
+<h1 id="机器级代码的生成"><a class="markdownIt-Anchor" href="#机器级代码的生成"></a> 机器级代码的生成</h1>
+<h2 id="编译工具gcc"><a class="markdownIt-Anchor" href="#编译工具gcc"></a> 编译工具:gcc</h2>
+<p>目前需要使用的命令:</p>
+<ul>
+<li><code>gcc -Og -o p file.c</code></li>
+<li><code>gcc -Og -S file.c</code></li>
+<li><code>gcc -Og -c file.c</code></li>
+</ul>
+<p>参数解释:</p>
+<ol>
+<li><code>-Og</code>: 告诉编译器使用会生成符合原始C代码整体结构的机器代码的优化等级。</li>
+</ol>
+<blockquote>
+<p>理解:编译时做一些优化, 同时尽量让生成的代码便于与原始C代码对应, 方便阅读和调试, 因此作为学习工具。如果用较高级别的优化，例如参数-O1或 -O2，程序优化效率更高，但产生的代码结构会发生很大改变。</p>
+</blockquote>
+<ol start="2">
+<li>
+<p><code>-o p</code>: 把最终产生的可执行文件命名为p</p>
+</li>
+<li>
+<p><code>-S</code>: 编译程序，产生汇编代码</p>
+</li>
+<li>
+<p><code>-c</code>: 编译并汇编代码，产生目标文件.o(未产生可执行文件)</p>
+</li>
+</ol>
+<h2 id="反汇编"><a class="markdownIt-Anchor" href="#反汇编"></a> 反汇编</h2>
+<h3 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h3>
+<ol>
+<li>
+<p>是什么:根据机器码产生可读的汇编代码的格式</p>
+</li>
+<li>
+<p>为什么需要:查看机器码的实际内容</p>
+</li>
+<li>
+<p>实际操作:<code>objdump -d file.o</code>，反汇编并在命令行汇总打印</p>
+</li>
+</ol>
+<h3 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h3>
+<ol>
+<li>
+<p>x86-64的指令长度<em>1-15字节</em>，具体长度由指令及其操作数的编码方式决定。</p>
+</li>
+<li>
+<p>设置指令格式的方式:从某个<strong>给定位置</strong>开始，可以将字节唯一解码成机器指令。</p>
+</li>
+<li>
+<p>反汇编器基于机器代码文件中的<strong>字节序列</strong>确定汇编代码，没有访问程序的源代码或汇编代码。</p>
+</li>
+<li>
+<p><em>反汇编器生成的汇编代码</em>和<em>GCC生成的汇编代码</em>由于命名规则差异，会有细微差别，但功能相同。</p>
+</li>
+</ol>
+<h2 id="结合c和汇编代码"><a class="markdownIt-Anchor" href="#结合c和汇编代码"></a> 结合C和汇编代码</h2>
+<ol>
+<li>
+<p>为什么需要: C程序不能访问一些机器特性，使用汇编能够简化流程</p>
+</li>
+<li>
+<p>两种方法</p>
+<ol>
+<li>
+<p>编写完整函数，放进独立汇编文件，让汇编器和链接器完成合并</p>
+</li>
+<li>
+<p>使用gcc的<em>内联汇编</em>特性，用asm伪指令使C程序中直接包含汇编代码(<strong>更常用</strong>)</p>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="数据格式"><a class="markdownIt-Anchor" href="#数据格式"></a> 数据格式</h1>
+<table>
+<thead>
+<tr>
+<th>C声明</th>
+<th>Intel数据类型</th>
+<th>汇编代码后缀</th>
+<th>长度(字节)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>byte(字节)</td>
+<td>b</td>
+<td>1</td>
+</tr>
+<tr>
+<td>short</td>
+<td>word(字)</td>
+<td>w</td>
+<td>2</td>
+</tr>
+<tr>
+<td>int</td>
+<td>dword(双字)</td>
+<td>l</td>
+<td>4</td>
+</tr>
+<tr>
+<td>long</td>
+<td>qword(四字)</td>
+<td>q</td>
+<td>8</td>
+</tr>
+<tr>
+<td>char*</td>
+<td>qword(四字)</td>
+<td>q</td>
+<td>8</td>
+</tr>
+<tr>
+<td>float</td>
+<td>single(单精度)</td>
+<td>s</td>
+<td>4</td>
+</tr>
+<tr>
+<td>double</td>
+<td>double(双精度)</td>
+<td>l</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>CSAPP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于</title>
     <url>/about/index.html</url>
     <content><![CDATA[<!-- xp-about -->
@@ -8707,7 +8887,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
-    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">19 篇日志</a><a href="&#x2F;tags&#x2F;">7 个标签</a></nav>
+    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">20 篇日志</a><a href="&#x2F;tags&#x2F;">7 个标签</a></nav>
   </section>
 <p class="xp-profile-signature">签名待补充</p>
 </section>
