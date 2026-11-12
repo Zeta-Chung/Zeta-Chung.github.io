@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #f520d5;
+    background: #6ec1ff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -4176,7 +4176,7 @@ body.xp-about {
   padding: 32px 36px;
 }
 .xp-about .post-body {
-  font: 16px/1.9 Tahoma, 'Microsoft YaHei', sans-serif;
+  font: 16px/1.9 'SimSun', 'Songti SC', serif;
 }
 .xp-about .post-body h1 {
   margin: 0 0 26px;
@@ -4205,6 +4205,7 @@ body.xp-about {
   color: #536d89;
 }
 .xp-about .xp-action-link {
+  font-family: Tahoma, 'Microsoft YaHei', sans-serif;
   display: inline-flex;
   flex-direction: column;
   padding: 14px 24px;
@@ -4720,5 +4721,177 @@ body.xp-about.window-is-maximized .main.win95-window {
   .collection-folder small {
     margin-left: auto;
     white-space: nowrap;
+  }
+}
+/* Four supplied photographs belong to their content pages, not the desktop. */
+.xp-about .main.win95-window .main-inner {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.xp-about .main-inner:has(#xp-profile:not([hidden])) {
+  background-image: linear-gradient(rgba(18,49,64,0.12), rgba(18,49,64,0.25)), url("../images/xp-pages/profile-balloons.png");
+  background-position: 42% center;
+}
+.xp-about .main-inner:has(#xp-introduction:not([hidden])) {
+  background-image: linear-gradient(rgba(247,243,221,0.15), rgba(247,243,221,0.2)), url("../images/xp-pages/introduction-wheel.png");
+}
+.xp-about .main-inner:has(#xp-links:not([hidden])) {
+  background-image: linear-gradient(rgba(35,31,17,0.15), rgba(35,31,17,0.32)), url("../images/xp-pages/links-music.png");
+}
+.xp-about .main-inner:has(#xp-contact:not([hidden])) {
+  background-image: linear-gradient(rgba(50,33,13,0.05), rgba(50,33,13,0.2)), url("../images/xp-pages/contact-sunset.png");
+}
+.xp-about #xp-profile,
+.xp-about #xp-links,
+.xp-about #xp-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  min-height: 440px;
+}
+.xp-about .xp-page[hidden] {
+  display: none !important;
+}
+.xp-about .about-profile {
+  width: min(100%, 440px);
+  padding: 22px 28px;
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 5px;
+  background: rgba(248,252,255,0.89);
+  box-shadow: 0 4px 16px rgba(12,39,54,0.18);
+}
+.xp-about .about-profile-identity img {
+  width: 120px;
+  height: 120px;
+}
+.xp-about .about-profile-identity strong {
+  font-size: 38px;
+  color: #153b56;
+}
+.xp-about .xp-profile-signature {
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 18px;
+  border-radius: 4px;
+  color: #173d54;
+  background: rgba(248,252,255,0.9);
+  font-size: 21px;
+  overflow-wrap: anywhere;
+}
+.xp-about .xp-intro-sections {
+  background: rgba(246,244,230,0.94);
+  border-color: #8d9c8c;
+}
+.xp-about .xp-intro-sections button {
+  color: #344d47;
+  border-color: #a4afa0;
+  background: linear-gradient(#fffdf1, #e5e8d7);
+}
+.xp-about .xp-intro-sections [aria-selected='true'] {
+  color: #fff;
+  background: linear-gradient(#6e9381, #355b4c);
+  border-color: #355b4c;
+}
+.xp-about .xp-intro-main-panel {
+  background: rgba(255,253,243,0.94);
+  border-color: rgba(255,255,255,0.85);
+  box-shadow: 0 3px 12px rgba(39,60,46,0.15);
+}
+.xp-about .xp-intro-content {
+  background: rgba(255,255,250,0.82);
+  border-color: #c7cfbc;
+  border-top-color: #8da591;
+}
+.xp-about .xp-intro-comment {
+  color: #40544d;
+  background: #eeeee1;
+  border-left-color: #bd9c5c;
+}
+.xp-about #xp-links .xp-page-lead {
+  margin: 0;
+  padding: 10px 20px;
+  color: #302a1c;
+  background: rgba(255,251,232,0.94);
+  border-radius: 4px;
+  font-size: 24px;
+}
+.xp-about .xp-action-link {
+  max-width: 100%;
+  padding: 18px 32px;
+  border-color: #8d7952;
+  color: #44371d;
+  background: linear-gradient(#fffef4, #e4d8b5 48%, #d5c59a 49%, #f7efd6);
+  font-size: 24px;
+}
+.xp-about .xp-action-link span {
+  color: #5f5134;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.xp-about .xp-action-link:hover {
+  background: #fff8dd;
+  border-color: #67502e;
+}
+.xp-about .xp-powered {
+  margin: 0;
+  padding: 8px 14px;
+  background: rgba(255,251,232,0.92);
+  color: #50432c;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.xp-about .xp-powered a {
+  color: #584019;
+  border-bottom-color: #8c7951;
+}
+.xp-about #xp-contact .xp-page-lead {
+  max-width: 100%;
+  margin: 0;
+  padding: 24px 28px;
+  border: 1px solid rgba(255,228,170,0.6);
+  border-radius: 5px;
+  background: rgba(40,29,15,0.86);
+  color: #fff8e7;
+  box-shadow: 0 4px 18px rgba(39,24,3,0.2);
+  font-size: 28px;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 768px) {
+  .xp-about #xp-profile,
+  .xp-about #xp-links,
+  .xp-about #xp-contact {
+    min-height: calc(var(--xp-content-height, 504px) - 74px);
+  }
+}
+@media (max-width: 767px) {
+  .xp-about .main-inner .post-block {
+    padding: 20px 14px;
+  }
+  .xp-about .about-profile {
+    padding: 20px 16px;
+  }
+  .xp-about .xp-profile-signature {
+    font-size: 18px;
+  }
+  .xp-about .xp-intro-main-panel {
+    padding: 12px;
+  }
+  .xp-about .xp-intro-content {
+    padding: 18px 12px;
+  }
+  .xp-about .xp-action-link {
+    padding: 16px 22px;
+    font-size: 21px;
+  }
+  .xp-about #xp-links .xp-page-lead {
+    font-size: 20px;
+  }
+  .xp-about #xp-contact .xp-page-lead {
+    padding: 20px 14px;
+    font-size: 20px;
   }
 }

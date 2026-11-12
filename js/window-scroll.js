@@ -37,6 +37,7 @@
     document.body.classList.toggle('window-scroll-mode', desktop.matches);
     if (desktop.matches && !frame.hidden) {
       frame.style.setProperty('--window-top-space', `${frame.getBoundingClientRect().top + window.scrollY}px`);
+      frame.style.setProperty('--xp-content-height', `${content.clientHeight}px`);
     }
     update();
   }

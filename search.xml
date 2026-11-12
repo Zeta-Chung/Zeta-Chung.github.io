@@ -8917,8 +8917,8 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <button type="button" class="xp-blog-aside" aria-expanded="false" aria-controls="xp-blog-aside-text" aria-label="查看附注">
 <span class="xp-blog-aside-hint">附注 · 点击查看</span>
 <span class="xp-blog-aside-text" id="xp-blog-aside-text" aria-hidden="true">
-<span>但是本介绍页有自己的想法</span>
-<span>其实是少觉多梦、腰酸背痛、精神失常,偶尔灵光一闪的极乐</span>
+<span>放我出去！！！</span>
+<span>这里存放着少觉多梦、腰酸背痛、精神失常,或者偶尔灵光一闪的极乐</span>
 <span>如阅读者有上述症状，本页概不负责</span>
 <span>也不对上面不好笑的冷笑话负责</span>
 </span>
@@ -9221,6 +9221,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
     document.body.classList.toggle('window-scroll-mode', desktop.matches);
     if (desktop.matches && !frame.hidden) {
       frame.style.setProperty('--window-top-space', `${frame.getBoundingClientRect().top + window.scrollY}px`);
+      frame.style.setProperty('--xp-content-height', `${content.clientHeight}px`);
     }
     update();
   }
