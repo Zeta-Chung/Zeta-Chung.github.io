@@ -20,7 +20,8 @@
     aside.querySelector('.xp-blog-aside-hint').textContent = open ? '附注 · 点击收起' : '附注 · 点击查看';
   });
 
-  const introTabs = [...document.querySelectorAll('.xp-intro-tabs [role="tab"]')];
+  document.querySelectorAll('.xp-intro-tabs, .xp-intro-sections').forEach(group => {
+  const introTabs = [...group.querySelectorAll('[role="tab"]')];
   function showIntro(tab) {
     introTabs.forEach(item => {
       const active = item === tab;
@@ -42,6 +43,7 @@
       showIntro(target);
       target.focus();
     });
+  });
   });
 
   function select(shortcut) {

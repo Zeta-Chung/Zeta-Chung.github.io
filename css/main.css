@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #6cff46;
+    background: #f520d5;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -4321,6 +4321,46 @@ body.xp-about {
   text-align: center;
   font-family: 'Zpix UI', Tahoma, 'Microsoft YaHei', sans-serif;
 }
+.xp-intro-sections {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid #c7d7e7;
+  background: linear-gradient(#f6fbff, #dbeaf8);
+}
+.xp-intro-sections button {
+  flex: 1;
+  padding: 8px 16px;
+  border: 1px solid #9fb5cc;
+  border-radius: 3px;
+  background: linear-gradient(#fff, #e7eef5);
+  color: #255784;
+  font: 15px/1.5 Tahoma, 'Microsoft YaHei', sans-serif;
+  cursor: pointer;
+}
+.xp-intro-sections [aria-selected='true'] {
+  border-color: #2267bd;
+  background: linear-gradient(#4d98ee, #1554a5);
+  box-shadow: inset 0 1px #a8d2ff;
+  color: #fff;
+}
+.xp-intro-main-panel {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #d1e0ed;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(230,243,255,0.85)), repeating-linear-gradient(0deg, transparent 0, transparent 19px, #8bb6d3 20px);
+}
+.xp-intro-main-panel[hidden] {
+  display: none;
+}
+.xp-blog-notes {
+  padding: 28px 24px 24px 34px;
+  border-color: #dad4bd;
+  background: linear-gradient(90deg, transparent 20px, #e3bfb4 20px, #e3bfb4 21px, transparent 21px), repeating-linear-gradient(#fffdf5 0, #fffdf5 31px, #e6e4d5 32px);
+}
+.xp-blog-notes > p {
+  background: rgba(255,253,245,0.9);
+}
 .xp-intro-tabs {
   display: flex;
   display: flex;
@@ -4347,8 +4387,13 @@ body.xp-about {
   color: #1555a8;
 }
 .xp-intro-content {
-  min-height: 150px;
-  padding: 20px 12px;
+  min-height: 200px;
+  margin-top: 12px;
+  padding: 24px 18px;
+  border: 1px solid #c8d9e6;
+  border-top: 3px solid #8fb7de;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 2px 3px 0 rgba(50,95,135,0.06);
 }
 .xp-intro-content [hidden] {
   display: none;
@@ -4359,6 +4404,9 @@ body.xp-about {
 }
 .xp-intro-comment {
   margin-top: 16px;
+  padding: 10px 12px;
+  border-left: 3px solid #e9ac35;
+  background: #f4f7fa;
   color: #536d89;
   font-family: 'Zpix UI', Tahoma, 'Microsoft YaHei', sans-serif;
 }

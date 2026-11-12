@@ -8891,7 +8891,11 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <p class="xp-profile-signature">The answer  is blowin'in the wind</p>
 </section>
 <section class="xp-page" id="xp-introduction" aria-label="个人介绍" hidden>
-<h2>关于我</h2>
+<div class="xp-intro-sections" role="tablist" aria-label="个人介绍分页">
+<button type="button" role="tab" id="intro-personal-tab" aria-controls="intro-personal" aria-selected="true">关于我</button>
+<button type="button" role="tab" id="intro-blog-tab" aria-controls="intro-blog" aria-selected="false" tabindex="-1">关于博客</button>
+</div>
+<section class="xp-intro-main-panel" id="intro-personal" role="tabpanel" aria-labelledby="intro-personal-tab">
 <div class="xp-intro-tabs" role="tablist" aria-label="关于我的标签">
 <button type="button" role="tab" id="intro-mcu-tab" aria-controls="intro-mcu" aria-selected="true">计算机驾驶员</button>
 <button type="button" role="tab" id="intro-disconnected-tab" aria-controls="intro-disconnected" aria-selected="false" tabindex="-1">断线重连中</button>
@@ -8906,7 +8910,8 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <section id="intro-walking" role="tabpanel" aria-labelledby="intro-walking-tab" hidden><p class="xp-intro-placeholder">用双脚丈量自己附近的每一寸土地，看看这里能不能进和有什么。------你说得对，但是〇〇是一款中间忘了开放世界冒险游戏</p></section>
 <section id="intro-sunlight" role="tabpanel" aria-labelledby="intro-sunlight-tab" hidden><p class="xp-intro-placeholder">热爱流动空气和晒太阳，自由的呼吸和温暖的体感使我清醒愉悦。------取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适</p></section>
 </div>
-<h2>关于这个博客</h2>
+</section>
+<section class="xp-intro-main-panel xp-blog-notes" id="intro-blog" role="tabpanel" aria-labelledby="intro-blog-tab" hidden>
 <p>学习、思考和整理</p>
 <p>俯身沧海，竞拾一粟而示人</p>
 <button type="button" class="xp-blog-aside" aria-expanded="false" aria-controls="xp-blog-aside-text" aria-label="查看附注">
@@ -8918,6 +8923,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <span>也不对上面不好笑的冷笑话负责</span>
 </span>
 </button>
+</section>
 </section>
 <section class="xp-page" id="xp-links" aria-label="链接" hidden>
 <p class="xp-page-lead">在 GitHub 上找到我。</p>
@@ -8960,7 +8966,8 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
     aside.querySelector('.xp-blog-aside-hint').textContent = open ? '附注 · 点击收起' : '附注 · 点击查看';
   });
 
-  const introTabs = [...document.querySelectorAll('.xp-intro-tabs [role="tab"]')];
+  document.querySelectorAll('.xp-intro-tabs, .xp-intro-sections').forEach(group => {
+  const introTabs = [...group.querySelectorAll('[role="tab"]')];
   function showIntro(tab) {
     introTabs.forEach(item => {
       const active = item === tab;
@@ -8982,6 +8989,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
       showIntro(target);
       target.focus();
     });
+  });
   });
 
   function select(shortcut) {
