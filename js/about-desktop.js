@@ -11,6 +11,39 @@
   const departure = document.getElementById('xpExit');
   let leaving = false;
 
+  const aside = document.querySelector('.xp-blog-aside');
+  aside?.addEventListener('click', () => {
+    const open = aside.getAttribute('aria-expanded') !== 'true';
+    aside.setAttribute('aria-expanded', String(open));
+    aside.setAttribute('aria-label', open ? '收起附注' : '查看附注');
+    document.getElementById(aside.getAttribute('aria-controls')).setAttribute('aria-hidden', String(!open));
+    aside.querySelector('.xp-blog-aside-hint').textContent = open ? '附注 · 点击收起' : '附注 · 点击查看';
+  });
+
+  const introTabs = [...document.querySelectorAll('.xp-intro-tabs [role="tab"]')];
+  function showIntro(tab) {
+    introTabs.forEach(item => {
+      const active = item === tab;
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
+    });
+  }
+  introTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => showIntro(tab));
+    tab.addEventListener('keydown', event => {
+      let target;
+      if (event.key === 'ArrowRight') target = introTabs[(index + 1) % introTabs.length];
+      if (event.key === 'ArrowLeft') target = introTabs[(index + introTabs.length - 1) % introTabs.length];
+      if (event.key === 'Home') target = introTabs[0];
+      if (event.key === 'End') target = introTabs[introTabs.length - 1];
+      if (!target) return;
+      event.preventDefault();
+      showIntro(target);
+      target.focus();
+    });
+  });
+
   function select(shortcut) {
     shortcuts.forEach(item => item.classList.toggle('is-selected', item === shortcut));
   }

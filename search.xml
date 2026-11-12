@@ -8882,32 +8882,50 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
     <url>/about/index.html</url>
     <content><![CDATA[<!-- xp-about -->
 <div class="xp-pages">
-<section class="xp-page" id="xp-profile" aria-labelledby="xp-profile-title">
-<h1 id="xp-profile-title">个人资料</h1>
+<section class="xp-page" id="xp-profile" aria-label="个人资料">
 <section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
     <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">20 篇日志</a><a href="&#x2F;tags&#x2F;">7 个标签</a></nav>
   </section>
-<p class="xp-profile-signature">签名待补充</p>
+<p class="xp-profile-signature">The answer  is blowin'in the wind</p>
 </section>
-<section class="xp-page" id="xp-introduction" aria-labelledby="xp-introduction-title" hidden>
-<h1 id="xp-introduction-title">个人介绍</h1>
+<section class="xp-page" id="xp-introduction" aria-label="个人介绍" hidden>
 <h2>关于我</h2>
-<p>关于作者，这里没有什么可提供的确切信息，我们都需要用一生来认识自己。</p>
+<div class="xp-intro-tabs" role="tablist" aria-label="关于我的标签">
+<button type="button" role="tab" id="intro-mcu-tab" aria-controls="intro-mcu" aria-selected="true">计算机驾驶员</button>
+<button type="button" role="tab" id="intro-disconnected-tab" aria-controls="intro-disconnected" aria-selected="false" tabindex="-1">断线重连中</button>
+<button type="button" role="tab" id="intro-water-tab" aria-controls="intro-water" aria-selected="false" tabindex="-1">水水爱好者</button>
+<button type="button" role="tab" id="intro-walking-tab" aria-controls="intro-walking" aria-selected="false" tabindex="-1">11路资深乘客</button>
+<button type="button" role="tab" id="intro-sunlight-tab" aria-controls="intro-sunlight" aria-selected="false" tabindex="-1">追风逐日</button>
+</div>
+<div class="xp-intro-content">
+<section id="intro-mcu" role="tabpanel" aria-labelledby="intro-mcu-tab"><p class="xp-intro-placeholder">无证驾驶，努力学习基础知识中，目前正在尝试操作MCU。------老大我们就这么搞总有一天会造出哆啦A梦吧</p></section>
+<section id="intro-disconnected" role="tabpanel" aria-labelledby="intro-disconnected-tab" hidden><p class="xp-intro-placeholder">偶尔专注于走神，对外界一无所知，也经常因此变成问题人士（刚才发生了什么？）------重生之我获得了穿越时间的能力（星星眼）</p></section>
+<section id="intro-water" role="tabpanel" aria-labelledby="intro-water-tab" hidden><p class="xp-intro-placeholder">论坛和吃饭群极度活跃------我在水群里取得了100级的好成绩，你也来试试吧！</p></section>
+<section id="intro-walking" role="tabpanel" aria-labelledby="intro-walking-tab" hidden><p class="xp-intro-placeholder">用双脚丈量自己附近的每一寸土地，看看这里能不能进和有什么。------你说得对，但是〇〇是一款中间忘了开放世界冒险游戏</p></section>
+<section id="intro-sunlight" role="tabpanel" aria-labelledby="intro-sunlight-tab" hidden><p class="xp-intro-placeholder">热爱流动空气和晒太阳，自由的呼吸和温暖的体感使我清醒愉悦。------取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适</p></section>
+</div>
 <h2>关于这个博客</h2>
-<p>本博客目前用于记录学习过程中的一些内容。</p>
-<p>（以后应该会有其他的）</p>
+<p>学习、思考和整理</p>
+<p>俯身沧海，竞拾一粟而示人</p>
+<button type="button" class="xp-blog-aside" aria-expanded="false" aria-controls="xp-blog-aside-text" aria-label="查看附注">
+<span class="xp-blog-aside-hint">附注 · 点击查看</span>
+<span class="xp-blog-aside-text" id="xp-blog-aside-text" aria-hidden="true">
+<span>但是本介绍页有自己的想法</span>
+<span>其实是少觉多梦、腰酸背痛、精神失常,偶尔灵光一闪的极乐</span>
+<span>如阅读者有上述症状，本页概不负责</span>
+<span>也不对上面不好笑的冷笑话负责</span>
+</span>
+</button>
 </section>
-<section class="xp-page" id="xp-links" aria-labelledby="xp-links-title" hidden>
-<h1 id="xp-links-title">链接</h1>
+<section class="xp-page" id="xp-links" aria-label="链接" hidden>
 <p class="xp-page-lead">在 GitHub 上找到我。</p>
 <a class="xp-action-link" href="https://github.com/Zeta-Chung" target="_blank" rel="noopener noreferrer">GitHub 个人主页<span>github.com/Zeta-Chung ↗</span></a>
 <p class="xp-powered">由 <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a> / <a href="https://theme-next.js.org/" target="_blank" rel="noopener noreferrer">NexT</a> 强力驱动。</p>
 </section>
-<section class="xp-page" id="xp-contact" aria-labelledby="xp-contact-title" hidden>
-<h1 id="xp-contact-title">联系</h1>
-<p class="xp-page-lead">联系方式待补充。</p>
+<section class="xp-page" id="xp-contact" aria-label="联系" hidden>
+<p class="xp-page-lead">zetac985211@gmail.com</p>
 </section>
 </div>
 ]]></content>
@@ -8932,6 +8950,39 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
   const frame = document.querySelector('.main.win95-window');
   const departure = document.getElementById('xpExit');
   let leaving = false;
+
+  const aside = document.querySelector('.xp-blog-aside');
+  aside?.addEventListener('click', () => {
+    const open = aside.getAttribute('aria-expanded') !== 'true';
+    aside.setAttribute('aria-expanded', String(open));
+    aside.setAttribute('aria-label', open ? '收起附注' : '查看附注');
+    document.getElementById(aside.getAttribute('aria-controls')).setAttribute('aria-hidden', String(!open));
+    aside.querySelector('.xp-blog-aside-hint').textContent = open ? '附注 · 点击收起' : '附注 · 点击查看';
+  });
+
+  const introTabs = [...document.querySelectorAll('.xp-intro-tabs [role="tab"]')];
+  function showIntro(tab) {
+    introTabs.forEach(item => {
+      const active = item === tab;
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
+    });
+  }
+  introTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => showIntro(tab));
+    tab.addEventListener('keydown', event => {
+      let target;
+      if (event.key === 'ArrowRight') target = introTabs[(index + 1) % introTabs.length];
+      if (event.key === 'ArrowLeft') target = introTabs[(index + introTabs.length - 1) % introTabs.length];
+      if (event.key === 'Home') target = introTabs[0];
+      if (event.key === 'End') target = introTabs[introTabs.length - 1];
+      if (!target) return;
+      event.preventDefault();
+      showIntro(target);
+      target.focus();
+    });
+  });
 
   function select(shortcut) {
     shortcuts.forEach(item => item.classList.toggle('is-selected', item === shortcut));
@@ -9023,7 +9074,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
     document.body.classList.remove('xp-welcome-open');
     const title = document.querySelector('.main[hidden]')
       ? document.querySelector('.xp-desktop-icon')
-      : document.querySelector('.xp-page:not([hidden]) h1') || document.querySelector('.main-inner .post-title');
+      : document.querySelector('.xp-page:not([hidden])');
     if (title) {
       title.setAttribute('tabindex', '-1');
       title.focus({ preventScroll: true });
