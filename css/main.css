@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #25ffff;
+    background: #4b1bff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -4076,7 +4076,7 @@ body.xp-about {
   min-height: 100vh;
   min-height: 100dvh;
   padding-bottom: 24px;
-  background: radial-gradient(ellipse at 15% 0, rgba(255,255,255,0.55), transparent 50%), linear-gradient(150deg, #80c4e8, #3e80bc 65%, #2761a5);
+  background: #58a6e8 url("../images/xp-wallpaper-character-6.png") center center/cover no-repeat fixed;
 }
 .xp-about .win95-taskbar,
 .xp-about .github-corner,
@@ -4403,6 +4403,9 @@ body.xp-about.window-is-maximized .main.win95-window {
   outline: none;
 }
 @media (max-width: 767px) {
+  body.xp-about {
+    background-position: 60% center;
+  }
   .xp-about .window-caption-title {
     filter: blur(0.2px);
   }
