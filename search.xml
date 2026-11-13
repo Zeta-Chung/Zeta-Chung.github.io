@@ -8904,7 +8904,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <button type="button" role="tab" id="intro-sunlight-tab" aria-controls="intro-sunlight" aria-selected="false" tabindex="-1">追风逐日</button>
 </div>
 <div class="xp-intro-content">
-<section id="intro-mcu" role="tabpanel" aria-labelledby="intro-mcu-tab"><p class="xp-intro-placeholder">无证驾驶，努力学习基础知识中，目前正在尝试操作MCU。------老大我们就这么搞总有一天会造出哆啦A梦吧</p></section>
+<section id="intro-mcu" role="tabpanel" aria-labelledby="intro-mcu-tab"><p class="xp-intro-placeholder">无证驾驶，努力学习基础知识中，正在尝试操作MCU。------老大我们就这么搞总有一天会造出哆啦A梦吧</p></section>
 <section id="intro-disconnected" role="tabpanel" aria-labelledby="intro-disconnected-tab" hidden><p class="xp-intro-placeholder">偶尔专注于走神，对外界一无所知，也经常因此变成问题人士（刚才发生了什么？）------重生之我获得了穿越时间的能力（星星眼）</p></section>
 <section id="intro-water" role="tabpanel" aria-labelledby="intro-water-tab" hidden><p class="xp-intro-placeholder">论坛和吃饭群极度活跃------我在水群里取得了100级的好成绩，你也来试试吧！</p></section>
 <section id="intro-walking" role="tabpanel" aria-labelledby="intro-walking-tab" hidden><p class="xp-intro-placeholder">用双脚丈量自己附近的每一寸土地，看看这里能不能进和有什么。------你说得对，但是〇〇是一款中间忘了开放世界冒险游戏</p></section>
@@ -8917,8 +8917,9 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <button type="button" class="xp-blog-aside" aria-expanded="false" aria-controls="xp-blog-aside-text" aria-label="查看附注">
 <span class="xp-blog-aside-hint">附注 · 点击查看</span>
 <span class="xp-blog-aside-text" id="xp-blog-aside-text" aria-hidden="true">
-<span>放我出去！！！</span>
-<span>这里存放着少觉多梦、腰酸背痛、精神失常,或者偶尔灵光一闪的极乐</span>
+<span>我要讲我要讲放我出去！！！</span>
+<span>此页可能导致腱鞘炎、肌肉拉伤、头疼脑热、睡眠不良或精神失常</span>
+<span>或偶尔灵光一闪的极乐</span>
 <span>如阅读者有上述症状，本页概不负责</span>
 <span>也不对上面不好笑的冷笑话负责</span>
 </span>
