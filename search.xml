@@ -8879,6 +8879,388 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
       </tags>
   </entry>
   <entry>
+    <title>2-2.访问信息</title>
+    <url>/2026/11/11/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/</url>
+    <content><![CDATA[<p>CSAPP第三章学习笔记，内容包括x86-64架构下的CPU内寄存器、操作数指示符、以及访问和传递信息使用的汇编指令。汇编代码使用ATT格式。</p>
+<span id="more"></span>
+<h1 id="通用目的寄存器"><a class="markdownIt-Anchor" href="#通用目的寄存器"></a> 通用目的寄存器</h1>
+<h2 id="是什么"><a class="markdownIt-Anchor" href="#是什么"></a> 是什么</h2>
+<p>CPU中用于存储<strong>整数数据</strong>和<strong>指针</strong>的寄存器，x86-64架构下共有16个通用目的寄存器</p>
+<h2 id="为什么需要"><a class="markdownIt-Anchor" href="#为什么需要"></a> 为什么需要</h2>
+<p>存储整数数据和指针，方便CPU进行运算</p>
+<h2 id="命名规则"><a class="markdownIt-Anchor" href="#命名规则"></a> 命名规则</h2>
+<table>
+<thead>
+<tr>
+<th>64位名称</th>
+<th>32位名称</th>
+<th>16位名称</th>
+<th>8位名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%rax</td>
+<td>%eax</td>
+<td>%ax</td>
+<td>%al</td>
+<td>返回值寄存器，存储函数返回值</td>
+</tr>
+<tr>
+<td>%rbx</td>
+<td>%ebx</td>
+<td>%bx</td>
+<td>%bl</td>
+<td>被调用者保存寄存器</td>
+</tr>
+<tr>
+<td>%rcx</td>
+<td>%ecx</td>
+<td>%cx</td>
+<td>%cl</td>
+<td>第四个参数寄存器(循环计数器)</td>
+</tr>
+<tr>
+<td>%rdx</td>
+<td>%edx</td>
+<td>%dx</td>
+<td>%dl</td>
+<td>第三个参数(I/O端口地址)寄存器</td>
+</tr>
+<tr>
+<td>%rsi</td>
+<td>%esi</td>
+<td>%si</td>
+<td>%sil</td>
+<td>第二个参数(源地址)寄存器</td>
+</tr>
+<tr>
+<td>%rdi</td>
+<td>%edi</td>
+<td>%di</td>
+<td>%dil</td>
+<td>第一个参数(目的地址)寄存器</td>
+</tr>
+<tr>
+<td>%rsp</td>
+<td>%esp</td>
+<td>%sp</td>
+<td>%spl</td>
+<td>栈指针寄存器</td>
+</tr>
+<tr>
+<td>%rbp</td>
+<td>%ebp</td>
+<td>%bp</td>
+<td>%bpl</td>
+<td>栈帧指针寄存器，被调用者保存</td>
+</tr>
+<tr>
+<td>%r8</td>
+<td>%r8d</td>
+<td>%r8w</td>
+<td>%r8b</td>
+<td>第五个参数寄存器</td>
+</tr>
+<tr>
+<td>%r9</td>
+<td>%r9d</td>
+<td>%r9w</td>
+<td>%r9b</td>
+<td>第六个参数寄存器</td>
+</tr>
+<tr>
+<td>%r10</td>
+<td>%r10d</td>
+<td>%r10w</td>
+<td>%r10b</td>
+<td>调用者保存</td>
+</tr>
+<tr>
+<td>%r11</td>
+<td>%r11d</td>
+<td>%r11w</td>
+<td>%r11b</td>
+<td>调用者保存</td>
+</tr>
+<tr>
+<td>%r12</td>
+<td>%r12d</td>
+<td>%r12w</td>
+<td>%r12b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r13</td>
+<td>%r13d</td>
+<td>%r13w</td>
+<td>%r13b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r14</td>
+<td>%r14d</td>
+<td>%r14w</td>
+<td>%r14b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r15</td>
+<td>%r15d</td>
+<td>%r15w</td>
+<td>%r15b</td>
+<td>被调用者保存</td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用规则"><a class="markdownIt-Anchor" href="#使用规则"></a> 使用规则</h2>
+<ol>
+<li>所有<strong>64位</strong>寄存器可以只访问其<strong>低32位、16位和8位</strong>（相应的名称也不同）。</li>
+</ol>
+<blockquote>
+<p>如果对64位的寄存器低位进行修改，不影响高位的值。特殊情况：写低32位寄存器时，会把高32位清零。</p>
+</blockquote>
+<ol start="2">
+<li>函数调用时，前六个参数分别存储在%rdi、%rsi、%rdx、%rcx、%r8和%r9中，返回值存储在%rax中。</li>
+</ol>
+<blockquote>
+<p>在不保存参数时，这些寄存器也能用作存储其它数据的寄存器</p>
+</blockquote>
+<ol start="3">
+<li>
+<p>调用者保存: 调用者在<strong>调用函数前</strong>保存寄存器的值，<strong>函数返回后</strong>恢复寄存器的值。</p>
+</li>
+<li>
+<p>被调用者保存: 被调用者在<strong>函数开始时</strong>保存寄存器的值，<strong>函数返回前</strong>恢复寄存器的值。</p>
+</li>
+</ol>
+<h1 id="操作数指示符"><a class="markdownIt-Anchor" href="#操作数指示符"></a> 操作数指示符</h1>
+<h2 id="基本思想"><a class="markdownIt-Anchor" href="#基本思想"></a> 基本思想</h2>
+<p>将内存看作一个很大的字节数组，每个字节都有一个唯一的地址，内存中的每个对象都占用一个或多个<strong>连续的字节</strong>，访问对象时需要知道对象的<strong>地址</strong>和<strong>大小</strong>。</p>
+<h2 id="是什么-2"><a class="markdownIt-Anchor" href="#是什么-2"></a> 是什么</h2>
+<p>操作数指示符是<strong>汇编指令</strong>中用于指示一个操作中的<strong>源数据值</strong>，以及放置结果的<strong>目的地址</strong>，操作数可以是寄存器、内存地址或立即数</p>
+<h3 id="立即数"><a class="markdownIt-Anchor" href="#立即数"></a> 立即数</h3>
+<p>用来表示一个<strong>常数值</strong>的操作数，在ATT格式中书写方式是<code>$&lt;常数值&gt;</code>，如<code>$0xFF</code>表示十六进制的255</p>
+<h3 id="寄存器"><a class="markdownIt-Anchor" href="#寄存器"></a> 寄存器</h3>
+<ol>
+<li>
+<p>用来表示一个<strong>寄存器</strong>的操作数，在ATT格式中书写方式是<code>%&lt;寄存器名称&gt;</code>，如<code>%rax</code>表示64位的rax寄存器;</p>
+</li>
+<li>
+<p>若将寄存器集合看作数组R, 用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">r_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示任意寄存器a的索引，则用R[<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">r_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>]表示寄存器a存储的值，R[r_a]的值可以被修改。</p>
+</li>
+</ol>
+<h3 id="内存引用"><a class="markdownIt-Anchor" href="#内存引用"></a> 内存引用</h3>
+<ol>
+<li>
+<p>用来表示一个<strong>内存地址</strong>的操作数，根据计算出来的地址访问某个内存位置。</p>
+</li>
+<li>
+<p>用符号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mi>b</mi></msub><mo stretchy="false">[</mo><mi>A</mi><mi>d</mi><mi>d</mi><mi>r</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M_b[Addr]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal">A</span><span class="mord mathnormal">dd</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mclose">]</span></span></span></span>表示内存中从地址Addr开始的b个字节的值，通常b可省去。</p>
+<blockquote>
+<p>地址与地址处的值不同：<code>movq 8(%rax), %rdx</code>读取地址<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false">[</mo><mi mathvariant="normal">%</mi><mi>r</mi><mi>a</mi><mi>x</mi><mo stretchy="false">]</mo><mo>+</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">R[\%rax]+8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mopen">[</span><span class="mord">%</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span>处的8字节；<code>leaq 8(%rax), %rdx</code>只计算该地址，不读取内存。</p>
+</blockquote>
+</li>
+<li>
+<p>寻址模式最常用的书写方式:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(r_b,r_i,s)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">mm</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></p>
+<p>其中，Imm是一个立即数，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">r_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是寄存器，s是一个整数，表示缩放因子（只能取1、2、4或8）。内存引用的地址计算公式为：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>地址</mtext><mo>=</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo>+</mo><mi>s</mi><mo>∗</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">地址 = Imm + R[r_b] + s * R[r_i]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">mm</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></span></p>
+<blockquote>
+<p>其余寻址模式都是该公式的特例(Imm、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">r_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>或<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为0)</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="数据传送指令"><a class="markdownIt-Anchor" href="#数据传送指令"></a> 数据传送指令</h1>
+<h2 id="最简单的指令mov类"><a class="markdownIt-Anchor" href="#最简单的指令mov类"></a> 最简单的指令:MOV类</h2>
+<ol>
+<li>
+<p><code>MOV S, D</code>表示把S中的数据<strong>复制</strong>到D中。</p>
+<blockquote>
+<p>S是源操作数，可以是立即数、寄存器或内存位置；D是目的操作数，可以是寄存器或内存位置。普通MOV不能让源和目的同时为内存操作数。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movb</td>
+<td>传送1字节数据</td>
+</tr>
+<tr>
+<td>movw</td>
+<td>传送2字节（一个字）数据</td>
+</tr>
+<tr>
+<td>movl</td>
+<td>传送4字节（一个双字）数据</td>
+</tr>
+<tr>
+<td>movq</td>
+<td>传送8字节（一个四字）数据</td>
+</tr>
+<tr>
+<td>movabsq</td>
+<td>本节的立即数形式：把完整64位立即数复制到64位通用寄存器</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注1：本表讨论的完整64位立即数形式只能以寄存器为目的：x86-64没有将任意完整64位立即数直接写入内存的普通MOV编码，可先写入寄存器，再用movq写入内存。</p>
+</blockquote>
+<blockquote>
+<p>注2：如果把位数更高的操作数mov到位数更低的操作数，则只mov位数更高操作数的低位部分</p>
+</blockquote>
+</li>
+<li>
+<p><code>MOVZ S, D</code>表示把S中的数据<strong>复制</strong>到D中，并将S的值<strong>零扩展</strong>到D中。</p>
+<blockquote>
+<p>零扩展是指将S的值扩展到D中时，在高位补0。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movzbw</td>
+<td>将零扩展的字节传送到字</td>
+</tr>
+<tr>
+<td>movzbl</td>
+<td>将零扩展的字节传送到双字</td>
+</tr>
+<tr>
+<td>movzbq</td>
+<td>将零扩展的字节传送到四字</td>
+</tr>
+<tr>
+<td>movzwl</td>
+<td>将零扩展的字传送到双字</td>
+</tr>
+<tr>
+<td>movzwq</td>
+<td>将零扩展的字传送到四字</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>都能以寄存器或内存地址为源操作数，但目的操作数只能是寄存器。原因是x86-64为MOVZ和MOVS类指令把目的地址固定为寄存器。不存在movzlq指令，是因为写低32位寄存器时，会自动把高32位清零。</p>
+</blockquote>
+</li>
+<li>
+<p><code>MOVS S, D</code>表示把S中的数据<strong>复制</strong>到D中，并将S的值<strong>符号扩展</strong>到D中。</p>
+<blockquote>
+<p>符号扩展是指将S的值扩展到D中时，在高位补上S的符号位。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movsbw</td>
+<td>将符号扩展的字节传送到字</td>
+</tr>
+<tr>
+<td>movsbl</td>
+<td>将符号扩展的字节传送到双字</td>
+</tr>
+<tr>
+<td>movsbq</td>
+<td>将符号扩展的字节传送到四字</td>
+</tr>
+<tr>
+<td>movswl</td>
+<td>将符号扩展的字传送到双字</td>
+</tr>
+<tr>
+<td>movswq</td>
+<td>将符号扩展的字传送到四字</td>
+</tr>
+<tr>
+<td>movslq</td>
+<td>将符号扩展的双字传送到四字</td>
+</tr>
+<tr>
+<td>cltq</td>
+<td>将%eax的符号扩展到%rax（只能作用于这两个特定寄存器）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>上表movs开头的指令可用寄存器或内存作为源，目的只能为寄存器。cltq的源和目的固定为%eax和%rax，不显式书写操作数，也不能另选内存源。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="栈操作压栈和弹栈"><a class="markdownIt-Anchor" href="#栈操作压栈和弹栈"></a> 栈操作（压栈和弹栈）</h1>
+<h2 id="栈"><a class="markdownIt-Anchor" href="#栈"></a> 栈</h2>
+<h3 id="是什么-3"><a class="markdownIt-Anchor" href="#是什么-3"></a> 是什么</h3>
+<p>可看作一个数组，且总是从数组的<strong>一端</strong>（被称为<strong>栈顶</strong>）插入和删除元素，遵循<strong>后进先出</strong>的原则</p>
+<h3 id="为什么需要-2"><a class="markdownIt-Anchor" href="#为什么需要-2"></a> 为什么需要</h3>
+<p>在调用函数时，因为某些寄存器会被覆盖，需要保存当前的寄存器状态，所以用栈来存储。</p>
+<h3 id="如何实现x86-64"><a class="markdownIt-Anchor" href="#如何实现x86-64"></a> 如何实现(x86-64)</h3>
+<ol>
+<li>
+<p>在内存中，栈底的地址最大，栈顶的地址最小，栈<strong>向下</strong>增长</p>
+</li>
+<li>
+<p>通过<strong>栈指针%rsp</strong>保存栈顶的地址</p>
+</li>
+<li>
+<p>压栈时，栈顶指针减小指定长度，弹栈时，栈顶指针增大指定长度达到</p>
+</li>
+</ol>
+<h2 id="压栈"><a class="markdownIt-Anchor" href="#压栈"></a> 压栈</h2>
+<ol>
+<li>
+<p>指令:<code>pushq S</code></p>
+</li>
+<li>
+<p>效果: 栈指针先自减8，再将S的值（四字）存入当前栈指针指向的位置，</p>
+</li>
+</ol>
+<h2 id="弹栈"><a class="markdownIt-Anchor" href="#弹栈"></a> 弹栈</h2>
+<ol>
+<li>
+<p>指令:<code>popq D</code></p>
+</li>
+<li>
+<p>效果: 将栈指针指向的四字值弹出，存放到D中，栈指针再自增8.</p>
+</li>
+</ol>
+<h2 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h2>
+<ol>
+<li>
+<p>x86-64指令中关于栈操作的指令只有pushq和popq, 其他长度的操作都未定义或者应当避免使用，原因是需要使栈指针保持<strong>八字节对齐</strong>（每次固定移动八字节）</p>
+</li>
+<li>
+<p>八字节对齐的原因：方便对数据和指令的原子化操作，防止在执行程序时，因为长度不同造成访存混乱。</p>
+</li>
+<li>
+<p>压栈和弹栈也是将值<strong>复制</strong>到相应寄存器中。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>CSAPP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于</title>
     <url>/about/index.html</url>
     <content><![CDATA[<!-- xp-about -->
@@ -8887,7 +9269,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <section class="about-profile" aria-label="个人资料">
     <h2 class="profile-window-title">个人资料</h2>
     <div class="about-profile-identity"><img src="&#x2F;images&#x2F;my-avatar.png" alt="" width="48" height="48"><strong>ZetaC</strong></div>
-    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">20 篇日志</a><a href="&#x2F;tags&#x2F;">7 个标签</a></nav>
+    <nav class="about-profile-stats" aria-label="站点统计"><a href="&#x2F;archives&#x2F;">21 篇日志</a><a href="&#x2F;tags&#x2F;">7 个标签</a></nav>
   </section>
 <p class="xp-profile-signature">The answer  is blowin'in the wind</p>
 </section>

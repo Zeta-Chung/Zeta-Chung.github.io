@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#059669"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#059669">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":280,"display":"post","padding":18,"offset":24},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":-1,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="CSAPP第三章学习笔记，内容包括x86-64架构下的CPU内寄存器、操作数指示符、以及访问和传递信息使用的汇编指令。汇编代码使用ATT格式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2-2.访问信息">
+<meta property="og:url" content="http://example.com/2026/11/11/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/index.html">
+<meta property="og:site_name" content="ZetaC">
+<meta property="og:description" content="CSAPP第三章学习笔记，内容包括x86-64架构下的CPU内寄存器、操作数指示符、以及访问和传递信息使用的汇编指令。汇编代码使用ATT格式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-11T01:46:17.000Z">
+<meta property="article:modified_time" content="2026-11-17T03:15:39.291Z">
+<meta property="article:author" content="ZetaC">
+<meta property="article:tag" content="CSAPP">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/11/11/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/11/11/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/","path":"2026/11/11/2-2.访问信息/","title":"2-2.访问信息"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2-2.访问信息 | ZetaC</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<!-- source/_data/head.njk -->
+<script>
+(() => {
+  if (location.pathname !== '/') return;
+  try {
+    const seen = sessionStorage.getItem('zetac-notifications-seen');
+    const replay = sessionStorage.getItem('zetac-notifications-replay');
+    sessionStorage.setItem('zetac-notifications-seen', '1');
+    sessionStorage.removeItem('zetac-notifications-replay');
+    if (!seen || replay === '1') {
+      document.documentElement.classList.add('notifications-pop-in');
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = [...document.querySelectorAll('.main-inner.index .post-block')];
+        let lastDelay = 0;
+        cards.forEach(card => {
+          const delay = parseFloat(card.style.getPropertyValue('--notification-delay')) || 0;
+          lastDelay = Math.max(lastDelay, delay);
+          window.setTimeout(() => card.classList.add('notification-shown'), delay);
+        });
+        window.setTimeout(() => {
+          document.documentElement.classList.remove('notifications-pop-in');
+          cards.forEach(card => card.classList.remove('notification-shown'));
+        }, lastDelay + 100);
+      }, { once: true });
+    }
+  } catch (_) {
+    // With storage unavailable, retain the ordinary immediately visible homepage.
+  }
+})();
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous">
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="desktop-copyright">&copy; 2026 ZetaC</div>
+    </div>
+  </footer>
+<main class="main win95-window"><div class="window-titlebar"><span class="window-document-icon" aria-hidden="true"></span><span class="window-caption-title">2-2.访问信息</span><div class="window-caption-controls"><button class="window-caption-control window-caption-minimize" type="button" disabled aria-label="最小化（暂未启用）" title="最小化（暂未启用）"></button><button class="window-caption-control window-caption-maximize" type="button" aria-label="最大化窗口" title="最大化窗口" aria-pressed="false"></button><a class="window-caption-control window-caption-close" href="/" aria-label="关闭窗口，返回首页" title="关闭窗口，返回首页"></a></div></div>
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZetaC</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E7%9B%AE%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text"> 通用目的寄存器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text"> 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81"><span class="nav-number">1.2.</span> <span class="nav-text"> 为什么需要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-number">1.3.</span> <span class="nav-text"> 命名规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-number">1.4.</span> <span class="nav-text"> 使用规则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8C%87%E7%A4%BA%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text"> 操作数指示符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">2.1.</span> <span class="nav-text"> 基本思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88-2"><span class="nav-number">2.2.</span> <span class="nav-text"> 是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E6%95%B0"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 立即数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%BC%95%E7%94%A8"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 内存引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text"> 数据传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E6%8C%87%E4%BB%A4mov%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text"> 最简单的指令:MOV类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%88%E6%93%8D%E4%BD%9C%E5%8E%8B%E6%A0%88%E5%92%8C%E5%BC%B9%E6%A0%88"><span class="nav-number">4.</span> <span class="nav-text"> 栈操作（压栈和弹栈）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">4.1.</span> <span class="nav-text"> 栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88-3"><span class="nav-number">4.1.1.</span> <span class="nav-text"> 是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-2"><span class="nav-number">4.1.2.</span> <span class="nav-text"> 为什么需要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0x86-64"><span class="nav-number">4.1.3.</span> <span class="nav-text"> 如何实现(x86-64)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%8B%E6%A0%88"><span class="nav-number">4.2.</span> <span class="nav-text"> 压栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%B9%E6%A0%88"><span class="nav-number">4.3.</span> <span class="nav-text"> 弹栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.4.</span> <span class="nav-text"> 注意事项</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/11/11/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="ZetaC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2-2.访问信息 | ZetaC">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2-2.访问信息
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+<span class="post-meta-item post-sequence">第20篇</span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-11-11 09:46:17" itemprop="dateCreated datePublished" datetime="2026-11-11T09:46:17+08:00">2026-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-11-17 11:15:39" itemprop="dateModified" datetime="2026-11-17T11:15:39+08:00">2026-11-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>CSAPP第三章学习笔记，内容包括x86-64架构下的CPU内寄存器、操作数指示符、以及访问和传递信息使用的汇编指令。汇编代码使用ATT格式。</p>
+<span id="more"></span>
+<h1 id="通用目的寄存器"><a class="markdownIt-Anchor" href="#通用目的寄存器"></a> 通用目的寄存器</h1>
+<h2 id="是什么"><a class="markdownIt-Anchor" href="#是什么"></a> 是什么</h2>
+<p>CPU中用于存储<strong>整数数据</strong>和<strong>指针</strong>的寄存器，x86-64架构下共有16个通用目的寄存器</p>
+<h2 id="为什么需要"><a class="markdownIt-Anchor" href="#为什么需要"></a> 为什么需要</h2>
+<p>存储整数数据和指针，方便CPU进行运算</p>
+<h2 id="命名规则"><a class="markdownIt-Anchor" href="#命名规则"></a> 命名规则</h2>
+<table>
+<thead>
+<tr>
+<th>64位名称</th>
+<th>32位名称</th>
+<th>16位名称</th>
+<th>8位名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%rax</td>
+<td>%eax</td>
+<td>%ax</td>
+<td>%al</td>
+<td>返回值寄存器，存储函数返回值</td>
+</tr>
+<tr>
+<td>%rbx</td>
+<td>%ebx</td>
+<td>%bx</td>
+<td>%bl</td>
+<td>被调用者保存寄存器</td>
+</tr>
+<tr>
+<td>%rcx</td>
+<td>%ecx</td>
+<td>%cx</td>
+<td>%cl</td>
+<td>第四个参数寄存器(循环计数器)</td>
+</tr>
+<tr>
+<td>%rdx</td>
+<td>%edx</td>
+<td>%dx</td>
+<td>%dl</td>
+<td>第三个参数(I/O端口地址)寄存器</td>
+</tr>
+<tr>
+<td>%rsi</td>
+<td>%esi</td>
+<td>%si</td>
+<td>%sil</td>
+<td>第二个参数(源地址)寄存器</td>
+</tr>
+<tr>
+<td>%rdi</td>
+<td>%edi</td>
+<td>%di</td>
+<td>%dil</td>
+<td>第一个参数(目的地址)寄存器</td>
+</tr>
+<tr>
+<td>%rsp</td>
+<td>%esp</td>
+<td>%sp</td>
+<td>%spl</td>
+<td>栈指针寄存器</td>
+</tr>
+<tr>
+<td>%rbp</td>
+<td>%ebp</td>
+<td>%bp</td>
+<td>%bpl</td>
+<td>栈帧指针寄存器，被调用者保存</td>
+</tr>
+<tr>
+<td>%r8</td>
+<td>%r8d</td>
+<td>%r8w</td>
+<td>%r8b</td>
+<td>第五个参数寄存器</td>
+</tr>
+<tr>
+<td>%r9</td>
+<td>%r9d</td>
+<td>%r9w</td>
+<td>%r9b</td>
+<td>第六个参数寄存器</td>
+</tr>
+<tr>
+<td>%r10</td>
+<td>%r10d</td>
+<td>%r10w</td>
+<td>%r10b</td>
+<td>调用者保存</td>
+</tr>
+<tr>
+<td>%r11</td>
+<td>%r11d</td>
+<td>%r11w</td>
+<td>%r11b</td>
+<td>调用者保存</td>
+</tr>
+<tr>
+<td>%r12</td>
+<td>%r12d</td>
+<td>%r12w</td>
+<td>%r12b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r13</td>
+<td>%r13d</td>
+<td>%r13w</td>
+<td>%r13b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r14</td>
+<td>%r14d</td>
+<td>%r14w</td>
+<td>%r14b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r15</td>
+<td>%r15d</td>
+<td>%r15w</td>
+<td>%r15b</td>
+<td>被调用者保存</td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用规则"><a class="markdownIt-Anchor" href="#使用规则"></a> 使用规则</h2>
+<ol>
+<li>所有<strong>64位</strong>寄存器可以只访问其<strong>低32位、16位和8位</strong>（相应的名称也不同）。</li>
+</ol>
+<blockquote>
+<p>如果对64位的寄存器低位进行修改，不影响高位的值。特殊情况：写低32位寄存器时，会把高32位清零。</p>
+</blockquote>
+<ol start="2">
+<li>函数调用时，前六个参数分别存储在%rdi、%rsi、%rdx、%rcx、%r8和%r9中，返回值存储在%rax中。</li>
+</ol>
+<blockquote>
+<p>在不保存参数时，这些寄存器也能用作存储其它数据的寄存器</p>
+</blockquote>
+<ol start="3">
+<li>
+<p>调用者保存: 调用者在<strong>调用函数前</strong>保存寄存器的值，<strong>函数返回后</strong>恢复寄存器的值。</p>
+</li>
+<li>
+<p>被调用者保存: 被调用者在<strong>函数开始时</strong>保存寄存器的值，<strong>函数返回前</strong>恢复寄存器的值。</p>
+</li>
+</ol>
+<h1 id="操作数指示符"><a class="markdownIt-Anchor" href="#操作数指示符"></a> 操作数指示符</h1>
+<h2 id="基本思想"><a class="markdownIt-Anchor" href="#基本思想"></a> 基本思想</h2>
+<p>将内存看作一个很大的字节数组，每个字节都有一个唯一的地址，内存中的每个对象都占用一个或多个<strong>连续的字节</strong>，访问对象时需要知道对象的<strong>地址</strong>和<strong>大小</strong>。</p>
+<h2 id="是什么-2"><a class="markdownIt-Anchor" href="#是什么-2"></a> 是什么</h2>
+<p>操作数指示符是<strong>汇编指令</strong>中用于指示一个操作中的<strong>源数据值</strong>，以及放置结果的<strong>目的地址</strong>，操作数可以是寄存器、内存地址或立即数</p>
+<h3 id="立即数"><a class="markdownIt-Anchor" href="#立即数"></a> 立即数</h3>
+<p>用来表示一个<strong>常数值</strong>的操作数，在ATT格式中书写方式是<code>$&lt;常数值&gt;</code>，如<code>$0xFF</code>表示十六进制的255</p>
+<h3 id="寄存器"><a class="markdownIt-Anchor" href="#寄存器"></a> 寄存器</h3>
+<ol>
+<li>
+<p>用来表示一个<strong>寄存器</strong>的操作数，在ATT格式中书写方式是<code>%&lt;寄存器名称&gt;</code>，如<code>%rax</code>表示64位的rax寄存器;</p>
+</li>
+<li>
+<p>若将寄存器集合看作数组R, 用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">r_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示任意寄存器a的索引，则用R[<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">r_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>]表示寄存器a存储的值，R[r_a]的值可以被修改。</p>
+</li>
+</ol>
+<h3 id="内存引用"><a class="markdownIt-Anchor" href="#内存引用"></a> 内存引用</h3>
+<ol>
+<li>
+<p>用来表示一个<strong>内存地址</strong>的操作数，根据计算出来的地址访问某个内存位置。</p>
+</li>
+<li>
+<p>用符号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mi>b</mi></msub><mo stretchy="false">[</mo><mi>A</mi><mi>d</mi><mi>d</mi><mi>r</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M_b[Addr]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal">A</span><span class="mord mathnormal">dd</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mclose">]</span></span></span></span>表示内存中从地址Addr开始的b个字节的值，通常b可省去。</p>
+<blockquote>
+<p>地址与地址处的值不同：<code>movq 8(%rax), %rdx</code>读取地址<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false">[</mo><mi mathvariant="normal">%</mi><mi>r</mi><mi>a</mi><mi>x</mi><mo stretchy="false">]</mo><mo>+</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">R[\%rax]+8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mopen">[</span><span class="mord">%</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span>处的8字节；<code>leaq 8(%rax), %rdx</code>只计算该地址，不读取内存。</p>
+</blockquote>
+</li>
+<li>
+<p>寻址模式最常用的书写方式:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(r_b,r_i,s)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">mm</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></p>
+<p>其中，Imm是一个立即数，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">r_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是寄存器，s是一个整数，表示缩放因子（只能取1、2、4或8）。内存引用的地址计算公式为：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>地址</mtext><mo>=</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo>+</mo><mi>s</mi><mo>∗</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">地址 = Imm + R[r_b] + s * R[r_i]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">mm</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></span></p>
+<blockquote>
+<p>其余寻址模式都是该公式的特例(Imm、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">r_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>或<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为0)</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="数据传送指令"><a class="markdownIt-Anchor" href="#数据传送指令"></a> 数据传送指令</h1>
+<h2 id="最简单的指令mov类"><a class="markdownIt-Anchor" href="#最简单的指令mov类"></a> 最简单的指令:MOV类</h2>
+<ol>
+<li>
+<p><code>MOV S, D</code>表示把S中的数据<strong>复制</strong>到D中。</p>
+<blockquote>
+<p>S是源操作数，可以是立即数、寄存器或内存位置；D是目的操作数，可以是寄存器或内存位置。普通MOV不能让源和目的同时为内存操作数。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movb</td>
+<td>传送1字节数据</td>
+</tr>
+<tr>
+<td>movw</td>
+<td>传送2字节（一个字）数据</td>
+</tr>
+<tr>
+<td>movl</td>
+<td>传送4字节（一个双字）数据</td>
+</tr>
+<tr>
+<td>movq</td>
+<td>传送8字节（一个四字）数据</td>
+</tr>
+<tr>
+<td>movabsq</td>
+<td>本节的立即数形式：把完整64位立即数复制到64位通用寄存器</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注1：本表讨论的完整64位立即数形式只能以寄存器为目的：x86-64没有将任意完整64位立即数直接写入内存的普通MOV编码，可先写入寄存器，再用movq写入内存。</p>
+</blockquote>
+<blockquote>
+<p>注2：如果把位数更高的操作数mov到位数更低的操作数，则只mov位数更高操作数的低位部分</p>
+</blockquote>
+</li>
+<li>
+<p><code>MOVZ S, D</code>表示把S中的数据<strong>复制</strong>到D中，并将S的值<strong>零扩展</strong>到D中。</p>
+<blockquote>
+<p>零扩展是指将S的值扩展到D中时，在高位补0。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movzbw</td>
+<td>将零扩展的字节传送到字</td>
+</tr>
+<tr>
+<td>movzbl</td>
+<td>将零扩展的字节传送到双字</td>
+</tr>
+<tr>
+<td>movzbq</td>
+<td>将零扩展的字节传送到四字</td>
+</tr>
+<tr>
+<td>movzwl</td>
+<td>将零扩展的字传送到双字</td>
+</tr>
+<tr>
+<td>movzwq</td>
+<td>将零扩展的字传送到四字</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>都能以寄存器或内存地址为源操作数，但目的操作数只能是寄存器。原因是x86-64为MOVZ和MOVS类指令把目的地址固定为寄存器。不存在movzlq指令，是因为写低32位寄存器时，会自动把高32位清零。</p>
+</blockquote>
+</li>
+<li>
+<p><code>MOVS S, D</code>表示把S中的数据<strong>复制</strong>到D中，并将S的值<strong>符号扩展</strong>到D中。</p>
+<blockquote>
+<p>符号扩展是指将S的值扩展到D中时，在高位补上S的符号位。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movsbw</td>
+<td>将符号扩展的字节传送到字</td>
+</tr>
+<tr>
+<td>movsbl</td>
+<td>将符号扩展的字节传送到双字</td>
+</tr>
+<tr>
+<td>movsbq</td>
+<td>将符号扩展的字节传送到四字</td>
+</tr>
+<tr>
+<td>movswl</td>
+<td>将符号扩展的字传送到双字</td>
+</tr>
+<tr>
+<td>movswq</td>
+<td>将符号扩展的字传送到四字</td>
+</tr>
+<tr>
+<td>movslq</td>
+<td>将符号扩展的双字传送到四字</td>
+</tr>
+<tr>
+<td>cltq</td>
+<td>将%eax的符号扩展到%rax（只能作用于这两个特定寄存器）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>上表movs开头的指令可用寄存器或内存作为源，目的只能为寄存器。cltq的源和目的固定为%eax和%rax，不显式书写操作数，也不能另选内存源。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="栈操作压栈和弹栈"><a class="markdownIt-Anchor" href="#栈操作压栈和弹栈"></a> 栈操作（压栈和弹栈）</h1>
+<h2 id="栈"><a class="markdownIt-Anchor" href="#栈"></a> 栈</h2>
+<h3 id="是什么-3"><a class="markdownIt-Anchor" href="#是什么-3"></a> 是什么</h3>
+<p>可看作一个数组，且总是从数组的<strong>一端</strong>（被称为<strong>栈顶</strong>）插入和删除元素，遵循<strong>后进先出</strong>的原则</p>
+<h3 id="为什么需要-2"><a class="markdownIt-Anchor" href="#为什么需要-2"></a> 为什么需要</h3>
+<p>在调用函数时，因为某些寄存器会被覆盖，需要保存当前的寄存器状态，所以用栈来存储。</p>
+<h3 id="如何实现x86-64"><a class="markdownIt-Anchor" href="#如何实现x86-64"></a> 如何实现(x86-64)</h3>
+<ol>
+<li>
+<p>在内存中，栈底的地址最大，栈顶的地址最小，栈<strong>向下</strong>增长</p>
+</li>
+<li>
+<p>通过<strong>栈指针%rsp</strong>保存栈顶的地址</p>
+</li>
+<li>
+<p>压栈时，栈顶指针减小指定长度，弹栈时，栈顶指针增大指定长度达到</p>
+</li>
+</ol>
+<h2 id="压栈"><a class="markdownIt-Anchor" href="#压栈"></a> 压栈</h2>
+<ol>
+<li>
+<p>指令:<code>pushq S</code></p>
+</li>
+<li>
+<p>效果: 栈指针先自减8，再将S的值（四字）存入当前栈指针指向的位置，</p>
+</li>
+</ol>
+<h2 id="弹栈"><a class="markdownIt-Anchor" href="#弹栈"></a> 弹栈</h2>
+<ol>
+<li>
+<p>指令:<code>popq D</code></p>
+</li>
+<li>
+<p>效果: 将栈指针指向的四字值弹出，存放到D中，栈指针再自增8.</p>
+</li>
+</ol>
+<h2 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h2>
+<ol>
+<li>
+<p>x86-64指令中关于栈操作的指令只有pushq和popq, 其他长度的操作都未定义或者应当避免使用，原因是需要使栈指针保持<strong>八字节对齐</strong>（每次固定移动八字节）</p>
+</li>
+<li>
+<p>八字节对齐的原因：方便对数据和指令的原子化操作，防止在执行程序时，因为长度不同造成访存混乱。</p>
+</li>
+<li>
+<p>压栈和弹栈也是将值<strong>复制</strong>到相应寄存器中。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags"><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+<a href="/tags/CSAPP/" rel="tag"># CSAPP</a></div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/10/29/1-3.%E6%B5%AE%E7%82%B9%E6%95%B0/" rel="prev" title="1-3.浮点数">
+                  <i class="fa fa-angle-left"></i> 1-3.浮点数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/11/11/2-1.%E7%A8%8B%E5%BA%8F%E7%BC%96%E7%A0%81%E5%92%8C%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F/" rel="next" title="2-1.程序编码和数据格式">
+                  2-1.程序编码和数据格式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Zeta-Chung" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<!-- 全站底部导航：沿用 NexT 菜单配置和搜索弹窗。 -->
+<nav class="win95-taskbar" aria-label="全站导航">
+  <ul class="taskbar-menu">
+      <li class="taskbar-item taskbar-item-home">
+        <a class="taskbar-link" href="/" aria-label="ZetaC · 首页">
+          <img class="taskbar-avatar" src="/images/my-avatar.png" alt="" width="24" height="24">
+          <span>ZetaC</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-about">
+        <a class="taskbar-link" href="/about/">
+          <i class="fa fa-user fa-fw" aria-hidden="true"></i>
+          <span>关于</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-tags">
+        <a class="taskbar-link" href="/tags/">
+          <i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+          <span>分类</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-archives">
+        <a class="taskbar-link" href="/archives/">
+          <i class="fa fa-archive fa-fw" aria-hidden="true"></i>
+          <span>归档</span>
+        </a>
+      </li>
+      <li class="taskbar-item taskbar-item-search">
+        <button class="taskbar-link popup-trigger" type="button" aria-label="搜索全站">
+          <i class="fa fa-search fa-fw" aria-hidden="true"></i>
+          <span>搜索</span>
+        </button>
+      </li>
+  </ul>
+</nav>
+
+<!-- 直接识别 mermaid 代码块并渲染（绕过 NexT page:loaded 事件时序问题） -->
+<script>
+(function() {
+  function initMermaid() {
+    var codeBlocks = document.querySelectorAll('pre > code.mermaid');
+    if (codeBlocks.length === 0) return;
+    codeBlocks.forEach(function(el) {
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = el.textContent;
+      el.parentNode.parentNode.replaceChild(div, el.parentNode);
+    });
+    if (typeof mermaid !== 'undefined') {
+      mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+      return;
+    }
+    var cfg = document.querySelector('.next-config[data-name="mermaid"]');
+    if (!cfg) return;
+    try {
+      var config = JSON.parse(cfg.textContent);
+      if (config.enable && config.js && config.js.url) {
+        var s = document.createElement('script');
+        s.src = config.js.url;
+        s.integrity = config.js.integrity || '';
+        s.crossOrigin = 'anonymous';
+        s.onload = function() {
+          mermaid.initialize({
+            theme: (config.theme || {}).light || 'default',
+            flowchart: { curve: 'linear' },
+            sequence: { actorMargin: 50 }
+          });
+          mermaid.run({ nodes: document.querySelectorAll('div.mermaid') });
+        };
+        document.head.appendChild(s);
+      }
+    } catch(e) { console.error('Mermaid init error:', e); }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initMermaid, 100);
+  } else {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMermaid, 100); });
+  }
+})();
+</script>
+<!-- 目录点击不产生历史记录（capture phase + 异常保护） -->
+<script>
+document.addEventListener('click', function(e) {
+  try {
+    var link = e.target.closest('.post-toc .nav-link');
+    if (link) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        var id = decodeURIComponent(href.slice(1));
+        var target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          if (!window.scrollWindowTarget?.(target, 'start')) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+  } catch(err) { console.error('TOC:', err); }
+}, true);
+</script>
+
+<!-- 文章内关键字搜索 -->
+<style>
+#articleSearchWrap { display: none; position: sticky; top: 0; z-index: 100; background: var(--card-bg-color, #f7fdf9); padding: 10px 16px; border-bottom: 2px solid var(--theme-color, #059669); align-items: center; gap: 8px; }
+#articleSearchWrap.show { display: flex; }
+#articleSearchWrap input { flex: 1; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 14px; outline: none; }
+#articleSearchWrap input:focus { border-color: var(--theme-color, #059669); }
+#articleSearchWrap .count { font-size: 12px; color: #888; white-space: nowrap; min-width: 50px; text-align: center; }
+#articleSearchWrap button { background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; padding: 4px 8px; font-size: 13px; line-height: 1; }
+#articleSearchWrap button:hover { background: #eee; }
+#articleSearchBtn { position: fixed; right: 20px; bottom: 80px; z-index: 99; width: 36px; height: 36px; border-radius: 50%; background: var(--theme-color, #059669); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity .2s; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+#articleSearchBtn:hover { opacity: 1; }
+mark.ah-match { background: #ffeb3b; color: inherit; padding: 0 1px; border-radius: 1px; }
+mark.ah-current { background: #ff9800; color: #fff; }
+</style>
+
+<div id="articleSearchWrap">
+  <input type="text" id="articleSearchInput" placeholder="搜索本文内容…" autofocus>
+  <span class="count" id="articleSearchCount"></span>
+  <button id="articleSearchPrev" title="上一个">▲</button>
+  <button id="articleSearchNext" title="下一个">▼</button>
+  <button id="articleSearchClose" title="关闭">✕</button>
+</div>
+
+<button id="articleSearchBtn" title="搜索本文" style="display:none;">
+  <span class="article-search-icon" aria-hidden="true"></span>
+</button>
+
+<script>
+(function() {
+  var postBody = document.querySelector('.post-body');
+  if (!postBody) return;
+
+  var wrap = document.getElementById('articleSearchWrap');
+  var input = document.getElementById('articleSearchInput');
+  var count = document.getElementById('articleSearchCount');
+  var btn = document.getElementById('articleSearchBtn');
+  var matches = [], currentIdx = 0;
+
+  function clearHighlights() {
+    matches.forEach(function(m) {
+      var parent = m.parentNode;
+      if (parent) {
+        parent.replaceChild(document.createTextNode(m.textContent), m);
+        parent.normalize();
+      }
+    });
+    matches = [];
+    currentIdx = 0;
+    count.textContent = '';
+  }
+
+  function search(keyword) {
+    clearHighlights();
+    if (!keyword) return;
+    var nodes = [];
+    var walker = document.createTreeWalker(postBody, 4, null, false);
+    var n;
+    while (n = walker.nextNode()) {
+      var idx = n.textContent.toLowerCase().indexOf(keyword.toLowerCase());
+      if (idx !== -1) nodes.push(n);
+    }
+    if (nodes.length === 0) { count.textContent = '无结果'; return; }
+    nodes.forEach(function(node) {
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var kw = keyword.toLowerCase();
+      var frag = document.createDocumentFragment();
+      var lastIdx = 0;
+      var idx;
+      while ((idx = lower.indexOf(kw, lastIdx)) !== -1) {
+        if (idx > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, idx)));
+        var mark = document.createElement('mark');
+        mark.className = 'ah-match';
+        mark.textContent = text.slice(idx, idx + kw.length);
+        frag.appendChild(mark);
+        matches.push(mark);
+        lastIdx = idx + kw.length;
+      }
+      if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    currentIdx = 0;
+    if (matches.length) {
+      matches[0].className = 'ah-current';
+      if (!window.scrollWindowTarget?.(matches[0], 'center')) matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    count.textContent = '1/' + matches.length;
+  }
+
+  function goTo(idx) {
+    if (!matches.length) return;
+    if (matches[currentIdx]) matches[currentIdx].className = 'ah-match';
+    currentIdx = (idx + matches.length) % matches.length;
+    matches[currentIdx].className = 'ah-current';
+    if (!window.scrollWindowTarget?.(matches[currentIdx], 'center')) matches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    count.textContent = (currentIdx + 1) + '/' + matches.length;
+  }
+
+  // Show search button only on article pages (has .post-body)
+  btn.style.display = '';
+  btn.addEventListener('click', function() {
+    wrap.classList.add('show');
+    input.focus();
+    input.select();
+  });
+
+  document.getElementById('articleSearchClose').addEventListener('click', function() {
+    clearHighlights();
+    wrap.classList.remove('show');
+    input.value = '';
+  });
+
+  document.getElementById('articleSearchNext').addEventListener('click', function() { goTo(currentIdx + 1); });
+  document.getElementById('articleSearchPrev').addEventListener('click', function() { goTo(currentIdx - 1); });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) { goTo(currentIdx - 1); }
+      else { search(input.value.trim()); }
+    }
+    if (e.key === 'Escape') {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+      input.blur();
+    }
+  });
+
+  // Close on click outside
+  document.addEventListener('click', function(e) {
+    if (wrap.classList.contains('show') && !wrap.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+      clearHighlights();
+      wrap.classList.remove('show');
+      input.value = '';
+    }
+  });
+})();
+</script>
+
+<div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="/js/window-controls.js" defer></script><script src="/js/window-scroll.js" defer></script>
+</body>
+</html>
