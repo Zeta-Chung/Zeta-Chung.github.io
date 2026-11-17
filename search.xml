@@ -8880,7 +8880,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
   </entry>
   <entry>
     <title>2-2.访问信息</title>
-    <url>/2026/11/11/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/</url>
+    <url>/2026/11/12/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/</url>
     <content><![CDATA[<p>CSAPP第三章学习笔记，内容包括x86-64架构下的CPU内寄存器、操作数指示符、以及访问和传递信息使用的汇编指令。汇编代码使用ATT格式。</p>
 <span id="more"></span>
 <h1 id="通用目的寄存器"><a class="markdownIt-Anchor" href="#通用目的寄存器"></a> 通用目的寄存器</h1>
