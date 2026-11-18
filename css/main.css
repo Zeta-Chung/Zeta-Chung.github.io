@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #1a5e14;
+    background: #da5dff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3458,6 +3458,61 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
 .main-inner.index .post-button .btn {
   min-width: 110px;
   padding: 5px 18px;
+}
+@media (min-width: 992px) {
+  .main-inner.index {
+    --notification-inset: 16px;
+    --notification-icon-size: 36px;
+    --notification-icon-gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 900px;
+    margin-inline: auto;
+  }
+  .main-inner.index > .post-block:not(:first-child),
+  .main-inner.index > .pagination {
+    margin-top: 0;
+  }
+  .main-inner.index > .pagination {
+    grid-column: 1/-1;
+  }
+  .main-inner.index > .post-block:not([hidden]),
+  .main-inner.index .post-content,
+  .main-inner.index .post-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .main-inner.index .post-content,
+  .main-inner.index .post-body,
+  .main-inner.index .notification-summary {
+    flex: 1;
+  }
+  .main-inner.index .post-meta-container {
+    margin: 7px var(--notification-inset) 0 calc(var(--notification-inset) + var(--notification-icon-size) + var(--notification-icon-gap));
+    text-align: left;
+  }
+  .main-inner.index .post-meta {
+    justify-content: flex-start;
+  }
+  .main-inner.index .post-body {
+    padding: 0 var(--notification-inset) 12px;
+  }
+  .main-inner.index .notification-summary {
+    gap: var(--notification-icon-gap);
+  }
+  .main-inner.index .notification-summary::before {
+    flex-basis: var(--notification-icon-size);
+    width: var(--notification-icon-size);
+    height: var(--notification-icon-size);
+  }
+  .main-inner.index .notification-summary-text {
+    overflow-wrap: anywhere;
+  }
+  .main-inner.index .post-button {
+    margin-top: 10px;
+  }
 }
 .about-profile {
   box-sizing: border-box;
