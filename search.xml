@@ -9263,7 +9263,202 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
   <entry>
     <title>2-3.算术和逻辑操作</title>
     <url>/2026/11/18/2-3-%E7%AE%97%E6%9C%AF%E5%92%8C%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>CSAPP第三章中有关算术和逻辑操作的汇编指令，以及对应的机器行为。包括加载有效地址、一元和二元操作、移位操作以及特殊算术操作。</p>
+<span id="more"></span>
+<h1 id="加载有效地址"><a class="markdownIt-Anchor" href="#加载有效地址"></a> 加载有效地址</h1>
+<h2 id="指令-leaq-s-d"><a class="markdownIt-Anchor" href="#指令-leaq-s-d"></a> 指令: leaq S, D</h2>
+<ol>
+<li>
+<p>效果：按S中表达式计算地址，写入到D中，不访问内存。<strong>目的操作数</strong>D必须为<strong>寄存器</strong></p>
+</li>
+<li>
+<p>lea有leaq, leal和leaw三种变种, 没有leab。</p>
+</li>
+<li>
+<p>使用<a href="2026/11/12/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/#L56">寻址模式</a>时，S可写作<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>R</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>R</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(R_b, R_i, s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">mm</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span>的形式</p>
+</li>
+</ol>
+<blockquote>
+<p>例如: %rdi中存放x, %rsi中存放y, 则<code>leaq 8(%rdi, %rsi, 2), %rax</code>表示向%rax写入x+2y+8</p>
+</blockquote>
+<h1 id="一元操作"><a class="markdownIt-Anchor" href="#一元操作"></a> 一元操作</h1>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INC D</td>
+<td>D = D+1</td>
+</tr>
+<tr>
+<td>DEC D</td>
+<td>D = D-1</td>
+</tr>
+<tr>
+<td>NEG D</td>
+<td>D = -D</td>
+</tr>
+<tr>
+<td>NOT D</td>
+<td>D = ~D</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>这些指令都有不同操作数长度的变种，例如inc可细分为incq, incl, incw和incb；</p>
+</li>
+<li>
+<p>当操作数是<strong>寄存器</strong>时可直接用inc<strong>不加后缀</strong>, 当操作数为<strong>内存地址</strong>时必须<strong>显式指定</strong>长度。</p>
+</li>
+</ol>
+<h1 id="二元操作"><a class="markdownIt-Anchor" href="#二元操作"></a> 二元操作</h1>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADD S, D</td>
+<td>D=D+S</td>
+</tr>
+<tr>
+<td>SUB S, D</td>
+<td>D=D-S</td>
+</tr>
+<tr>
+<td><a id="mul"></a>IMUL S, D</td>
+<td>D= D*S</td>
+</tr>
+<tr>
+<td>XOR S, D</td>
+<td>D = D^S</td>
+</tr>
+<tr>
+<td>OR S, D</td>
+<td>D=D | S</td>
+</tr>
+<tr>
+<td>AND S, D</td>
+<td>D = D&amp;S</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>这些指令同样有不同操作数长度的变种，加后缀的规则也与一元操作相同</p>
+</li>
+<li>
+<p>源操作数可以是立即数、寄存器或内存位置，目的操作数可以是寄存器或内存位置。IMUL操作目的必须是寄存器。</p>
+</li>
+</ol>
+<blockquote>
+<p>第二个操作数是内存位置时，需要从内存读出值、执行操作再写入内存</p>
+</blockquote>
+<ol start="3">
+<li>如果操作数是内存位置，同样可以使用<a href="2026/11/12/2-2.%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF/#L56">寻址模式</a>。</li>
+</ol>
+<h1 id="移位操作"><a class="markdownIt-Anchor" href="#移位操作"></a> 移位操作</h1>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SAL k, D</td>
+<td>D = D &lt;&lt; k</td>
+</tr>
+<tr>
+<td>SHL k, D</td>
+<td>等同于SAL</td>
+</tr>
+<tr>
+<td>SAR k, D</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mi>D</mi><mo>&gt;</mo><msub><mo>&gt;</mo><mi>A</mi></msub><mi>k</mi></mrow><annotation encoding="application/x-tex">D = D &gt;&gt;_A k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.6891em;vertical-align:-0.15em;"></span><span class="mrel"><span class="mrel">&gt;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>（算术右移）</td>
+</tr>
+<tr>
+<td>SHR k, D</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mi>D</mi><mo>&gt;</mo><msub><mo>&gt;</mo><mi>L</mi></msub><mi>k</mi></mrow><annotation encoding="application/x-tex">D = D &gt;&gt;_L k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.6891em;vertical-align:-0.15em;"></span><span class="mrel"><span class="mrel">&gt;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>（逻辑右移）</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>与上方操作一样，有不同操作数长度的变种，加后缀规则也类似。</p>
+</li>
+<li>
+<p>源操作数只能是<strong>8位立即数</strong>或单字节寄存器**%cl**，目的操作数可以是寄存器或内存位置</p>
+</li>
+<li>
+<p>如果源操作数是%cl, 对<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span></span></span></span>位数据进行移位操作，移位量由 <strong>%cl</strong> 的低m位决定(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">m = log_2(w)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="mclose">)</span></span></span></span>)。</p>
+<ol>
+<li>
+<p>个人理解原因:%cl寄存器的低m位可以表示0 ~ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^m-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7477em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>的移位量, 而<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup><mo>=</mo><mi>w</mi></mrow><annotation encoding="application/x-tex">2^m=w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span></span></span></span>使移位量小于位宽，防止无意义操作。</p>
+</li>
+<li>
+<p>例如，当%cl为0xFF时，salb移动7位, salw移动15位, sall移动31位, 而salq移动63位</p>
+</li>
+</ol>
+<blockquote>
+<p>这里教材表述有误，根据Intel手册，8, 16, 32位操作都取%cl的低5位, 64位操作取低6位。原因是简化设计和控制逻辑。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="特殊算术操作"><a class="markdownIt-Anchor" href="#特殊算术操作"></a> 特殊算术操作</h1>
+<h2 id="全乘法"><a class="markdownIt-Anchor" href="#全乘法"></a> 全乘法</h2>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>imulq S</td>
+<td>将S与 <strong>%rax</strong>的乘积(<strong>有符号, 共128位</strong>)的高64位送入%rdx中, 低64位送入%rax中</td>
+</tr>
+<tr>
+<td>mulq S</td>
+<td>将S与 <strong>%rax</strong>的乘积(<strong>无符号, 共128位</strong>)的高64位送入%rdx中, 低64位送入%rax中</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>imulq有两种不同的形式，第一种是<a href="#mul">双操作数</a>指令，从2个64位操作数中生成<strong>截断到64位的乘积</strong>，实现无符号乘法或补码乘法的效果。</p>
+</li>
+<li>
+<p>第二种是单操作数指令（上方），计算出操作数和%rax的<strong>全128位</strong>乘积</p>
+</li>
+</ol>
+<h2 id="八字的位宽转换"><a class="markdownIt-Anchor" href="#八字的位宽转换"></a> 八字的位宽转换</h2>
+<ol>
+<li>
+<p>八字:128位（8*16，因此称为八字）</p>
+</li>
+<li>
+<p>指令:<code>cqto</code></p>
+</li>
+<li>
+<p>效果: 将 <strong>%rax</strong>符号扩展为128位，高64位存放在 <strong>%rdx</strong>中, 低64位存放在%rax中</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>CSAPP</tag>
+      </tags>
   </entry>
   <entry>
     <title>关于</title>
