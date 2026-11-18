@@ -1263,7 +1263,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #bbff65;
+    background: #458552;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3467,7 +3467,7 @@ body:not(:has(.sidebar-nav-active)) .sidebar-toggle {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
-    max-width: 900px;
+    max-width: 1200px;
     margin-inline: auto;
   }
   .main-inner.index > .post-block:not(:first-child),
