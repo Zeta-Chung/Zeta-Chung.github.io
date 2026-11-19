@@ -9435,13 +9435,17 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 </tbody>
 </table>
 <ol>
-<li>
-<p>imulq有两种不同的形式，第一种是<a href="#mul">双操作数</a>指令，从2个64位操作数中生成<strong>截断到64位的乘积</strong>，实现无符号乘法或补码乘法的效果。</p>
-</li>
-<li>
-<p>第二种是单操作数指令（上方），计算出操作数和%rax的<strong>全128位</strong>乘积</p>
-</li>
+<li>imulq有两种不同的形式，第一种是<a href="#mul">双操作数</a>指令，从2个64位操作数中生成<strong>截断到64位的乘积</strong>，实现无符号乘法或补码乘法的效果。</li>
 </ol>
+<blockquote>
+<p>mul指令只有单操作数形式</p>
+</blockquote>
+<ol start="2">
+<li>第二种是单操作数指令（上方），计算出操作数和%rax的<strong>全128位</strong>乘积</li>
+</ol>
+<blockquote>
+<p>单操作数情形下同样有imull,imulw和imulb, 其中imulb将乘积存放在%ax中; imulw将高16位存放在%dx, 低16为存放在%ax; imull将高32位存放在%edx, 低32位存放在%eax。mul也是该规则。</p>
+</blockquote>
 <h2 id="八字的位宽转换"><a class="markdownIt-Anchor" href="#八字的位宽转换"></a> 八字的位宽转换</h2>
 <ol>
 <li>
@@ -9452,6 +9456,45 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 </li>
 <li>
 <p>效果: 将 <strong>%rax</strong>符号扩展为128位，高64位存放在 <strong>%rdx</strong>中, 低64位存放在%rax中</p>
+</li>
+</ol>
+<h2 id="除法"><a class="markdownIt-Anchor" href="#除法"></a> 除法</h2>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>idivq S</td>
+<td>将R[%rdx]:R[%rax]除以S的<strong>余数</strong>存放在 <strong>%rdx</strong>中, <br>除以S的 <strong>商(向0取整)</strong> 存放在 <strong>%rax</strong>中。</td>
+<td>有符号除法</td>
+</tr>
+<tr>
+<td>divq S</td>
+<td>同上</td>
+<td>无符号除法</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注: R[%rdx]:R[%rax]表示以%rdx为高位，%rax为低位，总位数为二者位数之和</p>
+</blockquote>
+<ol>
+<li>
+<p>对于64位的除法, 先将%rax中的被除数扩展到128位(高位在%rdx中), 进行除法运算。</p>
+</li>
+<li>
+<p>32位的除法，%eax中的被除数扩展后，高位放置在%edx中；16位的除法, %ax中的被除数扩展后，高位放置在%dx中。</p>
+</li>
+<li>
+<p><strong>8位</strong>的除法, %al中的被除数扩展后<strong>整体放置在%ax中</strong>。</p>
+</li>
+<li>
+<p>有符号除法时作符号扩展<code>cqto</code>，%rdx中全写入1或0；无符号除法时为%rdx清零。其余位宽的除法相同。</p>
 </li>
 </ol>
 ]]></content>
