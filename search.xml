@@ -9262,7 +9262,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
   </entry>
   <entry>
     <title>2-3.算术和逻辑操作</title>
-    <url>/2026/11/18/2-3-%E7%AE%97%E6%9C%AF%E5%92%8C%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C/</url>
+    <url>/2026/11/18/2-3.%E7%AE%97%E6%9C%AF%E5%92%8C%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<p>CSAPP第三章中有关算术和逻辑操作的汇编指令，以及对应的机器行为。包括加载有效地址、一元和二元操作、移位操作以及特殊算术操作。</p>
 <span id="more"></span>
 <h1 id="加载有效地址"><a class="markdownIt-Anchor" href="#加载有效地址"></a> 加载有效地址</h1>
